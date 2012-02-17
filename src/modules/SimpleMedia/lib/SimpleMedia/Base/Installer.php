@@ -23,14 +23,6 @@ class SimpleMedia_Base_Installer extends Zikula_AbstractInstaller
      */
     public function install()
     {
-        // Create the media directories
-        $datadir = FileUtil::getDataDirectory().'/SimpleMedia';
-        SimpleMedia_Util_Controller::mkdir($datadir . '/media/thefile');
-        SimpleMedia_Util_Controller::mkdir($datadir . '/media/thefile/thumbs');
-        $this->setVar('mediaDir', 'media/thefile');
-        $this->setVar('mediaThumbDir', 'thumbs');
-        $this->setVar('mediaThumbExt', '_tmb_');
-
         $basePath = SimpleMedia_Util_Controller::getFileBaseFolder('medium', 'theFile');
         if (!is_dir($basePath)) {
             return LogUtil::registerError($this->__f('The upload folder "%s" does not exist. Please create it before installing this application.', array($basePath)));

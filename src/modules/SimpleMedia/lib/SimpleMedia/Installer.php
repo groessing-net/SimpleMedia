@@ -23,6 +23,14 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
      */
     public function install()
     {
+        // Create the media directories
+        $datadir = FileUtil::getDataDirectory().'/SimpleMedia';
+        SimpleMedia_Util_Controller::mkdir($datadir . '/media/thefile');
+        SimpleMedia_Util_Controller::mkdir($datadir . '/media/thefile/thumbs');
+        $this->setVar('mediaDir', 'media/thefile');
+        $this->setVar('mediaThumbDir', 'thumbs');
+        $this->setVar('mediaThumbExt', '_tmb_');
+
         $result = parent::install();
 
         $thumbDimensions = array();
