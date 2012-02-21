@@ -44,7 +44,7 @@
                     {formintinput id='defaultThumbNumber' group='config' maxLength=255 width=20em __title='Input this setting. Only digits are allowed.'}
                 </div>
                 <div class="z-formrow">
-                    {formlabel for='enableShrinking' __text='Enable shrinking'}
+                    {formlabel for='enableShrinking' __text='Enable shrinking to maximum image dimensions. Original not stored.'}
                     {formcheckbox id='enableShrinking' group='config'}
                 </div>
                 <div class="z-formrow" id="shrinkDimensionsRow">

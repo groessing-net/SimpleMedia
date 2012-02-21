@@ -35,10 +35,10 @@ function smarty_function_getinlinesnippet($params, &$smarty)
     }
 
     $thumbnr = (isset($params['thumbnr']) && (is_numeric($params['thumbnr']) || $params['thumbnr'] == 'original')) ? $params['thumbnr'] : (int) FormUtil::getPassedValue('thumbnr', 0, 'GETPOST');
-    if ($thumbnr != 'original' && $thumbnr == 0) {
+    if (is_numeric($thumbnr) && $thumbnr == 0) {
         $thumbnr = ModUtil::getVar('SimpleMedia', 'defaultThumbNumber', 1);
     }
-    if ($thumbnr == 'original' && FormUtil::getPassedValue('type', 'user', 'GETPOST') == 'admin'
+    if (!is_numeric($thumbnr) && $thumbnr == 'original' && FormUtil::getPassedValue('type', 'user', 'GETPOST') == 'admin'
                                && FormUtil::getPassedValue('func', 'main', 'GETPOST') == 'view') {
         $thumbnr = ModUtil::getVar('SimpleMedia', 'defaultThumbNumber', 1);
     }
