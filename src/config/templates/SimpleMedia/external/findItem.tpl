@@ -47,7 +47,7 @@
         <div class="z-formrow">
             <label for="SimpleMedia_cid">{gt text='Category'}:</label>
             {gt text='All' assign='lblDef'}
-            {selector_category category=$mainCategory name='cat_id' field='id' defaultText=$lblDef editLink=false submit=true selectedValue=$catId}
+            {selector_category category=$mainCategory name='catid' field='id' defaultText=$lblDef editLink=false submit=true selectedValue=$catId}
         </div>
 
         <div class="z-formrow">
