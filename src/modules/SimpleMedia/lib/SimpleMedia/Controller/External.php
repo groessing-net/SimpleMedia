@@ -122,6 +122,11 @@ class SimpleMedia_Controller_External extends Zikula_AbstractController
             $onlyImages = 0;
         }
 
+        $categoryId = (isset($args['cat_id'])) ? $args['cat_id'] : FormUtil::getPassedValue('cat_id', 0, 'GET');
+        if (!is_numeric($categoryId)) {
+            $categoryId = 0;
+        }
+
         $thumbnr = (isset($args['thumbnr'])) ? $args['thumbnr'] : FormUtil::getPassedValue('thumbnr', 0, 'GET');
         if ($thumbnr != 'original') {
             $thumbnr = (int) $thumbnr;
@@ -159,7 +164,10 @@ $where = '';
         $this->view->assign('editorName', $editor)
                    ->assign('objectData', $objectData)
                    ->assign('onlyimages', $onlyImages)
+                   ->assign('catId', $categoryId)
                    ->assign('thumbnr', $thumbnr)
+                   ->assign('sort', $sort)
+                   ->assign('sortdir', $sdir)
                    ->assign('currentPage', $currentPage)
                    ->assign('pager', array('numitems'     => $objectCount,
                                            'itemsperpage' => $resultsPerPage));
