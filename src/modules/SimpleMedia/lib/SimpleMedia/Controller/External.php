@@ -122,7 +122,7 @@ class SimpleMedia_Controller_External extends Zikula_AbstractController
             $onlyImages = 0;
         }
 
-        $categoryId = (isset($args['cat_id'])) ? $args['cat_id'] : FormUtil::getPassedValue('cat_id', 0, 'GET');
+        $categoryId = (isset($args['catid'])) ? $args['catid'] : FormUtil::getPassedValue('catid', 0, 'GET');
         if (!is_numeric($categoryId)) {
             $categoryId = 0;
         }
