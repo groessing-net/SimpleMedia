@@ -125,7 +125,7 @@ class SimpleMedia_Controller_Admin extends SimpleMedia_Controller_Base_Admin
      * @param int    width    dimension width
      * @param int    height   dimension height
      */
-    function updatethumb($args)
+    public function updatethumb($args)
     {
 // DEBUG: permission check aspect starts
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('SimpleMedia::', '::', ACCESS_ADMIN));
