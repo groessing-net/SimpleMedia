@@ -121,7 +121,7 @@ class SimpleMedia_Controller_Base_User extends Zikula_AbstractController
             $resultsPerPage = (int) (isset($args['num']) && !empty($args['num'])) ? $args['num'] : $this->request->getGet()->filter('num', 0, FILTER_VALIDATE_INT);
             if ($resultsPerPage == 0) {
                 $csv = (int) (isset($args['usecsv']) && !empty($args['usecsv'])) ? $args['usecsv'] : $this->request->getGet()->filter('usecsvext', 0, FILTER_VALIDATE_INT);
-                $resultsPerPage = ($csv == 1) ? 999999 : $this->getVar('pagesize', 10);
+                $resultsPerPage = ($csv == 1) ? 999999 : $this->getVar('pageSize', 10);
             }
 
             $selectionArgs['currentPage'] = $currentPage;

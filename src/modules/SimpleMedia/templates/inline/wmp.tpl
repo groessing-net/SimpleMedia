@@ -8,15 +8,15 @@
     {* consider 45px additional height for the control toolbar * }
     {assign var='playerHeight' value=" height=\"`$file.fileInfo.video.resolution_y + 45`\""}
 {/if*}
-<!--[if !IE]> -->
+{literal}<!--[if !IE]> -->{/literal}
     <object id="sm{$idprefix}media{$medium.id}"
             type="video/x-ms-wmv"
             data="{$medium.theFileFullPathURL}"
             {$playerWidth}{$playerHeight}>
         <param name="src" value="{$medium.theFileFullPathURL}" />
         <param name="controller" value="1" />
-<!-- <![endif]-->
-<!--[if IE]>
+{literal}<!-- <![endif]-->{/literal}
+{literal}<!--[if IE]>{/literal}
     <object id="sm{$idprefix}media{$medium.id}"
             classid="clsid:6BF52A52-394A-11d3-B153-00C04F79FAA6"
             codebase="http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=6,4,7,1112{* 6,4,5,715 *}"
@@ -31,7 +31,7 @@
         <param name="displaysize" Value="0" />
         <param name="animationatstart" value="0" />
         <param name="transparentatstart" value="1" />
-<!--><!---->
+{literal}<!--><!---->{/literal}
         <param name="autostart" value="1" />
 {*        <param name="volume" value="-200" />*}
         <p>
@@ -42,4 +42,4 @@
             </a>
         </p>
     </object>
-<!-- <![endif]-->
+{literal}<!-- <![endif]-->{/literal}

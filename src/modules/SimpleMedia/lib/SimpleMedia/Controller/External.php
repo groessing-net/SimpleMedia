@@ -156,7 +156,7 @@ class SimpleMedia_Controller_External extends Zikula_AbstractController
         // the number of items displayed on a page for pagination
         $resultsPerPage = (int) (isset($args['num']) && !empty($args['num'])) ? $args['num'] : $getData->filter('num', 0, FILTER_VALIDATE_INT);
         if ($resultsPerPage == 0) {
-            $resultsPerPage = $this->getVar('pagesize', 10);
+            $resultsPerPage = $this->getVar('pagesize', 20);
         }
 $where = '';
         list($objectData, $objectCount) = $repository->selectWherePaginated($where, $sortParam, $currentPage, $resultsPerPage);

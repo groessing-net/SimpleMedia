@@ -165,7 +165,7 @@
         <div style="margin-left: 6em">
             {pager display='page' rowcount=$pager.numitems limit=$pager.itemsperpage posvar='pos' template='pagercss.tpl' maxpages='10'}
         </div>
-        <input type="submit" id="SimpleMedia_submit" name="submitButton" value="{gt text='Change selection'}" />
+        <input type="submit" id="SimpleMedia_submit" name="submitButton" value="{gt text='OK' assign='dummy'}Auswahl ändern" />
         <input type="button" id="SimpleMedia_cancel" name="cancelButton" value="{gt text='Cancel'}" />
         <br />
     </fieldset>

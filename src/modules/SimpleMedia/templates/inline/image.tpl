@@ -10,9 +10,9 @@
     {assign var='thumbSize' value=$thumbSizes[$thumbIndex]}
     {assign var='thumbWidth' value=$thumbSize.width}
     {assign var='thumbHeight' value=$thumbSize.height}
-    <img id="sm{$idprefix}img{$medium.id}" src="{$medium.theFile|simplemediaImageThumb:$medium.theFileFullPath:$thumbWidth:$thumbHeight}" width="{$thumbWidth}" height="{$thumbHeight}" alt="{$medium.title|replace:"\"":""}" />
+    <img id="sm{$idprefix}img{$medium.id}" src="{$medium.theFile|simplemediaImageThumb:$medium.theFileFullPath:$thumbWidth:$thumbHeight}" width="{$thumbWidth}"{* height="{$thumbHeight}"*} alt="{$medium.title|replace:"\"":""}" />
 {elseif $thumbnr eq 'original'}
-    <img id="sm{$idprefix}img{$medium.id}" src="{$medium.theFileFullPath}" alt="{$medium.title|replace:"\"":""}" />
+    <img id="sm{$idprefix}img{$medium.id}" src="{$medium.theFileFullPath}" alt="{$medium.title|replace:"\"":""}" width="{$medium.theFileMeta.width}" height="{$medium.theFileMeta.height}" />
 {/if}
 {if !isset($zoomMode) || $zoomMode ne 'nozoom'}
 </a>

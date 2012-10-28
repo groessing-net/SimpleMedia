@@ -23,19 +23,6 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
      */
     public function install()
     {
-        // Allowed File extensions, to be done before dir creation
-        $this->setVar('allowedExtensions', 'gif, jpeg, jpg, png, pdf, doc, xls, ppt, docx, xlsx, pptx, odt, ods, odp, arj, zip, rar, tar, tgz, gz, bz2, txt, rtf, swf, flv, mp3, mp4, avi, mpg, mpeg, mov');
-
-        // Create the media directories
-        $datadir = FileUtil::getDataDirectory().'/SimpleMedia';
-        SimpleMedia_Util_Controller::mkdir($datadir . '/media/thefile');
-        SimpleMedia_Util_Controller::mkdir($datadir . '/media/thefile/thumbs');
-        // Module vars for the media directories, not configurable yet in admin interface
-        $this->setVar('mediaDir', 'media/thefile');
-        $this->setVar('mediaThumbDir', 'thumbs');
-        $this->setVar('mediaThumbExt', '_tmb_');
-
-        // call the parent class
         $result = parent::install();
 
         $thumbDimensions = array();
@@ -44,23 +31,6 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
         $thumbDimensions[] = array('width' => 200, 'height' => 150);
 
         $this->setVar('thumbDimensions', $thumbDimensions);
-        
-        return $result;
-    }
-    
-    /**
-     * Uninstall SimpleMedia.
-     *
-     * @return boolean True on success, false otherwise.
-     */
-    public function uninstall()
-    {
-        // remind user on media upload dir
-        $datadir = FileUtil::getDataDirectory().'/SimpleMedia';
-        LogUtil::registerStatus($this->__f('The SimpleMedia media upload directories at [%s] can be removed manually', $datadir));
-
-        // call the parent class
-        $result = parent::uninstall();
 
         return $result;
     }

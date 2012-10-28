@@ -42,6 +42,9 @@ function smarty_function_getinlinesnippet($params, &$smarty)
                                && FormUtil::getPassedValue('func', 'main', 'GETPOST') == 'view') {
         $thumbnr = ModUtil::getVar('SimpleMedia', 'defaultThumbNumber', 1);
     }
+/*    if ($thumbnr == 0) {
+        $thumbnr = ModUtil::getVar('SimpleMedia', 'defaultThumbNumber', 1);
+    }*/
 
     if (!isset($params['zoomMode'])) {
         $params['zoomMode'] = 'nozoom';

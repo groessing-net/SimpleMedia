@@ -14,10 +14,6 @@ Changed files
   * style/style.css
   * templates/contenttype/itemlist_edit.tpl
   * templates/plugins/function.simplemediaSelectorTemplates.php
-  * lib/SimpleMedia/Base/UploadHandler.php - function isallowedfilextensions fileextensions parts
-  * lib/SimpleMedia/Util/Base/Controller.php - function getFileBaseFolder changed mediadir to the module var
-  * lib/SimpleMedia/Util/Base/Image.php - function getThumb changed absolute tmb path to modvar
-  * lib/SimpleMedia/Controller/External.php - Corrected MediaAttach to SimpleMedia
 
 Implemented classes:
   * lib/SimpleMedia/ContentType/ItemList.php
@@ -28,7 +24,6 @@ Implemented classes:
   * lib/SimpleMedia/Form/Handler/Admin/Config.php
   * lib/SimpleMedia/Installer.php
   * lib/SimpleMedia/UploadHandler.php
-  * lib/SimpleMedia/Util/Controller.php - added function mkdir
 
 Additional files:
   * images/logo*.png
@@ -46,9 +41,5 @@ Additional files:
   * templates/plugins/function.getinlinesnippet.php
   * templates/plugins/function.simplemediaSelectorMedium.php
   * templates/inline/*
-  * SCRIBITE
-    - editor plugins (xinha + tinymce)
-    - user editor header (tinymce)
-    - user api customisation for javascript file inclusion
 
 Overridden templates in /config.

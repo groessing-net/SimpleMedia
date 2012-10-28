@@ -120,7 +120,7 @@ class SimpleMedia_Form_Handler_Admin_Medium_Base_Edit extends SimpleMedia_Form_H
             return $result;
         }
 
-        return $this->view->redirect($this->getRedirectUrl($args, $entity, $repeatCreateAction));
+        return $this->view->redirect($this->getRedirectUrl($args, $entity));
     }
 
     /**
@@ -192,7 +192,7 @@ class SimpleMedia_Form_Handler_Admin_Medium_Base_Edit extends SimpleMedia_Form_H
     /**
      * Get url to redirect to.
      */
-    protected function getRedirectUrl($args, $obj, $repeatCreateAction = false)
+    protected function getRedirectUrl($args, $obj)
     {
         if ($this->inlineUsage == true) {
             $urlArgs = array('idp' => $this->idPrefix,
@@ -202,7 +202,7 @@ class SimpleMedia_Form_Handler_Admin_Medium_Base_Edit extends SimpleMedia_Form_H
             return ModUtil::url($this->name, 'admin', 'handleInlineRedirect', $urlArgs);
         }
 
-        if ($repeatCreateAction) {
+        if ($this->repeatCreateAction) {
             return $this->repeatReturnUrl;
         }
 

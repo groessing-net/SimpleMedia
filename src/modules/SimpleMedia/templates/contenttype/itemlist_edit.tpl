@@ -26,7 +26,7 @@
 
 <div class="z-formrow">
     {formlabel for='SimpleMedia_amount' text='Menge'}
-    {formtextinput id='SimpleMedia_amount' dataField='amount' group='data' mandatory=true maxLength=2}
+    {formtextinput id='SimpleMedia_amount' dataField='amount' group='data' mandatory=true maxLength=3}
 </div>
 
 <div class="z-formrow">

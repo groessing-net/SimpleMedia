@@ -3,7 +3,7 @@
 {assign var='playerHeight' value=''}
 {php}
     $medium = $this->get_template_vars('medium');
-    $fileInfo = @getimagesize($medium);
+    $fileInfo = @getimagesize($medium['theFileFullPath']);
     if (is_array($fileInfo)) {
         $this->assign('playerWidth', ' width="' . $fileInfo[0] . '"');
         $this->assign('playerHeight', ' height="' . $fileInfo[1] . '"');
@@ -14,20 +14,20 @@
 {else*}
     {assign var='bgcolor' value='#FFFFFF'}
 {*/if*}
-<!--[if !IE]> -->
+{literal}<!--[if !IE]> -->{/literal}
     <object id="sm{$idprefix}media{$medium.id}"
             type="application/x-shockwave-flash"
             data="{$medium.theFileFullPathURL}"
             {$playerWidth}{$playerHeight}>
         <param name="pluginurl" value="http://www.macromedia.com/go/getflashplayer" />
-<!-- <![endif]-->
-<!--[if IE]>
+{literal}<!-- <![endif]-->{/literal}
+{literal}<!--[if IE]>{/literal}
     <object id="sm{$idprefix}media{$medium.id}"
             classid="clsid:D27CDB6E-AE6D-11CF-96B8-444553540000"
             codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0"
             {$playerWidth}{$playerHeight}>
         <param name="movie" value="{$medium.theFileFullPathURL}" />
-<!--><!---->
+{literal}<!--><!---->{/literal}
         <param name="quality" value="high" />
         <param name="menu" value="0" />
         <param name="scale" value="showall" />
@@ -46,4 +46,4 @@
             </a>
         </p>
     </object>
-<!-- <![endif]-->
+{literal}<!-- <![endif]-->{/literal}

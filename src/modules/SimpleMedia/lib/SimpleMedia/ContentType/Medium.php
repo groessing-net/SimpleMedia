@@ -64,7 +64,8 @@ class SimpleMedia_ContentType_Medium extends Content_AbstractContentType
         $this->thumbnr = $data['thumbnr'];
     }
 
-    function display() {
+    public function display()
+    {
         if ($this->id != null && !empty($this->displayMode) && !empty($this->zoomMode) && !empty($this->thumbnr)) {
             return ModUtil::func('SimpleMedia', 'external', 'display', $this->getDisplayArguments());
         }

@@ -148,7 +148,7 @@ class SimpleMedia_Base_UploadHandler
 
         $extensionarr = explode('.', $fileName);
         $meta = array();
-        $meta['extension'] = $extensionarr[count($extensionarr) - 1];
+        $meta['extension'] = strtolower($extensionarr[count($extensionarr) - 1]);
         $meta['size'] = filesize($filePath);
         $meta['isImage'] = (in_array($meta['extension'], $this->imageFileTypes) ? true : false);
 
@@ -190,12 +190,12 @@ class SimpleMedia_Base_UploadHandler
         $allowedExtensions = array();
         switch ($objectType) {
             case 'medium':
-                            $allowedExtensions = explode(',', ModUtil::getVar('SimpleMedia', 'allowedExtensions'));
+                            $allowedExtensions = array('gif', 'jpeg', 'jpg', 'png', 'pdf', 'doc', 'xls', 'ppt', 'docx', 'xlsx', 'pptx', 'odt', 'ods', 'odp', 'arj', 'zip', 'rar', 'tar', 'tgz', 'gz', 'bz2', 'txt', 'rtf', 'swf', 'flv', 'mp3', 'mp4', 'avi', 'mpg', 'mpeg', 'mov');
                             break;
         }
 
         if (!empty($allowedExtensions)) {
-            $extensionCheck = in_array(strtolower($extension), $allowedExtensions);
+            $extensionCheck = in_array($extension, $allowedExtensions);
             if ($extensionCheck === false) {
                 return false;
             }
@@ -346,13 +346,11 @@ class SimpleMedia_Base_UploadHandler
 
         // get extension again, but including the dot
         $fileExtension = FileUtil::getExtension($fileName, true);
-        $mediaThumbExt = ModUtil::getVar('SimpleMedia', 'mediaThumbExt');
-        $thumbFileNameBase = str_replace($fileExtension, '', $fileName) . $mediaThumbExt;
+        $thumbFileNameBase = str_replace($fileExtension, '', $fileName) . '_tmb_';
         $thumbFileNameBaseLength = strlen($thumbFileNameBase);
 
         // remove image thumbnails
-        $mediaThumbDir = ModUtil::getVar('SimpleMedia', 'mediaThumbDir');
-        $thumbPath = $basePath . $mediaThumbDir;
+        $thumbPath = $basePath . 'tmb/';
         $thumbFiles = FileUtil::getFiles($thumbPath, false, true, null, 'f'); // non-recursive, relative pathes
         foreach ($thumbFiles as $thumbFile) {
             $thumbFileBase = substr($thumbFile, 0, $thumbFileNameBaseLength);

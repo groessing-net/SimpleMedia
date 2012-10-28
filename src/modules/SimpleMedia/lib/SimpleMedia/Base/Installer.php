@@ -63,6 +63,7 @@ class SimpleMedia_Base_Installer extends Zikula_AbstractInstaller
         // register hook subscriber bundles
         HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
 
+
         // initialisation successful
         return true;
     }
