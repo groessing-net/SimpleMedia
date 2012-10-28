@@ -1,0 +1,9 @@
+# generated at Sat Oct 27 20:20:23 CEST 2012 by ModuleStudio 0.5.5 (http://modulestudio.de)
+# ----------------------------------------------------------------------
+# Purpose of file: give access to upload files treated in this directory
+# ----------------------------------------------------------------------
+deny from all
+<FilesMatch "\.(gif|jpeg|jpg|png|pdf|doc|xls|ppt|docx|xlsx|pptx|odt|ods|odp|arj|zip|rar|tar|tgz|gz|bz2|txt|rtf|swf|flv|mp3|mp4|avi|mpg|mpeg|mov)$">
+    order allow,deny
+    allow from all
+</filesmatch>

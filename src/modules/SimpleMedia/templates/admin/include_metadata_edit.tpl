@@ -1,5 +1,10 @@
 {* purpose of this template: reusable editing of meta data fields *}
-<fieldset>
+{if isset($panel) && $panel eq true}
+    <h3 class="metadata z-panel-header z-panel-indicator z-pointer">{gt text='Metadata'}</h3>
+    <fieldset class="metadata z-panel-content" style="display: none">
+{else}
+    <fieldset class="metadata">
+{/if}
     <legend>{gt text='Metadata'}</legend>
 
     <div class="z-formrow">
@@ -16,7 +21,7 @@
         {formlabel for='metadataSubject' __text='Subject'}
         {formtextinput group='meta' id='metadataSubject' dataField='subject' maxLength=255}
     </div>
-    
+
     <div class="z-formrow">
         {formlabel for='metadataKeywords' __text='Keywords'}
         {formtextinput group='meta' id='metadataKeywords' dataField='keywords' maxLength=128}

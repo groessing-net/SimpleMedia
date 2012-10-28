@@ -10,7 +10,7 @@
     </author>
 {assign var='numItems' value=$items|@count}
 {if $numItems}
-{capture assign='uniqueID'}tag:{$baseurl|replace:'http://':''|replace:'/':''},{$items[0].createdDate|dateformat|default:$smarty.now|dateformat:'%Y-%m-%d'}:{modurl modname='SimpleMedia' type='user' func='display' ot='medium' id=$items[0].id}{/capture}
+{capture assign='uniqueID'}tag:{$baseurl|replace:'http://':''|replace:'/':''},{$items[0].createdDate|dateformat|default:$smarty.now|dateformat:'%Y-%m-%d'}:{modurl modname='SimpleMedia' type='user' func='display' ot='medium' id=$items[0].id slug=$items[0].slug}{/capture}
     <id>{$uniqueID}</id>
     <updated>{$items[0].updatedDate|default:$smarty.now|dateformat:'%Y-%m-%dT%H:%M:%SZ'}</updated>
 {/if}
@@ -21,36 +21,36 @@
 {foreach item='medium' from=$items}
     <entry>
         <title type="html">{$medium.title|notifyfilters:'simplemedia.filterhook.media'}</title>
-        <link rel="alternate" type="text/html" href="{modurl modname='SimpleMedia' type='user' func='display' ot='medium' id=$medium.id fqurl='1'}" />
+        <link rel="alternate" type="text/html" href="{modurl modname='SimpleMedia' type='user' func='display' ot='medium' id=$medium.id slug=$medium.slug fqurl='1'}" />
 
-{capture assign='uniqueID'}tag:{$baseurl|replace:'http://':''|replace:'/':''},{$medium.createdDate|dateformat|default:$smarty.now|dateformat:'%Y-%m-%d'}:{modurl modname='SimpleMedia' type='user' func='display' ot='medium' id=$medium.id}{/capture}
+        {capture assign='uniqueID'}tag:{$baseurl|replace:'http://':''|replace:'/':''},{$medium.createdDate|dateformat|default:$smarty.now|dateformat:'%Y-%m-%d'}:{modurl modname='SimpleMedia' type='user' func='display' ot='medium' id=$medium.id slug=$medium.slug}{/capture}
         <id>{$uniqueID}</id>
-    {if isset($medium.updatedDate) && $medium.updatedDate ne null}
-        <updated>{$medium.updatedDate|dateformat:'%Y-%m-%dT%H:%M:%SZ'}</updated>
-    {/if}
-    {if isset($medium.createdDate) && $medium.createdDate ne null}
-        <published>{$medium.createdDate|dateformat:'%Y-%m-%dT%H:%M:%SZ'}</published>
-    {/if}
-    {if isset($medium.createdUserId)}
-{usergetvar name='uname' uid=$medium.createdUserId assign='cr_uname'}
-{usergetvar name='name' uid=$medium.createdUserId assign='cr_name'}
-        <author>
-           <name>{$cr_name|default:$cr_uname}</name>
-           <uri>{usergetvar name='_UYOURHOMEPAGE' uid=$medium.createdUserId assign='homepage'}{$homepage|default:'-'}</uri>
-           <email>{usergetvar name='email' uid=$medium.createdUserId}</email>
-        </author>
-    {elseif isset($medium.__META__) && isset($medium.__META__.author)}
-        <author>{$medium.__META__.author}</author>
-    {/if}
+        {if isset($medium.updatedDate) && $medium.updatedDate ne null}
+            <updated>{$medium.updatedDate|dateformat:'%Y-%m-%dT%H:%M:%SZ'}</updated>
+        {/if}
+        {if isset($medium.createdDate) && $medium.createdDate ne null}
+            <published>{$medium.createdDate|dateformat:'%Y-%m-%dT%H:%M:%SZ'}</published>
+        {/if}
+        {if isset($medium.createdUserId)}
+            {usergetvar name='uname' uid=$medium.createdUserId assign='cr_uname'}
+            {usergetvar name='name' uid=$medium.createdUserId assign='cr_name'}
+            <author>
+               <name>{$cr_name|default:$cr_uname}</name>
+               <uri>{usergetvar name='_UYOURHOMEPAGE' uid=$medium.createdUserId assign='homepage'}{$homepage|default:'-'}</uri>
+               <email>{usergetvar name='email' uid=$medium.createdUserId}</email>
+            </author>
+            {elseif isset($medium.__META__) && isset($medium.__META__.author)}
+            <author>{$medium.__META__.author}</author>
+        {/if}
 
         <summary type="html">
             <![CDATA[
-                {$medium.description|truncate:150:"&hellip;"|default:'-'}
+            {$medium.description|truncate:150:"&hellip;"|default:'-'}
             ]]>
         </summary>
         <content type="html">
             <![CDATA[
-                {$medium.title|replace:'<br>':'<br />'}
+            {$medium.title|replace:'<br>':'<br />'}
             ]]>
         </content>
     </entry>

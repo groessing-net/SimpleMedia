@@ -1,33 +1,34 @@
 {* purpose of this template: module configuration *}
 {include file='admin/header.tpl'}
 <div class="simplemedia-config">
-{gt text='Settings' assign='templateTitle'}
-{pagesetvar name='title' value=$templateTitle}
-<div class="z-admin-content-pagetitle">
-    {icon type='config' size='small' __alt='Settings'}
-    <h3>{$templateTitle}</h3>
-</div>
+    {gt text='Settings' assign='templateTitle'}
+    {pagesetvar name='title' value=$templateTitle}
+    <div class="z-admin-content-pagetitle">
+        {icon type='config' size='small' __alt='Settings'}
+        <h3>{$templateTitle}</h3>
+    </div>
 
     {form cssClass='z-form'}
 
 
         {* add validation summary and a <div> element for styling the form *}
         {simplemediaFormFrame}
-        {formsetinitialfocus inputId='pageSize'}
+            {formsetinitialfocus inputId='pageSize'}
             <fieldset>
-                <legend>{gt text='Here you can manage all basic settings for this application.'}</legend>
-
+                <legend>{gt text='Contains the module variables
+                '}</legend>
+            
                 <div class="z-formrow">
                     {formlabel for='pageSize' __text='Page size'}
-                    {formintinput id='pageSize' group='config' maxLength=255 width=20em __title='Enter this setting. Only digits are allowed.'}
+                    {formintinput id='pageSize' group='config' maxLength=255 __title='Enter this setting. Only digits are allowed.'}
                 </div>
                 <div class="z-formrow">
                     {formlabel for='thumbDimensions' __text='Thumb dimensions'}
-                    {formtextinput id='thumbDimensions' group='config' maxLength=255 width=20em __title='Enter this setting.'}
+                    {formtextinput id='thumbDimensions' group='config' maxLength=255 __title='Enter this setting.'}
                 </div>
                 <div class="z-formrow">
                     {formlabel for='defaultThumbNumber' __text='Default thumb number'}
-                    {formintinput id='defaultThumbNumber' group='config' maxLength=255 width=20em __title='Enter this setting. Only digits are allowed.'}
+                    {formintinput id='defaultThumbNumber' group='config' maxLength=255 __title='Enter this setting. Only digits are allowed.'}
                 </div>
                 <div class="z-formrow">
                     {formlabel for='enableShrinking' __text='Enable shrinking'}
@@ -35,7 +36,7 @@
                 </div>
                 <div class="z-formrow">
                     {formlabel for='shrinkDimensions' __text='Shrink dimensions'}
-                    {formtextinput id='shrinkDimensions' group='config' maxLength=255 width=20em __title='Enter this setting.'}
+                    {formtextinput id='shrinkDimensions' group='config' maxLength=255 __title='Enter this setting.'}
                 </div>
                 <div class="z-formrow">
                     {formlabel for='useThumbCropper' __text='Use thumb cropper'}
@@ -43,7 +44,23 @@
                 </div>
                 <div class="z-formrow">
                     {formlabel for='cropSizeMode' __text='Crop size mode'}
-                    {formintinput id='cropSizeMode' group='config' maxLength=255 width=20em __title='Enter this setting. Only digits are allowed.'}
+                    {formintinput id='cropSizeMode' group='config' maxLength=255 __title='Enter this setting. Only digits are allowed.'}
+                </div>
+                <div class="z-formrow">
+                    {formlabel for='allowedExtensions' __text='Allowed extensions'}
+                    {formtextinput id='allowedExtensions' group='config' maxLength=255 __title='Enter this setting.'}
+                </div>
+                <div class="z-formrow">
+                    {formlabel for='mediaDir' __text='Media dir'}
+                    {formtextinput id='mediaDir' group='config' maxLength=255 __title='Enter this setting.'}
+                </div>
+                <div class="z-formrow">
+                    {formlabel for='mediaThumbDir' __text='Media thumb dir'}
+                    {formtextinput id='mediaThumbDir' group='config' maxLength=255 __title='Enter this setting.'}
+                </div>
+                <div class="z-formrow">
+                    {formlabel for='mediaThumbExt' __text='Media thumb ext'}
+                    {formtextinput id='mediaThumbExt' group='config' maxLength=255 __title='Enter this setting.'}
                 </div>
             </fieldset>
 

@@ -31,12 +31,12 @@
             <state>initial</state>
             <nextState>waiting</nextState>
             <operation ot="item" status="2">updateObjectStatus</operation>
-<!-- multiple operations can be executed in sequence
+          <!-- multiple operations can be executed in sequence
             <operation group='admin'>notify</operation>
--->
-<!-- actions can also define additional parameters
+          -->
+          <!-- actions can also define additional parameters
             <parameter className="z-bt-ok" titleText="Click me">Button</parameter>
--->
+          -->
         </action>
 
         <action id="approve">

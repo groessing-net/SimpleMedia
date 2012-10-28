@@ -1,153 +1,155 @@
-
 /* view pages */
 div#z-maincontent.z-module-simplemedia table tbody tr td {
     vertical-align: top;
 }
 
 /* display pages */
-div.simplemediaRightBox {
+.simplemedia-display.withrightbox div.z-panel-content {
+    float: left;
+    width: 79%;
+}
+.simplemedia-display div.simplemediarightbox {
     float: right;
     margin: 0 1em;
     padding: .5em;
+    width: 20%;
     /*border: 1px solid #666;*/
 }
 
-div.simplemediaRightBox h3 {
+.simplemedia-display div.simplemediarightbox h3 {
     color: #333;
     font-weight: 400;
     border-bottom: 1px solid #CCC;
     padding-bottom: 8px;
 }
 
-div.simplemediaRightBox p.manageLink {
+.simplemedia-display div.simplemediarightbox p.manageLink {
     margin-left: 18px;
 }
 
+.z-treecontainer {
+    border: 1px solid #ccc;
+    width: 400px;
+    float: left;
+    margin-right: 16px;
+}
 .simplemediaColourPicker {
     cursor: pointer;
 }
-
 /* validation */
-input.required, textarea.required {
+div.z-formrow input.required, div.z-formrow textarea.required {
     border: 1px solid #00a8e6;
 }
-input.validation-failed, textarea.validation-failed {
+div.z-formrow input.validation-failed, div.z-formrow textarea.validation-failed {
     border: 1px solid #f30;
-    color : #f30;
+    color: #f30;
 }
-input.validation-passed, textarea.validation-passed {
+div.z-formrow input.validation-passed, div.z-formrow textarea.validation-passed {
     border: 1px solid #0c0;
-    color : #000;
+    color: #000;
 }
 
 .validation-advice {
     margin: 5px 0;
     padding: 5px;
     background-color: #f90;
-    color : #fff;
+    color: #fff;
     font-weight: 700;
 }
 
-/* uploads */
-
-.simplemediaDropZone {
-    width: 100%;
-    height: 70px;
-    -webkit-border-radius: 10px;
-    -khtml-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    border: 2px dashed #aaa;
-    text-align: center;
-
-    -webkit-box-pack: center;
-    -moz-box-pack: center;
-    box-pack: center;
-
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-box-align: stretch;
-
-    display: -moz-box;
-    -moz-box-orient: vertical;
-    -moz-box-align: stretch;
-
-    display: box;
-    box-orient: vertical;
-    box-align: stretch;
-}
-.simplemediaDropZone.hover {
-    -webkit-box-shadow: inset 0px 0px 30px #ccc;
-    -moz-box-shadow: inset 0px 0px 30px #ccc;
-    -o-box-shadow: inset 0px 0px 30px #ccc;
-    box-shadow: inset 0px 0px 30px #ccc;
+/* edit pages */
+div.simmedRelationLeftSide {
+    float: left;
+    width: 25%;
 }
 
-.simplemediaUploadPreviewThumbs {
-    height: 125px;
-    margin-top: 10px;
-    text-align: center;
-}
-.simplemediaUploadPreviewThumbs img {
-    width: 50px;
-    height: 50px;
-    border: 1px solid black;
-    margin: 5px 5px 0 0;
-    -webkit-transition: -webkit-transform 0.2s ease-in;
-    -moz-transition: -moz-transform 1s ease-in-out;
-    -o-transition: -o-transform 1s ease-in-out;
-}
-.simplemediaUploadPreviewThumbs img:hover {
-    -webkit-transform: scale(3.5);
-    -webkit-transform-origin: 50% 50%;
-    -moz-transform: scale(3.5);
-    -moz-transform-origin: 50% 50%;
+div.simmedRelationRightSide {
+    float: right;
+    width: 65%;
 }
 
-.simplemediaProgressBar {
-    margin: 10px 0;
-    padding: 3px;
-    border: 1px solid #000;
-    font-size: 14px;
-    clear: both;
-    opacity: 0;
-    -o-transition: opacity 1s linear;
-    -moz-transition: opacity 1s linear;
-    -webkit-transition: opacity 1s linear;
-    text-align: center;
-}
-.simplemediaProgressBar.loading {
-    opacity: 1.0;
-}
-.simplemediaProgressBar .simplemediaProgress {
-    background-color: #99ccff;
-    height: auto;
-    width: 0;
+/* hide legends if z-panels are used as both contain the same labels */
+div.simplemedia-edit .z-panel-content legend {
+    display: none;
 }
 
 
+div.simmedAutoCompleteWrap {
+    position: absolute;
+    height: 40px;
+    margin: 0;
+    padding: 0;
+    left: 260px;
+    top: 10px;
+}
 
+div.simmedAutoComplete {
+    position: relative !important;
+    top: 2px !important;
+    width: 191px !important;
+    background-color: #fff;
+    border: 1px solid #888;
+    margin: 0;
+    padding: 0;
+}
 
-#smNavForm {
+div.simmedAutoComplete {
+    left: 0 !important;
+}
+div.simmedAutoComplete ul {
+    margin: 0;
+    padding: 0;
+}
+
+div.simmedAutoComplete ul li {
+    margin: 0;
+    padding: 0.2em 0 0.2em 20px;
+    list-style-type: none;
+    line-height: 1.4em;
+    cursor: pointer;
+    display: block;
+    background-position: 2px 2px;
+    background-repeat: no-repeat;
+}
+
+div.simmedAutoComplete ul li {
+    background-image: url("../../../images/icons/extrasmall/tab_right.png");
+}
+
+div.simmedAutoComplete ul li.selected {
+    background-color: #ffb;
+}
+
+div.simmedAutoComplete ul li div.itemtitle {
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 1.2em;
+}
+div.simmedAutoComplete ul li div.itemdesc {
+    font-size: 10px;
+    color: #888;
+}
+
+button.simmedInlineButton {
+    margin-top: 1em;
+}
+
+div.simplemedia-view form.simmedQuickNavForm {
     margin: 10px 0;
     padding: 8px 12px;
     border: 1px solid #ccc;
 }
 
-#smNavForm fieldset {
+div.simplemedia-view form.simmedQuickNavForm fieldset {
     padding: 3px 10px;
     margin-bottom: 0;
 }
 
-#smNavForm #SimpleMedia_num {
+div.simplemedia-view form.simmedQuickNavForm fieldset h3 {
+    margin-top: 0;
+}
+
+div.simplemedia-view form.simmedQuickNavForm fieldset #num {
     width: 50px;
     text-align: right;
-}
-
-#smNavForm #SimpleMedia_onlyimages {
-    margin-left: 35px;
-}
-
-#smNavForm #SimpleMedia_thumbnr {
-    width: 100px;
 }

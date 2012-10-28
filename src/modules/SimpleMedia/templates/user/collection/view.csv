@@ -1,0 +1,14 @@
+{* purpose of this template: collections view csv view in user area *}
+{simplemediaTemplateHeaders contentType='text/comma-separated-values; charset=iso-8859-15' asAttachment=true filename='Collections.csv'}
+"{gt text='Title'}";"{gt text='Description'}"
+;"{gt text='Media'}"
+{foreach item='collection' from=$items}
+    "{$collection.title|replace:"\"":""}";"{$collection.description|replace:"\"":""}"
+    ;"
+    {if isset($collection.Media) && $collection.Media ne null}
+        {foreach name='relationLoop' item='relatedItem' from=$collection.Media}
+        {$relatedItem.title|default:''}{if !$smarty.foreach.relationLoop.last}, {/if}
+        {/foreach}
+    {/if}
+    "
+{/foreach}

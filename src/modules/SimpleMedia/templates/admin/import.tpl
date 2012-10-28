@@ -8,7 +8,7 @@
     <h3>{$templateTitle}</h3>
 </div>
 
-    <p>Please override this template by moving it from <em>/modules/SimpleMedia/templates/admin/import.tpl</em> to either your <em>/themes/YourTheme/templates/modules/SimpleMedia/admin/import.tpl</em> or <em>/config/templates/SimpleMedia/admin/import.tpl</em>.</p>
+<p>Please override this template by moving it from <em>/modules/SimpleMedia/templates/admin/import.tpl</em> to either your <em>/themes/YourTheme/templates/modules/SimpleMedia/admin/import.tpl</em> or <em>/config/templates/SimpleMedia/admin/import.tpl</em>.</p>
 
 </div>
 {include file='admin/footer.tpl'}

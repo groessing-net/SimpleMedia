@@ -1,4 +1,4 @@
 CHANGELOG
 ---------
 
-Changes in SimpleMedia 1.0.0
+Changes in SimpleMedia 2.0.0

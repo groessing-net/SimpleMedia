@@ -1,5 +1,10 @@
 {* purpose of this template: reusable editing of entity attributes *}
-<fieldset>
+    {if isset($panel) && $panel eq true}
+        <h3 class="attributes z-panel-header z-panel-indicator z-pointer">{gt text='Attributes'}</h3>
+        <fieldset class="attributes z-panel-content" style="display: none">
+    {else}
+        <fieldset class="attributes">
+    {/if}
     <legend>{gt text='Attributes'}</legend>
     {formvolatile}
     {foreach key='fieldName' item='fieldValue' from=$attributes}
