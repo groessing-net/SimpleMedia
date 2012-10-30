@@ -50,10 +50,10 @@ class SimpleMedia_Base_Installer extends Zikula_AbstractInstaller
         $this->setVar('shrinkDimensions', '');
         $this->setVar('useThumbCropper', false);
         $this->setVar('cropSizeMode', 0);
-        $this->setVar('allowedExtensions', '"gif, jpeg, jpg, png, pdf, txt, mp3, mp4, avi, mpg, mpeg, mov'"');
-        $this->setVar('mediaDir', '"media/thefile"');
-        $this->setVar('mediaThumbDir', '"thumbs"');
-        $this->setVar('mediaThumbExt', '"_tmb_"');
+        $this->setVar('allowedExtensions', 'gif, jpeg, jpg, png, pdf, txt, mp3, mp4, avi, mpg, mpeg, mov');
+        $this->setVar('mediaDir', 'media/thefile');
+        $this->setVar('mediaThumbDir', 'thumbs');
+        $this->setVar('mediaThumbExt', '_tmb_');
     
         // create the default data for SimpleMedia
         $this->createDefaultData();
