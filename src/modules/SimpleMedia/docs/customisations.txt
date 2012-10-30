@@ -7,11 +7,24 @@ SimpleMedia - Manual additions and amendments
 CORE HACKS
 
 Changed files
-  * lib/SimpleMedia/Base/Installer.php - modvar string definitions were wrong, corrected.
+  * lib/SimpleMedia/Base/Installer.php - modvar string definitions were wrong in model, corrected in code.
 
 Implemented classes:
 
 Additional files:
+x  * images/logo*.png
+x  * javascript/jsCropperUI-1.2.2/
+x  * lib/SimpleMedia/Util/Manual.php
+x  * lib/SimpleMedia/Util/Mime.php
+x  * lib/vendor/flvplayer/
+x  * lib/vendor/mp3/
+x  * templates/plugins/function.getinlinesnippet.php
+x  * templates/plugins/function.simplemediaSelectorMedium.php
+x  * templates/inline/*
+  * SCRIBITE
+    - editor plugins (xinha + tinymce)
+    - user editor header (tinymce)
+    - user api customisation for javascript file inclusion
 
 Overridden templates in /config.
 
