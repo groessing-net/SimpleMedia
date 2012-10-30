@@ -18,6 +18,19 @@
 class SimpleMedia_Controller_Admin extends SimpleMedia_Controller_Base_Admin
 {
     /**
+     * Post initialise.
+     *
+     * Run after construction.
+     *
+     * @return void
+     */
+    protected function postInitialize()
+    {
+        // Set caching to true by default.
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+    }
+
+    /**
      * Edit thumbnail image by applying a cropping tool.
      *
      * @param int    id       id of the medium to be modified

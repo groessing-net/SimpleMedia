@@ -9,21 +9,21 @@
         $this->assign('playerHeight', $fileInfo[1]);
     }
 {/php}
-<!--[if !IE]> -->
+{literal}<!--[if !IE]> -->{/literal}
     <object id="sm{$idprefix}media{$medium.id}"
             width="{$playerWidth}" 
             height="{$playerHeight+20}" 
             type="application/x-shockwave-flash" 
             data="{$baseurl}modules/SimpleMedia/lib/vendor/flvplayer/player.swf">
-<!-- <![endif]-->
-<!--[if IE]>
+{literal}<!-- <![endif]-->{/literal}
+{literal}<!--[if IE]>{/literal}
     <object id="sm{$idprefix}media{$medium.id}" 
             width="{$playerWidth}" 
             height="{$playerHeight+20}"
             classid="clsid:D27CDB6E-AE6D-11CF-96B8-444553540000"
             codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0">
         <param name="movie" value="{$baseurl}modules/SimpleMedia/lib/vendor/flvplayer/player.swf" />
-<!--><!---->
+{literal}<!--><!---->{/literal}
         <param name="flashvars" value="file={$medium.theFileFullPathURL|urlencode}&amp;type=flv&amp;description={$medium.description}" />
         <param name="type" value="flv" />
         <param name="width" value="{$playerWidth}" />
@@ -38,4 +38,4 @@
             </a>
         </p>
 </object>
-<!-- <![endif]-->
+{literal}<!-- <![endif]-->{/literal}

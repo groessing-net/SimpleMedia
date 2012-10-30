@@ -94,6 +94,11 @@ class SimpleMedia_Form_Handler_Admin_Base_Edit extends Zikula_Form_AbstractHandl
     protected $returnTo = null;
 
     /**
+     * @var boolean Whether a create action is going to be repeated or not.
+     */
+    protected $repeatCreateAction = false;
+
+    /**
      * @var string Url of current form with all parameters for multiple creations.
      */
     protected $repeatReturnUrl = null;
@@ -594,7 +599,7 @@ class SimpleMedia_Form_Handler_Admin_Base_Edit extends Zikula_Form_AbstractHandl
                              array('lockName' => $this->name . $this->objectTypeCapital . $this->createCompositeIdentifier()));
         }
 
-        return $this->view->redirect($this->getRedirectUrl($args, $entity, $repeatCreateAction));
+        return $this->view->redirect($this->getRedirectUrl($args, $entity));
     }
 
     /**
@@ -713,7 +718,7 @@ class SimpleMedia_Form_Handler_Admin_Base_Edit extends Zikula_Form_AbstractHandl
         // get treated entity reference from persisted member var
         $entity = $this->entityRef;
 
-        if (in_array($args['commandName'], array('create', 'update'))) {
+        if (in_array($args['commandName'], array('create', 'update', 'delete'))) {
             if (count($this->uploadFields) > 0) {
                 $entityData = $this->handleUploads($entityData, $entity);
                 if ($entityData == false) {
@@ -724,10 +729,9 @@ class SimpleMedia_Form_Handler_Admin_Base_Edit extends Zikula_Form_AbstractHandl
 
         }
 
-        $repeatCreateAction = false;
         if (isset($entityData['repeatcreation'])) {
             if ($args['commandName'] == 'create') {
-                $repeatCreateAction = $entityData['repeatcreation'];
+                $this->repeatCreateAction = $entityData['repeatcreation'];
             }
             unset($entityData['repeatcreation']);
         }

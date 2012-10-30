@@ -13,19 +13,19 @@
 {if $medium.theFileMeta.extension eq 'mid' || $medium.theFileMeta.extension eq 'mp3' || $medium.theFileMeta.extension eq 'wav'}
     {assign var='playerHeight' value=' height="16"'}
 {/if}
-<!--[if !IE]> -->
+{literal}<!--[if !IE]> -->{/literal}
     <object id="sm{$idprefix}media{$medium.id}"
             type="{*video/quicktime*}{$mimeType}"
             data="{$medium.theFileFullPathURL}"
             {$playerWidth}{$playerHeight}>
-<!-- <![endif]-->
-<!--[if IE]>
+{literal}<!-- <![endif]-->{/literal}
+{literal}<!--[if IE]>{/literal}
     <object id="sm{$idprefix}media{$file.fileid}"
             classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B"
             codebase="http://www.apple.com/qtactivex/qtplugin.cab"
             {$playerWidth}{$playerHeight}>
         <param name="src" value="{$medium.theFileFullPathURL}" />
-<!--><!---->
+{literal}<!--><!---->{/literal}
         <param name="autoplay" value="0" />
         <param name="scale" value="aspect" />
         <p>
@@ -36,4 +36,4 @@
             </a>
         </p>
     </object>
-<!-- <![endif]-->
+{literal}<!-- <![endif]-->{/literal}

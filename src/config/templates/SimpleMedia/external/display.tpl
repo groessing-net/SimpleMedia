@@ -2,21 +2,21 @@
 <div id="medium{$medium.id}" class="smextmed">
 {if $displayMode eq 'link'}
     <p class="smextlink">
-        <a href="{*modurl modname='SimpleMedia' type='user' func='display' id=$medium.id*}{$item.theFileFullPathURL}" title="{$medium.title|replace:"\"":""}" class="dt{$medium.theFileMeta.extension}">
+        <a href="{*modurl modname='SimpleMedia' type='user' func='display' id=$medium.id*}{$medium.theFileFullPathURL}" title="{$medium.title|replace:"\"":""}" class="dt{$medium.theFileMeta.extension}">
             {*icon type='display' size='extrasmall' alt=$medium.title style='padding-right: 5px'*}
             {$medium.title|notifyfilters:'simplemedia.filter_hooks.media.filter'}
         </a>
     </p>
 {/if}
     {checkpermissionblock component='SimpleMedia::' instance='.*' level='ACCESS_EDIT'}
-{if $displayMode eq 'embed'}
+{if $displayMode eq 'embed' && (!isset($smarty.get.pdf) || !$smarty.get.pdf)}
     <p class="smexttitle">
         <strong>{$medium.title|notifyfilters:'simplemedia.filter_hooks.media.filter'}</strong>
 {/if}
 {*            <a href="{modurl modname='SimpleMedia' type='admin' func='edit' ot='medium' id=$medium.id}" title="{gt text='Edit'}">
                 {icon type='edit' size='extrasmall' __alt='Edit'}
             </a>*}
-{if $displayMode eq 'embed'}
+{if $displayMode eq 'embed' && (!isset($smarty.get.pdf) || !$smarty.get.pdf)}
         {if $medium.theFileMeta.isImage && $modvars.SimpleMedia.useThumbCropper eq true}
             <a href="{modurl modname='SimpleMedia' type='admin' func='editthumb' id=$medium.id thumbnr=$thumbnr returnTo='adminView'}" title="{gt text='Crop thumbnail image'}">
                 {img src='cropthumb.png' modname='SimpleMedia' __alt='Crop thumbnail image'}
