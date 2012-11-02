@@ -17,4 +17,53 @@
 class SimpleMedia_Installer extends SimpleMedia_Base_Installer
 {
     // feel free to extend the installer here
+    /**
+     * Install the SimpleMedia application.
+     *
+     * @return boolean True on success, or false.
+     */
+    public function install()
+    {
+        // call the parent class
+        $result = parent::install();
+
+        // adjust some vars
+        $thumbDimensions = array();
+        $thumbDimensions[] = array('width' => 300, 'height' => 225);
+        $thumbDimensions[] = array('width' => 150, 'height' => 113);
+        $thumbDimensions[] = array('width' => 80, 'height' => 60);
+        $this->setVar('thumbDimensions', $thumbDimensions);
+        $this->setVar('shrinkDimensions', array('width' => 1600, 'height' => 1200));
+        $this->setVar('allowedExtensions', 'gif, jpeg, jpg, png, pdf, txt, mp3, mp4, avi, mpg, mpeg, mov');
+        $this->setVar('mediaDir', 'media/thefile');
+        $this->setVar('mediaThumbDir', 'tmb');
+        $this->setVar('mediaThumbExt', '_tmb_');
+            
+        // initialisation successful
+        return $result;
+    }
+    
+    /**
+     * Create the default data for SimpleMedia.
+     *
+     * @return void
+     */
+    protected function createDefaultData()
+    {
+        // call the parent class
+        $result = parent::createDefaultData();
+
+        // add a root collection 
+        try {
+            $collection = new SimpleMedia_Entity_Collection();
+            $collection->setTitle($this->__('Root'));
+            $collection->setDescription($this->__('This is the root collection for your media and collections'));
+            $this->entityManager->persist($collection);
+            $this->entityManager->flush();
+        } catch (Exception $e) {
+            return LogUtil::registerError($e->getMessage());
+        }
+
+        return true;
+    }
 }
