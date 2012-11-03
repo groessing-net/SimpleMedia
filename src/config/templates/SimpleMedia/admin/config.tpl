@@ -78,12 +78,12 @@
                     {formlabel for='allowedExtensions' __text='Allowed extensions'}
                     {formtextinput id='allowedExtensions' group='config' maxLength=255 __title='Input this setting.'}
                 </div>
-                <div class="z-formrow">
+                {* hard coded atm <div class="z-formrow">
                     {formlabel for='mediaDir' __text='Media dir'}
                     {formtextinput id='mediaDir' group='config' maxLength=255 __title='Input this setting.'}
                     <em class="z-sub z-formnote">{gt text='located under userdata/SimpleMedia.'}</em>
                 </div>
-                {* hard coded atm <div class="z-formrow">
+                <div class="z-formrow">
                     {formlabel for='mediaThumbDir' __text='Media thumb dir'}
                     {formtextinput id='mediaThumbDir' group='config' maxLength=255 __title='Input this setting.'}
                 </div>
