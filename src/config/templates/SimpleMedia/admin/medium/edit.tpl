@@ -39,7 +39,7 @@
             {if $mode ne 'create'}
                 {assign var='mandatorySym' value='0'}
             {/if}
-            {formlabel for='theFile' __text='The file' mandatorysym=$mandatorySym}<br />{* break required for Google Chrome *}
+            {formlabel for='theFile' __text='Upload the file' mandatorysym=$mandatorySym}<br />{* break required for Google Chrome *}
             {if $mode eq 'create'}
                 {formuploadinput group='medium' id='theFile' mandatory=true readOnly=false cssClass='required validate-upload' }
             {else}
@@ -71,17 +71,26 @@
             {formtextinput group='medium' id='description' mandatory=false __title='Enter the description of the medium' textMode='multiline' rows='6' cols='50' cssClass='' }
         </div>
         
-        <div class="z-formrow">
+        {* Not actively being used yet <div class="z-formrow">
             {formlabel for='mediaType' __text='Media type' mandatorysym='1'}
             {formdropdownlist group='medium' id='mediaType' mandatory=true __title='Choose the media type' selectionMode='single'}
-        </div>
+        </div> *}
                 
+        {foreach key='registryId' item='registryCid' from=$registries}
+            <div class="z-formrow">
+                {formlabel for="category_`$registryId`" __text='Category'}
+                {formcategoryselector id="category_`$registryId`" category=$registryCid
+                                      dataField='categories' group=$groupName registryId=$registryId doctrine2=true}
+            </div>
+        {/foreach}
+
     </fieldset>
 
     <div class="z-panels" id="SimpleMedia_panel">
         
         {include file='admin/include_attributes_edit.tpl' obj=$medium panel=true}
-        {include file='admin/include_categories_edit.tpl' obj=$medium groupName='mediumObj' panel=true}
+        {* Categories included in standard fields fielset above *}
+        {* include file='admin/include_categories_edit.tpl' obj=$medium groupName='mediumObj' panel=true *}
         {include file='admin/include_metadata_edit.tpl' obj=$medium panel=true}
         {if $mode ne 'create'}
             {include file='admin/include_standardfields_edit.tpl' obj=$medium panel=true}
