@@ -10,11 +10,7 @@
 </div>
 
 
-{if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
-<div class="z-panels" id="SimpleMedia_panel">
-    <h3 id="z-panel-header-fields" class="z-panel-header z-panel-indicator z-pointer z-panel-active">{gt text='Fields'}</h3>
-    <div class="z-panel-content z-panel-active" style="overflow: visible">
-{/if}
+<h3>{gt text='Content'}</h3>
 <dl>
     <dt>{gt text='The file'}</dt>
     <dd>  <a href="{$medium.theFileFullPathURL}" title="{$medium.title|replace:"\"":""}"{if $medium.theFileMeta.isImage} rel="imageviewer[medium]"{/if}>
@@ -28,16 +24,20 @@
     <dt>{gt text='Description'}</dt>
     <dd>{$medium.description}</dd>
     <dt>{gt text='Additional data'}</dt>
-    <dd>{$medium.additionalData}</dd>
+    <dd>
+        {foreach item=additionalItem from=$medium.additionalData}
+        $additionalItem
+        {/foreach}
+    </dd>
     <dt>{gt text='Media type'}</dt>
     <dd>{$medium.mediaType|simplemediaGetListEntry:'medium':'mediaType'|safetext}</dd>
     
 </dl>
 {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
-    </div>
+<div class="z-panels" id="SimpleMedia_panel">
 {/if}
-{include file='admin/include_attributes_display.tpl' obj=$medium panel=true}
 {include file='admin/include_categories_display.tpl' obj=$medium panel=true}
+{include file='admin/include_attributes_display.tpl' obj=$medium panel=true}
 {include file='admin/include_metadata_display.tpl' obj=$medium panel=true}
 {include file='admin/include_standardfields_display.tpl' obj=$medium panel=true}
 
