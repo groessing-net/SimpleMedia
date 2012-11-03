@@ -25,63 +25,60 @@
 
     {formsetinitialfocus inputId='title'}
 
+    <fieldset>
+        <legend>{gt text='Content'}</legend>
+        
+        <div class="z-formrow">
+            {formlabel for='title' __text='Title' mandatorysym='1'}
+            {formtextinput group='medium' id='title' mandatory=true readOnly=false __title='Enter the title of the medium' textMode='singleline' maxLength=255 cssClass='required' }
+            {simplemediaValidationError id='title' class='required'}
+        </div>
+        
+        <div class="z-formrow">
+            {assign var='mandatorySym' value='1'}
+            {if $mode ne 'create'}
+                {assign var='mandatorySym' value='0'}
+            {/if}
+            {formlabel for='theFile' __text='The file' mandatorysym=$mandatorySym}<br />{* break required for Google Chrome *}
+            {if $mode eq 'create'}
+                {formuploadinput group='medium' id='theFile' mandatory=true readOnly=false cssClass='required validate-upload' }
+            {else}
+                {formuploadinput group='medium' id='theFile' mandatory=false readOnly=false cssClass=' validate-upload' }
+                <p class="z-formnote"><a id="resetTheFileVal" href="javascript:void(0);" class="z-hide">{gt text='Reset to empty value'}</a></p>
+            {/if}
+            
+                <div class="z-formnote">{gt text='Allowed file extensions:'} <span id="fileextensionstheFile">{$modvars.SimpleMedia.allowedExtensions}</span></div>
+            {if $mode ne 'create'}
+                {if $medium.theFile ne ''}
+                    <div class="z-formnote">
+                        {gt text='Current file'}:
+                        <a href="{$medium.theFileFullPathUrl}" title="{$medium.title|replace:"\"":""}"{if $medium.theFileMeta.isImage} rel="imageviewer[medium]"{/if}>
+                        {if $medium.theFileMeta.isImage}
+                            <img src="{$medium.theFileFullPath|simplemediaImageThumb:80:50}" width="80" height="50" alt="{$medium.title|replace:"\"":""}" />
+                        {else}
+                            {gt text='Download'} ({$medium.theFileMeta.size|simplemediaGetFileSize:$medium.theFileFullPath:false:false})
+                        {/if}
+                        </a>
+                    </div>
+                {/if}
+            {/if}
+            {simplemediaValidationError id='theFile' class='required'}
+            {simplemediaValidationError id='theFile' class='validate-upload'}
+        </div>
+        
+        <div class="z-formrow">
+            {formlabel for='description' __text='Description'}
+            {formtextinput group='medium' id='description' mandatory=false __title='Enter the description of the medium' textMode='multiline' rows='6' cols='50' cssClass='' }
+        </div>
+        
+        <div class="z-formrow">
+            {formlabel for='mediaType' __text='Media type' mandatorysym='1'}
+            {formdropdownlist group='medium' id='mediaType' mandatory=true __title='Choose the media type' selectionMode='single'}
+        </div>
+                
+    </fieldset>
 
     <div class="z-panels" id="SimpleMedia_panel">
-        <h3 id="z-panel-header-fields" class="z-panel-header z-panel-indicator z-pointer">{gt text='Fields'}</h3>
-        <div class="z-panel-content z-panel-active" style="overflow: visible">
-            <fieldset>
-                <legend>{gt text='Content'}</legend>
-                
-                <div class="z-formrow">
-                    {formlabel for='title' __text='Title' mandatorysym='1'}
-                    {formtextinput group='medium' id='title' mandatory=true readOnly=false __title='Enter the title of the medium' textMode='singleline' maxLength=255 cssClass='required' }
-                    {simplemediaValidationError id='title' class='required'}
-                </div>
-                
-                <div class="z-formrow">
-                    {assign var='mandatorySym' value='1'}
-                    {if $mode ne 'create'}
-                        {assign var='mandatorySym' value='0'}
-                    {/if}
-                    {formlabel for='theFile' __text='The file' mandatorysym=$mandatorySym}<br />{* break required for Google Chrome *}
-                    {if $mode eq 'create'}
-                        {formuploadinput group='medium' id='theFile' mandatory=true readOnly=false cssClass='required validate-upload' }
-                    {else}
-                        {formuploadinput group='medium' id='theFile' mandatory=false readOnly=false cssClass=' validate-upload' }
-                        <p class="z-formnote"><a id="resetTheFileVal" href="javascript:void(0);" class="z-hide">{gt text='Reset to empty value'}</a></p>
-                    {/if}
-                    
-                        <div class="z-formnote">{gt text='Allowed file extensions:'} <span id="fileextensionstheFile">gif, jpeg, jpg, png, pdf, doc, xls, ppt, docx, xlsx, pptx, odt, ods, odp, arj, zip, rar, tar, tgz, gz, bz2, txt, rtf, swf, flv, mp3, mp4, avi, mpg, mpeg, mov</span></div>
-                    {if $mode ne 'create'}
-                        {if $medium.theFile ne ''}
-                            <div class="z-formnote">
-                                {gt text='Current file'}:
-                                <a href="{$medium.theFileFullPathUrl}" title="{$medium.title|replace:"\"":""}"{if $medium.theFileMeta.isImage} rel="imageviewer[medium]"{/if}>
-                                {if $medium.theFileMeta.isImage}
-                                    <img src="{$medium.theFileFullPath|simplemediaImageThumb:80:50}" width="80" height="50" alt="{$medium.title|replace:"\"":""}" />
-                                {else}
-                                    {gt text='Download'} ({$medium.theFileMeta.size|simplemediaGetFileSize:$medium.theFileFullPath:false:false})
-                                {/if}
-                                </a>
-                            </div>
-                        {/if}
-                    {/if}
-                    {simplemediaValidationError id='theFile' class='required'}
-                    {simplemediaValidationError id='theFile' class='validate-upload'}
-                </div>
-                
-                <div class="z-formrow">
-                    {formlabel for='description' __text='Description'}
-                    {formtextinput group='medium' id='description' mandatory=false __title='Enter the description of the medium' textMode='multiline' rows='6' cols='50' cssClass='' }
-                </div>
-                
-                <div class="z-formrow">
-                    {formlabel for='mediaType' __text='Media type' mandatorysym='1'}
-                    {formdropdownlist group='medium' id='mediaType' mandatory=true __title='Choose the media type' selectionMode='single'}
-                </div>
-                        
-            </fieldset>
-        </div>
         
         {include file='admin/include_attributes_edit.tpl' obj=$medium panel=true}
         {include file='admin/include_categories_edit.tpl' obj=$medium groupName='mediumObj' panel=true}
