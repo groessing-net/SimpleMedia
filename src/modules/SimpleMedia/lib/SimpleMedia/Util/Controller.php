@@ -18,31 +18,6 @@ class SimpleMedia_Util_Controller extends SimpleMedia_Util_Base_Controller
 {
     // feel free to add your own convenience methods here
 
-    /**
-     * Retrieve the base path for given object type and upload field combination.
-     *
-     * @param string $objectType Name of treated entity type.
-     * @param string $fieldName  Name of upload field.
-     *
-     * @return mixed Output.
-     * @throws Exception if invalid object type is given.
-     */
-    public function getFileBaseFolder($objectType, $fieldName)
-    {
-        if (!in_array($objectType, $this->getObjectTypes())) {
-            throw new Exception('Error! Invalid object type received.');
-        }
-
-        $basePath = FileUtil::getDataDirectory() . '/SimpleMedia/';
-
-        switch ($objectType) {
-            case 'medium':
-                $basePath .= $this->getVar('mediaDir') . '/';
-            break;
-        }
-
-        return $basePath;
-    }
 
     /**
      * Creates upload folder and tmb subfolder as well as an .htaccess file within it.
