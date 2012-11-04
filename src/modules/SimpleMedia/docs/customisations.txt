@@ -1,17 +1,25 @@
 
 CUSTOMISATIONS 2.0
-------------------
+==================
 
 SimpleMedia - Manual additions and amendments
 
 CORE HACKS
+----------
+none
+
 
 Changed files
+-------------
   * lib/SimpleMedia/Base/Installer.php - modvar string definitions were wrong in model, corrected in code.
 
+
 Implemented classes:
+--------------------
+  * 
 
 Additional files:
+-----------------
 x  * images/logo*.png
 x  * javascript/jsCropperUI-1.2.2/
 x  * lib/SimpleMedia/Util/Manual.php
@@ -26,13 +34,15 @@ x  * templates/inline/*
     - user editor header (tinymce)
     - user api customisation for javascript file inclusion
 
-Overridden templates in /config.
+
+Overridden templates in /config
+-------------------------------
 
 
 
 
 CUSTOMISATIONS 1.0
-------------------
+==================
 
 SimpleMedia - Manual additions and amendments
 
