@@ -15,14 +15,14 @@
         {simplemediaFormFrame}
             {formsetinitialfocus inputId='pageSize'}
             <fieldset>
-                <legend>{gt text='Here you can manage all basic settings for this application.'}</legend>
+                <legend>{gt text='Here you can manage all basic settings for SimpleMedia.'}</legend>
             
                 <div class="z-formrow">
-                    {formlabel for='pageSize' __text='Page size'}
+                    {formlabel for='pageSize' __text='Number of items on a page'}
                     {formintinput id='pageSize' group='config' maxLength=255 width=20em __title='Input this setting. Only digits are allowed.'}
                 </div>
                 <div class="z-formrow">
-                    {formlabel for='thumb1width' __text='Thumb dimensions'}
+                    {formlabel for='thumb1width' __text='Thumbnail dimensions (w x h)'}
                     {*formtextinput id='thumbDimensions' group='config' maxLength=255 width=20em __title='Input this setting.'*}
                     <ol style="margin-left: 320px">
                     {formvolatile}
@@ -44,15 +44,15 @@
                     {formtextinput id='thumbDimensions' group='config' maxLength=255 __title='Input this setting.'}
                 </div> *}
                 <div class="z-formrow">
-                    {formlabel for='defaultThumbNumber' __text='Default thumb number'}
+                    {formlabel for='defaultThumbNumber' __text='Default thumbnail dimension number'}
                     {formintinput id='defaultThumbNumber' group='config' maxLength=255 width=20em __title='Input this setting. Only digits are allowed.'}
                 </div>
                 <div class="z-formrow">
-                    {formlabel for='enableShrinking' __text='Enable shrinking to maximum image dimensions. Original not stored.'}
+                    {formlabel for='enableShrinking' __text='Enable shrinking to maximum image dimensions, original image not stored'}
                     {formcheckbox id='enableShrinking' group='config'}
                 </div>
                 <div class="z-formrow" id="shrinkDimensionsRow">
-                    {formlabel for='shrinkWidth' __text='Shrink dimensions'}
+                    {formlabel for='shrinkWidth' __text='Maximum image dimensions after shrink (w x h)'}
                     <div>
                         {formintinput group='maxSize' id='shrinkWidth' size='8' maxLength='4' text=$modvars.SimpleMedia.shrinkDimensions.width} x
                         {formintinput group='maxSize' id='shrinkHeight' size='8' maxLength='4' text=$modvars.SimpleMedia.shrinkDimensions.height} {gt text='pixels'}
@@ -63,25 +63,25 @@
                     {formtextinput id='shrinkDimensions' group='config' maxLength=255 __title='Input this setting.'}
                 </div> *}
                 <div class="z-formrow">
-                    {formlabel for='useThumbCropper' __text='Use thumb cropper'}
+                    {formlabel for='useThumbCropper' __text='Use cropper for the thumbnail image'}
                     {formcheckbox id='useThumbCropper' group='config'}
                 </div>
                 <div class="z-formrow" id="cropSizeModeRow">
-                    {formlabel for='cropSizeMode' __text='Crop size mode'}
+                    {formlabel for='cropSizeMode' __text='Cropping size mode'}
                     {formdropdownlist id='cropSizeMode' group='config'}
                 </div>
                 {* <div class="z-formrow">
-                    {formlabel for='cropSizeMode' __text='Crop size mode'}
+                    {formlabel for='cropSizeMode' __text='Cropping size mode'}
                     {formintinput id='cropSizeMode' group='config' maxLength=255 __title='Input this setting. Only digits are allowed.'}
                 </div> *}
                 <div class="z-formrow">
-                    {formlabel for='allowedExtensions' __text='Allowed extensions'}
+                    {formlabel for='allowedExtensions' __text='Allowed file extensions for upload'}
                     {formtextinput id='allowedExtensions' group='config' maxLength=255 __title='Input this setting.'}
                 </div>
-                {* hard coded atm <div class="z-formrow">
-                    {formlabel for='mediaDir' __text='Media dir'}
+                {* Hard coded for now <div class="z-formrow">
+                    {formlabel for='mediaDir' __text='Media folder'}
                     {formtextinput id='mediaDir' group='config' maxLength=255 __title='Input this setting.'}
-                    <em class="z-sub z-formnote">{gt text='located under userdata/SimpleMedia.'}</em>
+                    <em class="z-sub z-formnote">{gt text='normally located under userdata/SimpleMedia.'}</em>
                 </div>
                 <div class="z-formrow">
                     {formlabel for='mediaThumbDir' __text='Media thumb dir'}
@@ -90,7 +90,7 @@
                  <div class="z-formrow">
                     {formlabel for='mediaThumbExt' __text='Media thumb ext'}
                     {formtextinput id='mediaThumbExt' group='config' maxLength=255 __title='Input this setting.'}
-                </div>*}
+                </div> *}
             </fieldset>
 
             <div class="z-buttons z-formbuttons">
