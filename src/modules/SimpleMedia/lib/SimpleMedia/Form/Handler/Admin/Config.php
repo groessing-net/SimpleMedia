@@ -17,4 +17,52 @@
 class SimpleMedia_Form_Handler_Admin_Config extends SimpleMedia_Form_Handler_Admin_Base_Config
 {
     // feel free to extend the base handler class here
+
+     /**
+     * Command event handler overrideD
+     *
+     */
+    public function handleCommand(Zikula_Form_View $view, &$args)
+    {
+        if ($args['commandName'] == 'save') {
+            // check if all fields are valid
+            if (!$this->view->isValid()) {
+                return false;
+            }
+
+            // retrieve form data
+            $data = $this->view->getValues();
+
+            // update all standard module vars
+            if (!$this->setVars($data['config'])) {
+                return LogUtil::registerError($this->__('Error! Failed to set configuration variables.'));
+            }
+
+            // handle shrinkdimensions
+            if ($data['config']['enableShrinking']) {
+                $this->setVar('shrinkDimensions', array('width' => $data['maxSize']['shrinkWidth'], 'height' => $data['maxSize']['shrinkHeight']));
+            }
+            
+            // handle thumbnail dimensions
+            $thumbDimensions = array();
+            for ($i = 1; $i <= count($data['thumbSizes'])/2; $i++) {
+                if (!empty($data['thumbSizes']['thumb'.$i.'width']) && !empty($data['thumbSizes']['thumb'.$i.'height'])) {
+                    $thumbDimensions[] = array(
+						'width' => $data['thumbSizes']['thumb'.$i.'width'],
+						'height' => $data['thumbSizes']['thumb'.$i.'height']
+					);
+                }
+            }
+            $this->setVar('thumbDimensions', $thumbDimensions);
+
+            LogUtil::registerStatus($this->__('Done! Module configuration updated.'));
+        } else if ($args['commandName'] == 'cancel') {
+            // nothing to do there
+        }
+
+        // redirect back to the config page
+        $url = ModUtil::url($this->name, 'admin', 'config');
+        return $this->view->redirect($url);
+    }
+    
 }
