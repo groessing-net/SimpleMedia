@@ -48,10 +48,12 @@
             {sortlink __linktext='The file' sort='theFile' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main collection=$collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='user' func='view' ot='medium'}
         </th>
         <th id="hdescription" scope="col" class="z-left">
-            {sortlink __linktext='Description' sort='description' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main collection=$collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='user' func='view' ot='medium'}
+            {gt text='Description'}
+            {*sortlink __linktext='Description' sort='description' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main collection=$collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='user' func='view' ot='medium'*}
         </th>
         <th id="hadditionaldata" scope="col" class="z-left">
-            {sortlink __linktext='Additional data' sort='additionalData' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main collection=$collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='user' func='view' ot='medium'}
+            {gt text='Additional data'}
+            {*sortlink __linktext='Additional data' sort='additionalData' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main collection=$collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='user' func='view' ot='medium'*}
         </th>
         <th id="hsortvalue" scope="col" class="z-right">
             {sortlink __linktext='Sort value' sort='sortValue' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main collection=$collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='user' func='view' ot='medium'}
@@ -88,7 +90,9 @@
             {$medium.description}
         </td>
         <td headers="hadditionaldata" class="z-left">
-            {$medium.additionalData}
+            {foreach item=additionalItem from=$medium.additionalData}
+            {$additionalItem}|
+            {/foreach}
         </td>
         <td headers="hsortvalue" class="z-right">
             {$medium.sortValue}

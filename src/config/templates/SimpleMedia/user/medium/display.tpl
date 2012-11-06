@@ -27,7 +27,11 @@
     <dt>{gt text='Description'}</dt>
     <dd>{$medium.description}</dd>
     <dt>{gt text='Additional data'}</dt>
-    <dd>{$medium.additionalData}</dd>
+    <dd>
+        {foreach item=additionalItem from=$medium.additionalData}
+        {$additionalItem}|
+        {/foreach}
+    </dd>
     <dt>{gt text='Sort value'}</dt>
     <dd>{$medium.sortValue}</dd>
     <dt>{gt text='Media type'}</dt>

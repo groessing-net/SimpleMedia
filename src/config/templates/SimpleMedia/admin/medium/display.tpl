@@ -30,7 +30,7 @@
     <dt>{gt text='Additional data'}</dt>
     <dd>
         {foreach item=additionalItem from=$medium.additionalData}
-        $additionalItem
+        {$additionalItem}|
         {/foreach}
     </dd>
     <dt>{gt text='Sort value'}</dt>

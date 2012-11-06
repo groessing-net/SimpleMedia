@@ -93,7 +93,9 @@
             {$medium.description}
         </td>
         <td headers="hadditionaldata" class="z-left">
-            {$medium.additionalData}
+            {foreach item=additionalItem from=$medium.additionalData}
+            {$additionalItem}|
+            {/foreach}
         </td>
         <td headers="hsortvalue" class="z-right">
             {$medium.sortValue}
