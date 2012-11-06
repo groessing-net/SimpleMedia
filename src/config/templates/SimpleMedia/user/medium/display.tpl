@@ -16,12 +16,46 @@
 <dl>
     <dt>{gt text='The file'}</dt>
     <dd>{getinlinesnippet medium=$medium}</dd>
+    {* <dd>  <a href="{$medium.theFileFullPathURL}" title="{$medium.title|replace:"\"":""}"{if $medium.theFileMeta.isImage} rel="imageviewer[medium]"{/if}>
+      {if $medium.theFileMeta.isImage}
+          <img src="{$medium.theFileFullPath|simplemediaImageThumb:'medium':'theFile':250:150}" width="250" height="150" alt="{$medium.title|replace:"\"":""}" />
+      {else}
+          {gt text='Download'} ({$medium.theFileMeta.size|simplemediaGetFileSize:$medium.theFileFullPath:false:false})
+      {/if}
+      </a>
+    </dd> *}
     <dt>{gt text='Description'}</dt>
     <dd>{$medium.description}</dd>
     <dt>{gt text='Additional data'}</dt>
     <dd>{$medium.additionalData}</dd>
+    <dt>{gt text='Sort value'}</dt>
+    <dd>{$medium.sortValue}</dd>
     <dt>{gt text='Media type'}</dt>
     <dd>{$medium.mediaType|simplemediaGetListEntry:'medium':'mediaType'|safetext}</dd>
+    <dt>{gt text='Collection'}</dt>
+    <dd>
+    {if isset($medium.Collection) && $medium.Collection ne null}
+      {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
+      <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$medium.Collection.id}">
+        {$medium.Collection.title|default:""}
+      </a>
+      <a id="collectionItem{$medium.Collection.id}Display" href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$medium.Collection.id theme='Printer' forcelongurl=true}" title="{gt text='Open quick view window'}" class="z-hide">
+          {icon type='view' size='extrasmall' __alt='Quick view'}
+      </a>
+      <script type="text/javascript">
+      /* <![CDATA[ */
+          document.observe('dom:loaded', function() {
+              simmedInitInlineWindow($('collectionItem{{$medium.Collection.id}}Display'), '{{$medium.Collection.title|replace:"'":""}}');
+          });
+      /* ]]> */
+      </script>
+      {else}
+    {$medium.Collection.title|default:""}
+      {/if}
+    {else}
+        {gt text='No set.'}
+    {/if}
+    </dd>
     
 </dl>
 {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
@@ -90,7 +124,7 @@
                 headerSelector: 'h3',
                 headerClassName: 'z-panel-header z-panel-indicator',
                 contentClassName: 'z-panel-content',
-                active: 'z-panel-header-fields'
+                active: ['z-panel-header-fields']
             });
         });
     /* ]]> */

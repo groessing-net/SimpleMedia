@@ -10,12 +10,16 @@
 </div>
 
 
-<h3>{gt text='Content'}</h3>
+{if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
+<div class="z-panels" id="SimpleMedia_panel">
+    <h3 id="z-panel-header-fields" class="z-panel-header z-panel-indicator z-pointer z-panel-active">{gt text='Fields'}</h3>
+    <div class="z-panel-content z-panel-active" style="overflow: visible">
+{/if}
 <dl>
     <dt>{gt text='The file'}</dt>
     <dd>  <a href="{$medium.theFileFullPathURL}" title="{$medium.title|replace:"\"":""}"{if $medium.theFileMeta.isImage} rel="imageviewer[medium]"{/if}>
       {if $medium.theFileMeta.isImage}
-          <img src="{$medium.theFileFullPath|simplemediaImageThumb:250:150}" width="250" height="150" alt="{$medium.title|replace:"\"":""}" />
+          <img src="{$medium.theFileFullPath|simplemediaImageThumb:'medium':'theFile':250:150}" width="250" height="150" alt="{$medium.title|replace:"\"":""}" />
       {else}
           {gt text='Download'} ({$medium.theFileMeta.size|simplemediaGetFileSize:$medium.theFileFullPath:false:false})
       {/if}
@@ -29,15 +33,41 @@
         $additionalItem
         {/foreach}
     </dd>
+    <dt>{gt text='Sort value'}</dt>
+    <dd>{$medium.sortValue}</dd>
     <dt>{gt text='Media type'}</dt>
     <dd>{$medium.mediaType|simplemediaGetListEntry:'medium':'mediaType'|safetext}</dd>
+    <dt>{gt text='Collection'}</dt>
+    <dd>
+    {if isset($medium.Collection) && $medium.Collection ne null}
+      {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
+      <a href="{modurl modname='SimpleMedia' type='admin' func='display' ot='collection' id=$medium.Collection.id}">
+        {$medium.Collection.title|default:""}
+      </a>
+      <a id="collectionItem{$medium.Collection.id}Display" href="{modurl modname='SimpleMedia' type='admin' func='display' ot='collection' id=$medium.Collection.id theme='Printer'}" title="{gt text='Open quick view window'}" class="z-hide">
+          {icon type='view' size='extrasmall' __alt='Quick view'}
+      </a>
+      <script type="text/javascript">
+      /* <![CDATA[ */
+          document.observe('dom:loaded', function() {
+              simmedInitInlineWindow($('collectionItem{{$medium.Collection.id}}Display'), '{{$medium.Collection.title|replace:"'":""}}');
+          });
+      /* ]]> */
+      </script>
+      {else}
+    {$medium.Collection.title|default:""}
+      {/if}
+    {else}
+        {gt text='No set.'}
+    {/if}
+    </dd>
     
 </dl>
 {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
-<div class="z-panels" id="SimpleMedia_panel">
+    </div>
 {/if}
-{include file='admin/include_categories_display.tpl' obj=$medium panel=true}
 {include file='admin/include_attributes_display.tpl' obj=$medium panel=true}
+{include file='admin/include_categories_display.tpl' obj=$medium panel=true}
 {include file='admin/include_metadata_display.tpl' obj=$medium panel=true}
 {include file='admin/include_standardfields_display.tpl' obj=$medium panel=true}
 
@@ -75,7 +105,7 @@
                 headerSelector: 'h3',
                 headerClassName: 'z-panel-header z-panel-indicator',
                 contentClassName: 'z-panel-content',
-                active: 'z-panel-header-fields'
+                active: ['z-panel-header-fields']
             });
         });
     /* ]]> */

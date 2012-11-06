@@ -8,6 +8,8 @@
     <h3>{$templateTitle}</h3>
 </div>
 
+<p class="sectiondesc">Various kind of media</p>
+
 {checkpermissionblock component='SimpleMedia:Medium:' instance='.*' level='ACCESS_ADD'}
     {gt text='Create medium' assign='createTitle'}
     <a href="{modurl modname='SimpleMedia' type='admin' func='edit' ot='medium'}" title="{$createTitle}" class="z-icon-es-add">
@@ -40,25 +42,33 @@
         <col id="cthefile" />
         <col id="cdescription" />
         <col id="cadditionaldata" />
+        <col id="csortvalue" />
         <col id="cmediatype" />
+        <col id="ccollection" />
         <col id="citemactions" />
     </colgroup>
     <thead>
     <tr>
         <th id="htitle" scope="col" class="z-left">
-            {sortlink __linktext='Title' sort='title' currentsort=$sort sortdir=$sdir all=$all own=$own catid=$catId Collection=$Collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='medium'}
+            {sortlink __linktext='Title' sort='title' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main collection=$collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='medium'}
         </th>
         <th id="hthefile" scope="col" class="z-left">
-            {sortlink __linktext='The file' sort='theFile' currentsort=$sort sortdir=$sdir all=$all own=$own catid=$catId Collection=$Collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='medium'}
+            {sortlink __linktext='The file' sort='theFile' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main collection=$collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='medium'}
         </th>
         <th id="hdescription" scope="col" class="z-left">
-            {sortlink __linktext='Description' sort='description' currentsort=$sort sortdir=$sdir all=$all own=$own catid=$catId Collection=$Collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='medium'}
+            {sortlink __linktext='Description' sort='description' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main collection=$collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='medium'}
         </th>
         <th id="hadditionaldata" scope="col" class="z-left">
-            {sortlink __linktext='Additional data' sort='additionalData' currentsort=$sort sortdir=$sdir all=$all own=$own catid=$catId Collection=$Collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='medium'}
+            {sortlink __linktext='Additional data' sort='additionalData' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main collection=$collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='medium'}
+        </th>
+        <th id="hsortvalue" scope="col" class="z-right">
+            {sortlink __linktext='Sort value' sort='sortValue' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main collection=$collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='medium'}
         </th>
         <th id="hmediatype" scope="col" class="z-left">
-            {sortlink __linktext='Media type' sort='mediaType' currentsort=$sort sortdir=$sdir all=$all own=$own catid=$catId Collection=$Collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='medium'}
+            {sortlink __linktext='Media type' sort='mediaType' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main collection=$collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='medium'}
+        </th>
+        <th id="hcollection" scope="col" class="z-left">
+            {sortlink __linktext='Collection' sort='collection' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main collection=$collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='medium'}
         </th>
         <th id="hitemactions" scope="col" class="z-right z-order-unsorted">{gt text='Actions'}</th>
     </tr>
@@ -73,7 +83,7 @@
         <td headers="hthefile" class="z-left">
               <a href="{$medium.theFileFullPathURL}" title="{$medium.title|replace:"\"":""}"{if $medium.theFileMeta.isImage} rel="imageviewer[medium]"{/if}>
               {if $medium.theFileMeta.isImage}
-                  <img src="{$medium.theFileFullPath|simplemediaImageThumb:32:20}" width="32" height="20" alt="{$medium.title|replace:"\"":""}" />
+                  <img src="{$medium.theFileFullPath|simplemediaImageThumb:'medium':'theFile':32:20}" width="32" height="20" alt="{$medium.title|replace:"\"":""}" />
               {else}
                   {gt text='Download'} ({$medium.theFileMeta.size|simplemediaGetFileSize:$medium.theFileFullPath:false:false})
               {/if}
@@ -85,8 +95,30 @@
         <td headers="hadditionaldata" class="z-left">
             {$medium.additionalData}
         </td>
+        <td headers="hsortvalue" class="z-right">
+            {$medium.sortValue}
+        </td>
         <td headers="hmediatype" class="z-left">
             {$medium.mediaType|simplemediaGetListEntry:'medium':'mediaType'|safetext}
+        </td>
+        <td headers="hcollection" class="z-left">
+            {if isset($medium.Collection) && $medium.Collection ne null}
+                <a href="{modurl modname='SimpleMedia' type='admin' func='display' ot='collection' id=$medium.Collection.id}">
+                  {$medium.Collection.title|default:""}
+                </a>
+                <a id="collectionItem{$medium.id}_rel_{$medium.Collection.id}Display" href="{modurl modname='SimpleMedia' type='admin' func='display' ot='collection' id=$medium.Collection.id theme='Printer'}" title="{gt text='Open quick view window'}" class="z-hide">
+                    {icon type='view' size='extrasmall' __alt='Quick view'}
+                </a>
+                <script type="text/javascript">
+                /* <![CDATA[ */
+                    document.observe('dom:loaded', function() {
+                        simmedInitInlineWindow($('collectionItem{{$medium.id}}_rel_{{$medium.Collection.id}}Display'), '{{$medium.Collection.title|replace:"'":""}}');
+                    });
+                /* ]]> */
+                </script>
+            {else}
+                {gt text='Not set.'}
+            {/if}
         </td>
         <td id="itemactions{$medium.id}" headers="hitemactions" class="z-right z-nowrap z-w02">
             {if count($medium._actions) gt 0}
@@ -106,7 +138,7 @@
     </tr>
 {foreachelse}
     <tr class="z-admintableempty">
-      <td class="z-left" colspan="6">
+      <td class="z-left" colspan="8">
     {gt text='No media found.'}
       </td>
     </tr>
