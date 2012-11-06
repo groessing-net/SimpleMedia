@@ -29,14 +29,75 @@
     <div class="z-panels" id="SimpleMedia_panel">
         <h3 id="z-panel-header-fields" class="z-panel-header z-panel-indicator z-pointer">{gt text='Fields'}</h3>
         <div class="z-panel-content z-panel-active" style="overflow: visible">
+            {formvolatile}
+                {assign var='useOnlyCurrentLocale' value=true}
+                {if $modvars.ZConfig.multilingual}
+                    {if $supportedLocales ne '' && is_array($supportedLocales) && count($supportedLocales) > 1}
+                        {assign var='useOnlyCurrentLocale' value=false}
+                        {nocache}
+                        {lang assign='currentLanguage'}
+                        {foreach item='locale' from=$supportedLocales}
+                            {if $locale eq $currentLanguage}
+                                <fieldset>
+                                    <legend>{$locale|getlanguagename|safehtml}</legend>
+                                    
+                                    <div class="z-formrow">
+                                        {formlabel for='title' __text='Title' mandatorysym='1'}
+                                        {formtextinput group='medium' id='title' mandatory=true readOnly=false __title='Enter the title of the medium' textMode='singleline' maxLength=255 cssClass='required' }
+                                        {simplemediaValidationError id='title' class='required'}
+                                    </div>
+                                    
+                                    <div class="z-formrow">
+                                        {formlabel for='description' __text='Description'}
+                                        {formtextinput group='medium' id='description' mandatory=false __title='Enter the description of the medium' textMode='multiline' rows='6' cols='50' cssClass='' }
+                                    </div>
+                                            
+                                </fieldset>
+                            {/if}
+                        {/foreach}
+                        {foreach item='locale' from=$supportedLocales}
+                            {if $locale ne $currentLanguage}
+                                <fieldset>
+                                    <legend>{$locale|getlanguagename|safehtml}</legend>
+                                    
+                                    <div class="z-formrow">
+                                        {formlabel for="title`$locale`" __text='Title' mandatorysym='1'}
+                                        {formtextinput group="medium`$locale`" id="title`$locale`" mandatory=true readOnly=false __title='Enter the title of the medium' textMode='singleline' maxLength=255 cssClass='required' }
+                                        {simplemediaValidationError id="title`$locale`" class='required'}
+                                    </div>
+                                    
+                                    <div class="z-formrow">
+                                        {formlabel for="description`$locale`" __text='Description'}
+                                        {formtextinput group="medium`$locale`" id="description`$locale`" mandatory=false __title='Enter the description of the medium' textMode='multiline' rows='6' cols='50' cssClass='' }
+                                    </div>
+                                            
+                                </fieldset>
+                            {/if}
+                        {/foreach}
+                        {/nocache}
+                    {/if}
+                {/if}
+                {if $useOnlyCurrentLocale eq true}
+                    {lang assign='locale'}
+                    <fieldset>
+                        <legend>{$locale|getlanguagename|safehtml}</legend>
+                        
+                        <div class="z-formrow">
+                            {formlabel for='title' __text='Title' mandatorysym='1'}
+                            {formtextinput group='medium' id='title' mandatory=true readOnly=false __title='Enter the title of the medium' textMode='singleline' maxLength=255 cssClass='required' }
+                            {simplemediaValidationError id='title' class='required'}
+                        </div>
+                        
+                        <div class="z-formrow">
+                            {formlabel for='description' __text='Description'}
+                            {formtextinput group='medium' id='description' mandatory=false __title='Enter the description of the medium' textMode='multiline' rows='6' cols='50' cssClass='' }
+                        </div>
+                                
+                    </fieldset>
+                {/if}
+            {/formvolatile}
             <fieldset>
-                <legend>{gt text='Content'}</legend>
-                
-                <div class="z-formrow">
-                    {formlabel for='title' __text='Title' mandatorysym='1'}
-                    {formtextinput group='medium' id='title' mandatory=true readOnly=false __title='Enter the title of the medium' textMode='singleline' maxLength=255 cssClass='required' }
-                    {simplemediaValidationError id='title' class='required'}
-                </div>
+                <legend>{gt text='Further properties'}</legend>
                 
                 <div class="z-formrow">
                     {assign var='mandatorySym' value='1'}
@@ -58,7 +119,7 @@
                                 {gt text='Current file'}:
                                 <a href="{$medium.theFileFullPathUrl}" title="{$medium.title|replace:"\"":""}"{if $medium.theFileMeta.isImage} rel="imageviewer[medium]"{/if}>
                                 {if $medium.theFileMeta.isImage}
-                                    <img src="{$medium.theFileFullPath|simplemediaImageThumb:80:50}" width="80" height="50" alt="{$medium.title|replace:"\"":""}" />
+                                    <img src="{$medium.theFileFullPath|simplemediaImageThumb:'medium':'theFile':80:50}" width="80" height="50" alt="{$medium.title|replace:"\"":""}" />
                                 {else}
                                     {gt text='Download'} ({$medium.theFileMeta.size|simplemediaGetFileSize:$medium.theFileFullPath:false:false})
                                 {/if}
@@ -71,20 +132,22 @@
                 </div>
                 
                 <div class="z-formrow">
-                    {formlabel for='description' __text='Description'}
-                    {formtextinput group='medium' id='description' mandatory=false __title='Enter the description of the medium' textMode='multiline' rows='6' cols='50' cssClass='' }
+                    {gt text='Used for sorting media within a collection.' assign='toolTip'}
+                    {formlabel for='sortValue' __text='Sort value' class='simplemediaFormTooltips' title=$toolTip}
+                    {formintinput group='medium' id='sortValue' mandatory=false __title='Enter the sort value of the medium' maxLength=11 cssClass=' validate-digits' }
+                    {simplemediaValidationError id='sortValue' class='validate-digits'}
                 </div>
                 
                 <div class="z-formrow">
-                    {formlabel for='mediaType' __text='Media type' mandatorysym='1'}
-                    {formdropdownlist group='medium' id='mediaType' mandatory=true __title='Choose the media type' selectionMode='single'}
+                    {formlabel for='mediaType' __text='Media type'}
+                    {formdropdownlist group='medium' id='mediaType' mandatory=false __title='Choose the media type' selectionMode='single'}
                 </div>
-                        
             </fieldset>
         </div>
         
         {include file='admin/include_attributes_edit.tpl' obj=$medium panel=true}
         {include file='admin/include_categories_edit.tpl' obj=$medium groupName='mediumObj' panel=true}
+        {include file='admin/collection/include_selectEditOne.tpl' relItem=$medium aliasName='collection' idPrefix='simmedMedium_Collection' panel=true}
         {include file='admin/include_metadata_edit.tpl' obj=$medium panel=true}
         {if $mode ne 'create'}
             {include file='admin/include_standardfields_edit.tpl' obj=$medium panel=true}
@@ -147,8 +210,18 @@
 /* <![CDATA[ */
     var editImage = '<img src="{{$editImageArray.src}}" width="16" height="16" alt="" />';
     var removeImage = '<img src="{{$deleteImageArray.src}}" width="16" height="16" alt="" />';
+    var relationHandler = new Array();
+    var newItem = new Object();
+    newItem.ot = 'collection';
+    newItem.alias = 'Collection';
+    newItem.prefix = 'simmedMedium_CollectionSelectorDoNew';
+    newItem.moduleName = 'SimpleMedia';
+    newItem.acInstance = null;
+    newItem.windowInstance = null;
+    relationHandler.push(newItem);
 
     document.observe('dom:loaded', function() {
+        simmedInitRelationItemsForm('collection', 'simmedMedium_Collection', true);
 
         simmedAddCommonValidationRules('medium', '{{if $mode eq 'create'}}{{else}}{{$medium.id}}{{/if}}');
 
@@ -176,7 +249,7 @@
             headerSelector: 'h3',
             headerClassName: 'z-panel-header z-panel-indicator',
             contentClassName: 'z-panel-content',
-            active: 'z-panel-header-fields'
+            active: ['z-panel-header-fields']
         });
 
         Zikula.UI.Tooltips($$('.simplemediaFormTooltips'));

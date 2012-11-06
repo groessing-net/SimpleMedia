@@ -21,6 +21,10 @@
 <dl>
     <dt>{gt text='Description'}</dt>
     <dd>{$collection.description}</dd>
+    <dt>{gt text='Preview image'}</dt>
+    <dd>{$collection.previewImage}</dd>
+    <dt>{gt text='Sort value'}</dt>
+    <dd>{$collection.sortValue}</dd>
     
 </dl>
 {include file='user/include_categories_display.tpl' obj=$collection}

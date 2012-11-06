@@ -6,7 +6,7 @@
 <div class="z-frontendcontainer">
     <h2>{$templateTitle}</h2>
 
-<p class="sectiondesc">Collections form a nested tree that contain one or more media items. </p>
+<p class="sectiondesc">Collections form a nested tree that contain one or more media items and nested collections.</p>
 
 <p>
     {gt text='Switch to table view' assign='switchTitle'}

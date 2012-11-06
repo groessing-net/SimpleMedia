@@ -10,15 +10,34 @@
 {assign var='leftSide' value=' style="float: left; width: 10em"'}
 {assign var='rightSide' value=' style="float: left"'}
 {assign var='break' value=' style="clear: left"'}
-<p>
-    <label for="{$baseID}_catid"{$leftSide}>{gt text='Category'}:</label>
-    {gt text='All' assign='lblDef'}
-    {selector_category category=$mainCategory name="`$baseID`_catid" field='id' defaultText=$lblDef editLink=false selectedValue=$catId}
-    <br{$break} />
-</p>
+
+{if $properties ne null && is_array($properties)}
+    {gt text='All' assign='lblDefault'}
+    {nocache}
+    {foreach item='property' from=$properties}
+        <p>
+            {modapifunc modname='SimpleMedia' type='category' func='hasMultipleSelection' ot='medium' registry=$property assign='hasMultiSelection'}
+            {gt text='Category' assign='categoryLabel'}
+            {assign var='categorySelectorId' value='catid'}
+            {assign var='categorySelectorName' value='catid'}
+            {assign var='categorySelectorSize' value='1'}
+            {if $hasMultiSelection eq true}
+                {gt text='Categories' assign='categoryLabel'}
+                {assign var='categorySelectorName' value='catids'}
+                {assign var='categorySelectorId' value='catids__'}
+                {assign var='categorySelectorSize' value='8'}
+            {/if}
+            <label for="{$baseID}_{$categorySelectorId}{$property}"{$leftSide}>{$categoryLabel}:</label>
+            &nbsp;
+            {selector_category name="`$baseID`_`$categorySelectorName``$property`" field='id' selectedValue=$catIds.$propertyName categoryRegistryModule='SimpleMedia' categoryRegistryTable=$objectType categoryRegistryProperty=$property defaultText=$lblDefault editLink=false multipleSize=$categorySelectorSize}
+            <br{$break} />
+        </p>
+    {/foreach}
+    {/nocache}
+{/if}
 <p>
     <label for="{$baseID}_id"{$leftSide}>{gt text='Medium'}:</label>
-    <select id="{$baseID}_id" name="id" {$rightSide}>
+    <select id="{$baseID}_id" name="id"{$rightSide}>
         {foreach item='medium' from=$items}{strip}
             <option value="{$medium.id}"{if $selectedId eq $medium.id} selected="selected"{/if}>
                 {$medium.title}
@@ -31,12 +50,13 @@
 </p>
 <p>
     <label for="{$baseID}_sort"{$leftSide}>{gt text='Sort by'}:</label>
-    <select id="{$baseID}_sort" name="sort" {$rightSide}>
+    <select id="{$baseID}_sort" name="sort"{$rightSide}>
         <option value="id"{if $sort eq 'id'} selected="selected"{/if}>{gt text='Id'}</option>
         <option value="title"{if $sort eq 'title'} selected="selected"{/if}>{gt text='Title'}</option>
         <option value="theFile"{if $sort eq 'theFile'} selected="selected"{/if}>{gt text='The file'}</option>
         <option value="description"{if $sort eq 'description'} selected="selected"{/if}>{gt text='Description'}</option>
         <option value="additionalData"{if $sort eq 'additionalData'} selected="selected"{/if}>{gt text='Additional data'}</option>
+        <option value="sortValue"{if $sort eq 'sortValue'} selected="selected"{/if}>{gt text='Sort value'}</option>
         <option value="mediaType"{if $sort eq 'mediaType'} selected="selected"{/if}>{gt text='Media type'}</option>
         <option value="createdDate"{if $sort eq 'createdDate'} selected="selected"{/if}>{gt text='Creation date'}</option>
         <option value="createdUserId"{if $sort eq 'createdUserId'} selected="selected"{/if}>{gt text='Creator'}</option>

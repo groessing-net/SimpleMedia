@@ -1,5 +1,6 @@
 {* purpose of this template: collections view filter form in user area *}
 {checkpermissionblock component='SimpleMedia:Collection:' instance='.*' level='ACCESS_EDIT'}
+{assign var='objectType' value='collection'}
 <form action="{$modvars.ZConfig.entrypoint|default:'index.php'}" method="get" id="simmedCollectionQuickNavForm" class="simmedQuickNavForm">
     <fieldset>
         <h3>{gt text='Quick navigation'}</h3>
@@ -9,10 +10,28 @@
         <input type="hidden" name="ot" value="collection" />
         {gt text='All' assign='lblDefault'}
         {if !isset($categoryFilter) || $categoryFilter eq true}
-            <label for="categoryid">{gt text='Category'}</label>
-            &nbsp;
-            {modapifunc modname='SimpleMedia' type='category' func='getMainCat' assign='mainCategory'}
-            {selector_category category=$mainCategory name='catid' field='id' defaultText=$lblDefault editLink=false selectedValue=$catId}
+            {modapifunc modname='SimpleMedia' type='category' func='getAllProperties' assign='properties'}
+            {if $properties ne null && is_array($properties)}
+                {gt text='All' assign='lblDefault'}
+                {nocache}
+                {foreach key='propertyName' item='propertyId' from=$properties}
+                    {modapifunc modname='SimpleMedia' type='category' func='hasMultipleSelection' ot=$objectType registry=$propertyName assign='hasMultiSelection'}
+                    {gt text='Category' assign='categoryLabel'}
+                    {assign var='categorySelectorId' value='catid'}
+                    {assign var='categorySelectorName' value='catid'}
+                    {assign var='categorySelectorSize' value='1'}
+                    {if $hasMultiSelection eq true}
+                        {gt text='Categories' assign='categoryLabel'}
+                        {assign var='categorySelectorName' value='catids'}
+                        {assign var='categorySelectorId' value='catids__'}
+                        {assign var='categorySelectorSize' value='5'}
+                    {/if}
+                    <label for="{$categorySelectorId}{$propertyName}">{$categoryLabel}</label>
+                    &nbsp;
+                    {selector_category name="`$categorySelectorName``$propertyName`" field='id' selectedValue=$catIdList.$propertyName categoryRegistryModule='SimpleMedia' categoryRegistryTable=$objectType categoryRegistryProperty=$propertyName defaultText=$lblDefault editLink=false multipleSize=$categorySelectorSize}
+                {/foreach}
+                {/nocache}
+            {/if}
         {/if}
         {if !isset($searchFilter) || $searchFilter eq true}
             <label for="searchterm">{gt text='Search'}:</label>
@@ -25,6 +44,8 @@
             <option value="id"{if $sort eq 'id'} selected="selected"{/if}>{gt text='Id'}</option>
             <option value="title"{if $sort eq 'title'} selected="selected"{/if}>{gt text='Title'}</option>
             <option value="description"{if $sort eq 'description'} selected="selected"{/if}>{gt text='Description'}</option>
+            <option value="previewImage"{if $sort eq 'previewImage'} selected="selected"{/if}>{gt text='Preview image'}</option>
+            <option value="sortValue"{if $sort eq 'sortValue'} selected="selected"{/if}>{gt text='Sort value'}</option>
             <option value="createdDate"{if $sort eq 'createdDate'} selected="selected"{/if}>{gt text='Creation date'}</option>
             <option value="createdUserId"{if $sort eq 'createdUserId'} selected="selected"{/if}>{gt text='Creator'}</option>
             <option value="updatedDate"{if $sort eq 'updatedDate'} selected="selected"{/if}>{gt text='Update date'}</option>
@@ -38,7 +59,6 @@
             <input type="hidden" name="sdir" value="{if $sdir eq 'desc'}asc{else}desc{/if}" />
         {/if}
         {if !isset($pageSizeSelector) || $pageSizeSelector eq true}
-            {assign var='pageSize' value=$pager.itemsperpage}
             <label for="num">{gt text='Page size'}</label>
             &nbsp;
             <select id="num" name="num">

@@ -1,5 +1,5 @@
 {* Purpose of this template: Display one certain medium within an external context *}
-<div id="medium{$medium.de.guite.modulestudio.metamodel.modulestudio.impl.IntegerFieldImpl@4838462a (name: id, documentation: null) (defaultValue: null, mandatory: true, nullable: false, leading: false, primaryKey: true, readonly: false, unique: true, translatable: false, sluggablePosition: 0, sortableGroup: false) (length: 9, sortablePosition: false) (minValue: 0, maxValue: 0, aggregateFor: , version: false)}" class="simmedexternalmedium">
+<div id="medium{$medium.de.guite.modulestudio.metamodel.modulestudio.impl.IntegerFieldImpl@566e9e64 (name: id, documentation: null) (defaultValue: null, mandatory: true, nullable: false, leading: false, primaryKey: true, readonly: false, unique: true, translatable: false, sluggablePosition: 0, sortableGroup: false) (length: 9, sortablePosition: false) (minValue: 0, maxValue: 0, aggregateFor: , version: false)}" class="simmedexternalmedium">
 {if $displayMode eq 'link'}
     <p class="simmedexternallink">
     <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='medium' id=$medium.id slug=$medium.slug}" title="{$medium.title|replace:"\"":""}">
@@ -21,11 +21,14 @@
         &nbsp;
     </div>
 
+    {* you can distinguish the context like this: *}
     {*if $source eq 'contentType'}
         ...
     {elseif $source eq 'scribite'}
         ...
     {/if*}
+
+    {* you can enable more details about the item: *}
     {*
         <p class="simmedexternaldesc">
             {if $medium.description ne ''}{$medium.description}<br />{/if}

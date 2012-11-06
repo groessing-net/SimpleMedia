@@ -26,20 +26,86 @@
     {formsetinitialfocus inputId='title'}
 
 
-    <fieldset>
-        <legend>{gt text='Content'}</legend>
-        
-        <div class="z-formrow">
-            {formlabel for='title' __text='Title' mandatorysym='1'}
-            {formtextinput group='collection' id='title' mandatory=true readOnly=false __title='Enter the title of the collection' textMode='singleline' maxLength=255 cssClass='required' }
-            {simplemediaValidationError id='title' class='required'}
-        </div>
-        
-        <div class="z-formrow">
-            {formlabel for='description' __text='Description'}
-            {formtextinput group='collection' id='description' mandatory=false __title='Enter the description of the collection' textMode='multiline' rows='6' cols='50' cssClass='' }
-        </div>
+    {formvolatile}
+        {assign var='useOnlyCurrentLocale' value=true}
+        {if $modvars.ZConfig.multilingual}
+            {if $supportedLocales ne '' && is_array($supportedLocales) && count($supportedLocales) > 1}
+                {assign var='useOnlyCurrentLocale' value=false}
+                {nocache}
+                {lang assign='currentLanguage'}
+                {foreach item='locale' from=$supportedLocales}
+                    {if $locale eq $currentLanguage}
+                        <fieldset>
+                            <legend>{$locale|getlanguagename|safehtml}</legend>
+                            
+                            <div class="z-formrow">
+                                {formlabel for='title' __text='Title' mandatorysym='1'}
+                                {formtextinput group='collection' id='title' mandatory=true readOnly=false __title='Enter the title of the collection' textMode='singleline' maxLength=255 cssClass='required' }
+                                {simplemediaValidationError id='title' class='required'}
+                            </div>
+                            
+                            <div class="z-formrow">
+                                {formlabel for='description' __text='Description'}
+                                {formtextinput group='collection' id='description' mandatory=false __title='Enter the description of the collection' textMode='multiline' rows='6' cols='50' cssClass='' }
+                            </div>
+                        </fieldset>
+                    {/if}
+                {/foreach}
+                {foreach item='locale' from=$supportedLocales}
+                    {if $locale ne $currentLanguage}
+                        <fieldset>
+                            <legend>{$locale|getlanguagename|safehtml}</legend>
+                            
+                            <div class="z-formrow">
+                                {formlabel for="title`$locale`" __text='Title' mandatorysym='1'}
+                                {formtextinput group="collection`$locale`" id="title`$locale`" mandatory=true readOnly=false __title='Enter the title of the collection' textMode='singleline' maxLength=255 cssClass='required' }
+                                {simplemediaValidationError id="title`$locale`" class='required'}
+                            </div>
+                            
+                            <div class="z-formrow">
+                                {formlabel for="description`$locale`" __text='Description'}
+                                {formtextinput group="collection`$locale`" id="description`$locale`" mandatory=false __title='Enter the description of the collection' textMode='multiline' rows='6' cols='50' cssClass='' }
+                            </div>
+                        </fieldset>
+                    {/if}
+                {/foreach}
+                {/nocache}
+            {/if}
+        {/if}
+        {if $useOnlyCurrentLocale eq true}
+            {lang assign='locale'}
+            <fieldset>
+                <legend>{$locale|getlanguagename|safehtml}</legend>
                 
+                <div class="z-formrow">
+                    {formlabel for='title' __text='Title' mandatorysym='1'}
+                    {formtextinput group='collection' id='title' mandatory=true readOnly=false __title='Enter the title of the collection' textMode='singleline' maxLength=255 cssClass='required' }
+                    {simplemediaValidationError id='title' class='required'}
+                </div>
+                
+                <div class="z-formrow">
+                    {formlabel for='description' __text='Description'}
+                    {formtextinput group='collection' id='description' mandatory=false __title='Enter the description of the collection' textMode='multiline' rows='6' cols='50' cssClass='' }
+                </div>
+            </fieldset>
+        {/if}
+    {/formvolatile}
+    <fieldset>
+        <legend>{gt text='Further properties'}</legend>
+        
+        <div class="z-formrow">
+            {gt text='The representing thumbnail image. Does not have to be within the collection itself.' assign='toolTip'}
+            {formlabel for='previewImage' __text='Preview image' class='simplemediaFormTooltips' title=$toolTip}
+            {formintinput group='collection' id='previewImage' mandatory=false __title='Enter the preview image of the collection' maxLength=11 cssClass=' validate-digits' }
+            {simplemediaValidationError id='previewImage' class='validate-digits'}
+        </div>
+        
+        <div class="z-formrow">
+            {gt text='Used for sorting collections within a parent collection.' assign='toolTip'}
+            {formlabel for='sortValue' __text='Sort value' class='simplemediaFormTooltips' title=$toolTip}
+            {formintinput group='collection' id='sortValue' mandatory=false __title='Enter the sort value of the collection' maxLength=11 cssClass=' validate-digits' }
+            {simplemediaValidationError id='sortValue' class='validate-digits'}
+        </div>
     </fieldset>
     
     {include file='admin/include_categories_edit.tpl' obj=$collection groupName='collectionObj'}

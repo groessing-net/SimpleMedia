@@ -119,6 +119,9 @@ function simmedInitQuickNavigation(objectType, controller) {
 
     switch (objectType) {
     case 'medium':
+        if ($('collection') !== undefined) {
+            $('collection').observe('change', function () { simmedSubmitQuickNavForm(objectType); });
+        }
         if ($('mediaType') !== undefined) {
             $('mediaType').observe('change', function () { simmedSubmitQuickNavForm(objectType); });
         }

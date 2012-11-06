@@ -8,7 +8,7 @@
     <h3>{$templateTitle}</h3>
 </div>
 
-<p class="sectiondesc">Collections form a nested tree that contain one or more media items. </p>
+<p class="sectiondesc">Collections form a nested tree that contain one or more media items and nested collections.</p>
 
 {checkpermissionblock component='SimpleMedia:Collection:' instance='.*' level='ACCESS_ADD'}
 {*
@@ -46,15 +46,23 @@
     <colgroup>
         <col id="ctitle" />
         <col id="cdescription" />
+        <col id="cpreviewimage" />
+        <col id="csortvalue" />
         <col id="citemactions" />
     </colgroup>
     <thead>
     <tr>
         <th id="htitle" scope="col" class="z-left">
-            {sortlink __linktext='Title' sort='title' currentsort=$sort sortdir=$sdir all=$all own=$own catid=$catId searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='collection'}
+            {sortlink __linktext='Title' sort='title' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='collection'}
         </th>
         <th id="hdescription" scope="col" class="z-left">
-            {sortlink __linktext='Description' sort='description' currentsort=$sort sortdir=$sdir all=$all own=$own catid=$catId searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='collection'}
+            {sortlink __linktext='Description' sort='description' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='collection'}
+        </th>
+        <th id="hpreviewimage" scope="col" class="z-right">
+            {sortlink __linktext='Preview image' sort='previewImage' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='collection'}
+        </th>
+        <th id="hsortvalue" scope="col" class="z-right">
+            {sortlink __linktext='Sort value' sort='sortValue' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='collection'}
         </th>
         <th id="hitemactions" scope="col" class="z-right z-order-unsorted">{gt text='Actions'}</th>
     </tr>
@@ -68,6 +76,12 @@
         </td>
         <td headers="hdescription" class="z-left">
             {$collection.description}
+        </td>
+        <td headers="hpreviewimage" class="z-right">
+            {$collection.previewImage}
+        </td>
+        <td headers="hsortvalue" class="z-right">
+            {$collection.sortValue}
         </td>
         <td id="itemactions{$collection.id}" headers="hitemactions" class="z-right z-nowrap z-w02">
             {if count($collection._actions) gt 0}
@@ -87,7 +101,7 @@
     </tr>
 {foreachelse}
     <tr class="z-admintableempty">
-      <td class="z-left" colspan="3">
+      <td class="z-left" colspan="5">
     {gt text='No collections found.'}
       </td>
     </tr>

@@ -8,7 +8,7 @@
     <h3>{$templateTitle}</h3>
 </div>
 
-<p class="sectiondesc">Collections form a nested tree that contain one or more media items. </p>
+<p class="sectiondesc">Collections form a nested tree that contain one or more media items and nested collections.</p>
 
 <p>
     {checkpermissionblock component='SimpleMedia:Collection:' instance='.*' level='ACCESS_ADD'}
