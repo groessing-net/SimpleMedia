@@ -160,13 +160,13 @@ class SimpleMedia_Util_Base_Controller extends Zikula_AbstractBase
 
         // Check if directory exist and try to create it if needed
         if (!is_dir($uploadPath) && !FileUtil::mkdirs($uploadPath, 0777)) {
-            LogUtil::registerStatus(__f('The upload directory "%s" does not exist and could not be created. Try to create it yourself and make sure that this folder is accessible via the web and writable by the webserver.', array($uploadPath), $dom));
+            LogUtil::registerError(__f('The upload directory "%s" does not exist and could not be created. Try to create it yourself and make sure that this folder is accessible via the web and writable by the webserver.', array($uploadPath), $dom));
             return false;
         }
 
         // Check if directory is writable and change permissions if needed
         if (!is_writable($uploadPath) && !chmod($uploadPath, 0777)) {
-            LogUtil::registerStatus(__f('Warning! The upload directory at "%s" exists but is not writable by the webserver.', array($uploadPath), $dom));
+            LogUtil::registerError(__f('Warning! The upload directory at "%s" exists but is not writable by the webserver.', array($uploadPath), $dom));
             return false;
         }
 
@@ -176,13 +176,13 @@ class SimpleMedia_Util_Base_Controller extends Zikula_AbstractBase
 
         // Check if directory exist and try to create it if needed
         if (!is_dir($thumbPath) && !FileUtil::mkdirs($thumbPath, 0777)) {
-            LogUtil::registerStatus(__f('Warning! The upload thumbnail directory "%s" does not exist and could not be created. Try to create it yourself and make sure that this folder is accessible via the web and writable by the webserver.', array($thumbPath), $dom));
+            LogUtil::registerError(__f('Warning! The upload thumbnail directory "%s" does not exist and could not be created. Try to create it yourself and make sure that this folder is accessible via the web and writable by the webserver.', array($thumbPath), $dom));
             return false;
         }
 
         // Check if directory is writable and change permissions if needed
         if (!is_writable($thumbPath) && !chmod($thumbPath, 0777)) {
-            LogUtil::registerStatus(__f('Warning! The upload thumbnail directory at "%s" exists but is not writable by the webserver.', array($thumbPath), $dom));
+            LogUtil::registerError(__f('Warning! The upload thumbnail directory at "%s" exists but is not writable by the webserver.', array($thumbPath), $dom));
             return false;
         }
 
@@ -193,7 +193,7 @@ class SimpleMedia_Util_Base_Controller extends Zikula_AbstractBase
             $extensions = str_replace(',', '|', str_replace(' ', '', $allowedExtensions));
             $htaccessContent = str_replace('__EXTENSIONS__', $extensions, FileUtil::readFile($htaccessFileTemplate));
             if (!FileUtil::writeFile($htaccessFilePath, $htaccessContent)) {
-                LogUtil::registerStatus(__f('Warning! Could not but could not write the .htaccess file at "%s".', array($htaccessFilePath), $dom));
+                LogUtil::registerError(__f('Warning! Could not but could not write the .htaccess file at "%s".', array($htaccessFilePath), $dom));
                 return false;
             }
         }
