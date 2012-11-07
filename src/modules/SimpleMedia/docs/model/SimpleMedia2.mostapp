@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modulestudio:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:modulestudio="http://modulestudio.de/modulestudio" xmi:id="_6CazsRD0EeCXF58EtCb2zA" name="SimpleMedia" documentation="Simple file and media management with Collections." author="Axel Guckelsberger" email="info@guite.de" url="http://zikula.de" version="2.0.0" prefix="simmed" modelPath="/Users/erik/Dropbox/Zikula/SimpleMediaMOST">
+  <models xmi:type="modulestudio:Models" xmi:id="_6CbawBD0EeCXF58EtCb2zA" name="Model" numExampleRows="0">
+    <variables xmi:type="modulestudio:Variables" xmi:id="_tpfSsBD1EeCXF58EtCb2zA" name="MediaSettings" documentation="Here you can manage all basic settings for SimpleMedia">
+      <vars xmi:type="modulestudio:IntVar" xmi:id="_ufY_8BD1EeCXF58EtCb2zA" name="pageSize" documentation="Number of items on a page (backend)" value="20"/>
+      <vars xmi:type="modulestudio:IntVar" xmi:id="_L3SDgCaPEeKpiPPCkvbihg" name="mediaPageSize" documentation="Number of media on a page (frontend)" value="15"/>
+      <vars xmi:type="modulestudio:IntVar" xmi:id="_UI0b4CaPEeKpiPPCkvbihg" name="collectionsPageSize" documentation="Number of collections on a page (frontend)" value="6"/>
+      <vars xmi:type="modulestudio:TextVar" xmi:id="_isUAIPJlEeCT2pTUg7uikw" name="thumbDimensions" documentation="Contains an array of thumbnail widthxheight dimensions array ( array ( width => 200, height => 150 ) )" value=""/>
+      <vars xmi:type="modulestudio:IntVar" xmi:id="_OJBiQPJlEeCT2pTUg7uikw" name="defaultThumbNumber" documentation="The default thumbnail that is used from the set of Thumbdimensions" value="1"/>
+      <vars xmi:type="modulestudio:BoolVar" xmi:id="_rkMcQPJkEeCT2pTUg7uikw" name="enableShrinking" documentation="Enable shrinking to maximum image dimensions, original image not stored" value="false"/>
+      <vars xmi:type="modulestudio:TextVar" xmi:id="_lBiLEPJlEeCT2pTUg7uikw" name="shrinkDimensions" documentation="Maximum image dimensions after shrink (w x h)" value=""/>
+      <vars xmi:type="modulestudio:BoolVar" xmi:id="_uJrQwPJkEeCT2pTUg7uikw" name="useThumbCropper" documentation="Use cropper for the thumbnail image" value="false"/>
+      <vars xmi:type="modulestudio:IntVar" xmi:id="_wcFYQPJkEeCT2pTUg7uikw" name="cropSizeMode" documentation="Cropping size mode" value="0"/>
+      <vars xmi:type="modulestudio:TextVar" xmi:id="_x3NpkB6bEeKbqaJK9SRhxg" name="allowedExtensions" documentation="Allowed file extensions for file upload" value="gif, jpeg, jpg, png, pdf, txt, mp3, mp4, avi, mpg, mpeg, mov" maxLength="255"/>
+      <vars xmi:type="modulestudio:IntVar" xmi:id="_kKmuMCjkEeKmqaleGxH5Xg" name="maxUploadFileSize" documentation="Maximum File Size during upload in kB. Default after install 5 MB." value="5000"/>
+      <vars xmi:type="modulestudio:IntVar" xmi:id="_zYVcoCjkEeKmqaleGxH5Xg" name="defaultCollection" documentation="The default Collection that is used for new Media." value="1"/>
+      <vars xmi:type="modulestudio:TextVar" xmi:id="_CQ1jYB6cEeKbqaJK9SRhxg" name="mediaDir" documentation="The location under userdata/SimpleMedia where the uploaded files are stored." value="media/thefile" maxLength="100"/>
+      <vars xmi:type="modulestudio:TextVar" xmi:id="_NVT9cB6cEeKbqaJK9SRhxg" name="mediaThumbDir" documentation="Media thumbnail folder" value="tmb" maxLength="100"/>
+      <vars xmi:type="modulestudio:TextVar" xmi:id="_URsgwB6cEeKbqaJK9SRhxg" name="mediaThumbExt" documentation="Media thumbnail suffix" value="_tmb_" maxLength="20"/>
+    </variables>
+    <relations xmi:type="modulestudio:OneToManyRelationship" xmi:id="_V8lHgB6XEeKbqaJK9SRhxg" target="_lqNhUCsHEeCM6fdBMShs7A" source="_LZC3UB6XEeKbqaJK9SRhxg" bidirectional="true" sourceAlias="collection" targetAlias="media" nullable="false" unique="true" editType="ACTIVE_EDIT_PASSIVE_EDIT"/>
+    <entities xmi:type="modulestudio:Entity" xmi:id="_lqNhUCsHEeCM6fdBMShs7A" name="medium" documentation="Various kind of media" nameMultiple="media" incoming="_V8lHgB6XEeKbqaJK9SRhxg" leading="true" categorisable="true" attributable="true" metaData="true">
+      <fields xmi:type="modulestudio:StringField" xmi:id="_1GGhcCpgEeCcvNODygdSZQ" name="title" defaultValue="" leading="true" translatable="true" sluggablePosition="1"/>
+      <fields xmi:type="modulestudio:UploadField" xmi:id="_MByFwPJhEeCT2pTUg7uikw" name="theFile" allowedExtensions="gif, jpeg, jpg, png, pdf, doc, xls, ppt, docx, xlsx, pptx, odt, ods, odp, arj, zip, rar, tar, tgz, gz, bz2, txt, rtf, swf, flv, mp3, mp4, avi, mpg, mpeg, mov" subFolderName=""/>
+      <fields xmi:type="modulestudio:TextField" xmi:id="_swPpwypgEeCcvNODygdSZQ" name="description" defaultValue="" mandatory="false" translatable="true"/>
+      <fields xmi:type="modulestudio:ArrayField" xmi:id="_TJ0ZICBREeKpVPXW0SCq-A" name="additionalData" documentation="Can contain infomation like exif, IPTC, XMP, Copyright, Etc." defaultValue="" mandatory="false"/>
+      <fields xmi:type="modulestudio:IntegerField" xmi:id="_g--5MCaTEeKpiPPCkvbihg" name="sortValue" documentation="Used for sorting media within a collection." defaultValue="" mandatory="false"/>
+      <fields xmi:type="modulestudio:ListField" xmi:id="_Gx13IB6hEeKgAqb8LavWqA" name="mediaType" mandatory="false">
+        <items xmi:type="modulestudio:ListFieldItem" xmi:id="_Oaj8AB6hEeKgAqb8LavWqA" name="Image" value="image" default="true"/>
+        <items xmi:type="modulestudio:ListFieldItem" xmi:id="_l87aIB6hEeKgAqb8LavWqA" name="Movie" value="movie"/>
+        <items xmi:type="modulestudio:ListFieldItem" xmi:id="_7CGdEB6hEeKgAqb8LavWqA" name="Audio" value="audio"/>
+        <items xmi:type="modulestudio:ListFieldItem" xmi:id="_cwrF8B6hEeKgAqb8LavWqA" name="Text" value="text"/>
+        <items xmi:type="modulestudio:ListFieldItem" xmi:id="_-ZE_8B6hEeKgAqb8LavWqA" name="Other" value="other"/>
+      </fields>
+    </entities>
+    <entities xmi:type="modulestudio:Entity" xmi:id="_LZC3UB6XEeKbqaJK9SRhxg" name="collection" documentation="Collections form a nested tree that contain one or more media items and nested collections." nameMultiple="collections" outgoing="_V8lHgB6XEeKbqaJK9SRhxg" tree="NESTED" categorisable="true">
+      <fields xmi:type="modulestudio:StringField" xmi:id="_QWFZEB6XEeKbqaJK9SRhxg" name="title" defaultValue="" leading="true" translatable="true"/>
+      <fields xmi:type="modulestudio:TextField" xmi:id="_V_DFUB6aEeKbqaJK9SRhxg" name="description" defaultValue="" mandatory="false" translatable="true"/>
+      <fields xmi:type="modulestudio:IntegerField" xmi:id="_XOKfYCaTEeKpiPPCkvbihg" name="previewImage" documentation="The representing thumbnail image. Does not have to be within the collection itself." defaultValue="0" mandatory="false"/>
+      <fields xmi:type="modulestudio:IntegerField" xmi:id="_bge4ECayEeK9mtzAqFrj-g" name="sortValue" documentation="Used for sorting collections within a parent collection." defaultValue="" mandatory="false"/>
+    </entities>
+  </models>
+  <controllers xmi:type="modulestudio:Controllers" xmi:id="_6CbawRD0EeCXF58EtCb2zA" name="Controller" modelContext="_6CbawBD0EeCXF58EtCb2zA" processViews="_6CbawhD0EeCXF58EtCb2zA">
+    <controllers xmi:type="modulestudio:AdminController" xmi:id="_RKgwoBD1EeCXF58EtCb2zA" name="Admin">
+      <actions xmi:type="modulestudio:MainAction" xmi:id="_SXWXMBD1EeCXF58EtCb2zA" name="Main"/>
+      <actions xmi:type="modulestudio:ViewAction" xmi:id="_S0RjwBD1EeCXF58EtCb2zA" name="View"/>
+      <actions xmi:type="modulestudio:DisplayAction" xmi:id="_TOYF0BD1EeCXF58EtCb2zA" name="Display"/>
+      <actions xmi:type="modulestudio:EditAction" xmi:id="_TqSlwBD1EeCXF58EtCb2zA" name="Edit"/>
+      <actions xmi:type="modulestudio:CustomAction" xmi:id="_HH3CQCpXEeCcnbWjrYA5tA" name="Import"/>
+    </controllers>
+    <controllers xmi:type="modulestudio:UserController" xmi:id="_bjaeIBD1EeCXF58EtCb2zA" name="User">
+      <actions xmi:type="modulestudio:MainAction" xmi:id="_cVmwEBD1EeCXF58EtCb2zA" name="Main"/>
+      <actions xmi:type="modulestudio:ViewAction" xmi:id="_cveooBD1EeCXF58EtCb2zA" name="View"/>
+      <actions xmi:type="modulestudio:DisplayAction" xmi:id="_dWKOIBD1EeCXF58EtCb2zA" name="Display"/>
+    </controllers>
+    <controllers xmi:type="modulestudio:AjaxController" xmi:id="_h_8csBD1EeCXF58EtCb2zA" name="Ajax">
+      <actions xmi:type="modulestudio:MainAction" xmi:id="_i-oSgBD1EeCXF58EtCb2zA" name="Main"/>
+    </controllers>
+  </controllers>
+  <views xmi:type="modulestudio:Views" xmi:id="_6CbawhD0EeCXF58EtCb2zA" name="View" controller="_6CbawRD0EeCXF58EtCb2zA"/>
+</modulestudio:Application>
