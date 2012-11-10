@@ -24,6 +24,7 @@
       <fields xmi:type="modulestudio:UploadField" xmi:id="_MByFwPJhEeCT2pTUg7uikw" name="theFile" allowedExtensions="gif, jpeg, jpg, png, pdf, doc, xls, ppt, docx, xlsx, pptx, odt, ods, odp, arj, zip, rar, tar, tgz, gz, bz2, txt, rtf, swf, flv, mp3, mp4, avi, mpg, mpeg, mov" subFolderName=""/>
       <fields xmi:type="modulestudio:TextField" xmi:id="_swPpwypgEeCcvNODygdSZQ" name="description" defaultValue="" mandatory="false" translatable="true"/>
       <fields xmi:type="modulestudio:ArrayField" xmi:id="_TJ0ZICBREeKpVPXW0SCq-A" name="additionalData" documentation="Can contain infomation like exif, IPTC, XMP, Copyright, Etc." defaultValue="" mandatory="false"/>
+      <fields xmi:type="modulestudio:IntegerField" xmi:id="_HiHQgCtlEeK0BP9BaZkHTQ" name="previewImage" documentation="Contains an optional thumbnail image for the Medium item." defaultValue="0" mandatory="false"/>
       <fields xmi:type="modulestudio:IntegerField" xmi:id="_g--5MCaTEeKpiPPCkvbihg" name="sortValue" documentation="Used for sorting media within a collection." defaultValue="" mandatory="false"/>
       <fields xmi:type="modulestudio:ListField" xmi:id="_Gx13IB6hEeKgAqb8LavWqA" name="mediaType" mandatory="false">
         <items xmi:type="modulestudio:ListFieldItem" xmi:id="_Oaj8AB6hEeKgAqb8LavWqA" name="Image" value="image" default="true"/>

@@ -41,6 +41,10 @@
           <element xmi:type="modulestudio:ArrayField" href="SimpleMedia2.mostapp#_TJ0ZICBREeKpVPXW0SCq-A"/>
           <layoutConstraint xmi:type="notation:Location" xmi:id="_TLcw0SBREeKpVPXW0SCq-A"/>
         </children>
+        <children xmi:type="notation:Node" xmi:id="_HjvBICtlEeK0BP9BaZkHTQ" type="3102">
+          <element xmi:type="modulestudio:IntegerField" href="SimpleMedia2.mostapp#_HiHQgCtlEeK0BP9BaZkHTQ"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_HjvBIStlEeK0BP9BaZkHTQ"/>
+        </children>
         <children xmi:type="notation:Node" xmi:id="_g_AHUCaTEeKpiPPCkvbihg" type="3102">
           <element xmi:type="modulestudio:IntegerField" href="SimpleMedia2.mostapp#_g--5MCaTEeKpiPPCkvbihg"/>
           <layoutConstraint xmi:type="notation:Location" xmi:id="_g_AHUSaTEeKpiPPCkvbihg"/>
@@ -160,7 +164,7 @@
     <element xmi:type="modulestudio:Models" href="SimpleMedia2.mostapp#_6CbawBD0EeCXF58EtCb2zA"/>
     <edges xmi:type="notation:Connector" xmi:id="_q4q-wB7KEeKEzrNhQCxC2g" type="4102" source="_q3X-RR7KEeKEzrNhQCxC2g" target="_q3XXMB7KEeKEzrNhQCxC2g" lineColor="0">
       <children xmi:type="notation:DecorationNode" xmi:id="_q4rl0B7KEeKEzrNhQCxC2g" type="6102">
-        <layoutConstraint xmi:type="notation:Location" xmi:id="_q4rl0R7KEeKEzrNhQCxC2g" x="4" y="-97"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_q4rl0R7KEeKEzrNhQCxC2g" x="10" y="-80"/>
       </children>
       <styles xmi:type="notation:FontStyle" xmi:id="_q4q-wR7KEeKEzrNhQCxC2g" fontColor="4210752" fontName="Lucida Grande" fontHeight="12"/>
       <element xmi:type="modulestudio:OneToManyRelationship" href="SimpleMedia2.mostapp#_V8lHgB6XEeKbqaJK9SRhxg"/>
