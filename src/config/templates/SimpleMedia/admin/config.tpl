@@ -1,5 +1,6 @@
 {* purpose of this template: module configuration *}
 {include file='admin/header.tpl'}
+
 <div class="simplemedia-config">
     {gt text='Settings' assign='templateTitle'}
     {pagesetvar name='title' value=$templateTitle}
@@ -80,12 +81,16 @@
                     {gt text='Cropping size mode' assign='toolTip'}
                     {formlabel for='cropSizeMode' __text='Crop size mode' class='simplemediaFormTooltips' title=$toolTip}
                     {* formintinput id='cropSizeMode' group='config' maxLength=255 __title='Enter this setting. Only digits are allowed.' *}
-                    {formdropdownlist id='cropSizeMode' group='config'}
+                    {formdropdownlist id='cropSizeMode' group='cropSize'}
                 </div>
                 <div class="z-formrow">
                     {gt text='Allowed file extensions for file upload' assign='toolTip'}
                     {formlabel for='allowedExtensions' __text='Allowed extensions' class='simplemediaFormTooltips' title=$toolTip}
                     {formtextinput id='allowedExtensions' group='config' maxLength=255 __title='Enter this setting.'}
+                </div>
+                <div class="z-formrow">
+                    {formlabel for='maxUploadFileSize' __text='Maximum upload file size in kB'}
+                    {formintinput id='maxUploadFileSize' group='config' maxLength=255 __title='Enter this setting. Only digits are allowed.'}
                 </div>
                 {* hard coded for now <div class="z-formrow">
                     {gt text='The location under userdata/SimpleMedia where the uploaded files are stored.' assign='toolTip'}
@@ -102,6 +107,9 @@
                     {formlabel for='mediaThumbExt' __text='Media thumb ext' class='simplemediaFormTooltips' title=$toolTip}
                     {formtextinput id='mediaThumbExt' group='config' maxLength=255 __title='Enter this setting.'}
                 </div> *}
+
+                {* Include a dropdown list for the default collection *}                
+                {*include file='admin/collection/include_selectEditOne.tpl' relItem=$medium aliasName='collection' idPrefix='simmedMedium_Collection' panel=false*}
             </fieldset>
 
             <div class="z-buttons z-formbuttons">
@@ -143,3 +151,4 @@
     }
 /* ]]> */
 </script>
+

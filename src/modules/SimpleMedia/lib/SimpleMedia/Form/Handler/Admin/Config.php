@@ -18,8 +18,35 @@ class SimpleMedia_Form_Handler_Admin_Config extends SimpleMedia_Form_Handler_Adm
 {
     // feel free to extend the base handler class here
 
+    /**
+     * Method stub for own additions in subclasses.
+     */
+    protected function initializeAdditions()
+    {
+        // get the configured default collection for new media
+        /* $defaultCollectionId = ModUtil::getVar('SimpleMedia', 'defaultCollection');
+        if ($defaultCollectionId > 0) {
+            $defaultCollection = ModUtil::apiFunc('SimpleMedia', 'selection', 'getEntity', array('ot' => 'collection', 'id' => $defaultCollectionId, 'slimMode' => true));
+            if ($defaultCollection) {
+                $this->view->assign('defaultCollection', $defaultCollection);
+            } else {
+            $this->view->assign('defaultCollection', null);
+            }
+        } else {
+            $this->view->assign('defaultCollection', null);
+        }*/
+        
+        // assign cropSizeModes
+        $utilManual = new SimpleMedia_Util_Manual();
+        $cropSize = array(
+            'cropSizeMode' => ModUtil::getVar('SimpleMedia', 'cropSizeMode'), 
+            'cropSizeModeItems' => $utilManual->getCropSizeModes()
+        );
+        $this->view->assign('cropSize', $cropSize);
+}
+    
      /**
-     * Command event handler overrideD
+     * Command event handler overridden
      *
      */
     public function handleCommand(Zikula_Form_View $view, &$args)
@@ -38,23 +65,29 @@ class SimpleMedia_Form_Handler_Admin_Config extends SimpleMedia_Form_Handler_Adm
                 return LogUtil::registerError($this->__('Error! Failed to set configuration variables.'));
             }
 
-            // handle shrinkdimensions
+            // handle shrinkdimensions array
             if ($data['config']['enableShrinking']) {
                 $this->setVar('shrinkDimensions', array('width' => $data['maxSize']['shrinkWidth'], 'height' => $data['maxSize']['shrinkHeight']));
             }
             
-            // handle thumbnail dimensions
+            // handle thumbnail dimensions array
             $thumbDimensions = array();
             for ($i = 1; $i <= count($data['thumbSizes'])/2; $i++) {
                 if (!empty($data['thumbSizes']['thumb'.$i.'width']) && !empty($data['thumbSizes']['thumb'.$i.'height'])) {
                     $thumbDimensions[] = array(
-						'width' => $data['thumbSizes']['thumb'.$i.'width'],
-						'height' => $data['thumbSizes']['thumb'.$i.'height']
-					);
+                        'width' => $data['thumbSizes']['thumb'.$i.'width'],
+                        'height' => $data['thumbSizes']['thumb'.$i.'height']
+                    );
                 }
             }
             $this->setVar('thumbDimensions', $thumbDimensions);
 
+            // handle cropSizeMode
+            $this->setVar('cropSizeMode', $data['cropSize']['cropSizeMode']);
+            
+            // handle default collection
+            // TBD
+            
             LogUtil::registerStatus($this->__('Done! Module configuration updated.'));
         } else if ($args['commandName'] == 'cancel') {
             // nothing to do there
