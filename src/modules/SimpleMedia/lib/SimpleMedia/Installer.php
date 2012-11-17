@@ -39,7 +39,7 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
         $this->setVar('mediaThumbExt', '_tmb_');
 		
 		// modvars not yet in the model!
-/*		if (!isset($this->getVar('defaultCollection'))) {
+		/*if (!isset($this->getVar('defaultCollection'))) {
 			$this->setVar('defaultCollection', 0);
 		}*/
         $this->setVar('maxUploadFileSize', 5000);
@@ -61,7 +61,7 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
         // add a root collection 
         try {
             $collection = new SimpleMedia_Entity_Collection();
-            $collection->setTitle($this->__('Default'));
+            $collection->setTitle($this->__('Default collection'));
             $collection->setDescription($this->__('This is the default root collection for your media and collections'));
             $this->entityManager->persist($collection);
             $this->entityManager->flush();
