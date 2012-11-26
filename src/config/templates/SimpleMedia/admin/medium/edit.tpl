@@ -110,7 +110,7 @@
                 <p class="z-formnote"><a id="resetTheFileVal" href="javascript:void(0);" class="z-hide">{gt text='Reset to empty value'}</a></p>
             {/if}
             
-                <div class="z-formnote">{gt text='Allowed file extensions:'} <span id="fileextensionstheFile">gif, jpeg, jpg, png, pdf, doc, xls, ppt, docx, xlsx, pptx, odt, ods, odp, arj, zip, rar, tar, tgz, gz, bz2, txt, rtf, swf, flv, mp3, mp4, avi, mpg, mpeg, mov</span></div>
+                <div class="z-formnote">{gt text='Allowed file extensions:'} <span id="fileextensionstheFile">{$modvars.SimpleMedia.allowedExtensions}</span></div>
             {if $mode ne 'create'}
                 {if $medium.theFile ne ''}
                     <div class="z-formnote">
@@ -163,7 +163,14 @@
     </fieldset>
     
     <div class="z-panels" id="SimpleMedia_panel">
-        {include file='admin/collection/include_selectEditOne.tpl' relItem=$medium aliasName='collection' idPrefix='simmedMedium_Collection' panel=false}
+        {if $mode eq 'create'}
+            {modapifunc modname=SimpleMedia type=selection func=getEntity ot='collection' id=$modvars.SimpleMedia.defaultCollection slimMode=true assign=$defaultCollection}
+            {include file='admin/collection/include_selectEditOne.tpl' defaultCollection=$defaultCollection relItem=$medium aliasName='collection' idPrefix='simmedMedium_Collection' panel=false}
+        {else}
+            {include file='admin/collection/include_selectEditOne.tpl' relItem=$medium aliasName='collection' idPrefix='simmedMedium_Collection' panel=false}
+        {/if}
+        {*modapifunc modname=SimpleMedia type=selection func=getEntity ot='collection' id=$modvars.SimpleMedia.defaultCollection assign=medium['collection']}
+        {include file='admin/collection/include_selectEditOne.tpl' relItem=$medium aliasName='collection' idPrefix='simmedMedium_Collection' panel=false*}
         {include file='admin/include_categories_edit.tpl' obj=$medium groupName='mediumObj' panel=false}
         {include file='admin/include_attributes_edit.tpl' obj=$medium panel=true}
         {include file='admin/include_metadata_edit.tpl' obj=$medium panel=true}
@@ -267,12 +274,14 @@
             headerSelector: 'h3',
             headerClassName: 'z-panel-header z-panel-indicator',
             contentClassName: 'z-panel-content',
-            active: ['z-panel-header-fields']
+            active: $('z-panel-header-fields')
         });
 
         Zikula.UI.Tooltips($$('.simplemediaFormTooltips'));
         simmedInitUploadField('theFile');
     });
-
+    
 /* ]]> */
 </script>
+
+{zdebug}

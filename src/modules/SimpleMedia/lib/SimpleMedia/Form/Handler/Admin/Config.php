@@ -23,28 +23,33 @@ class SimpleMedia_Form_Handler_Admin_Config extends SimpleMedia_Form_Handler_Adm
      */
     protected function initializeAdditions()
     {
-        // get the configured default collection for new media
-        /* $defaultCollectionId = ModUtil::getVar('SimpleMedia', 'defaultCollection');
-        if ($defaultCollectionId > 0) {
-            $defaultCollection = ModUtil::apiFunc('SimpleMedia', 'selection', 'getEntity', array('ot' => 'collection', 'id' => $defaultCollectionId, 'slimMode' => true));
-            if ($defaultCollection) {
-                $this->view->assign('defaultCollection', $defaultCollection);
-            } else {
-            $this->view->assign('defaultCollection', null);
-            }
-        } else {
-            $this->view->assign('defaultCollection', null);
-        }*/
-        
-        // assign cropSizeModes
-        $utilManual = new SimpleMedia_Util_Manual();
-        $cropSize = array(
-            'cropSizeMode' => ModUtil::getVar('SimpleMedia', 'cropSizeMode'), 
-            'cropSizeModeItems' => $utilManual->getCropSizeModes()
-        );
-        $this->view->assign('cropSize', $cropSize);
-}
-    
+		// get the configured default collection for new media
+		$collections = ModUtil::apiFunc('SimpleMedia', 'selection', 'getEntities', array('ot' => 'collection', 'orderBy' => 'lvl', 'useJoins' => false, 'slimMode' => false));
+		$defaultCollectionItems = array();
+		foreach ($collections as $collection) {
+			// prefix the title with level
+			$prefix = '';
+			for ($i=0; $i<$collection['lvl']; $i++) {
+				$prefix .= '- - ';
+			}
+			$defaultCollectionItems[] = array(
+				'value' => $collection['id'],
+				'text' => $prefix . $collection['title']
+			);
+		}
+		$this->view->assign('defaultCollections', array(
+			'defaultCollection' => ModUtil::getVar('SimpleMedia', 'defaultCollection', 1),
+			'defaultCollectionItems' => $defaultCollectionItems));
+		
+		// assign cropSizeModes
+		$utilManual = new SimpleMedia_Util_Manual();
+		$cropSize = array(
+			'cropSizeMode' => ModUtil::getVar('SimpleMedia', 'cropSizeMode'), 
+			'cropSizeModeItems' => $utilManual->getCropSizeModes()
+		);
+		$this->view->assign('cropSize', $cropSize);
+    }
+	
      /**
      * Command event handler overridden
      *
@@ -75,19 +80,19 @@ class SimpleMedia_Form_Handler_Admin_Config extends SimpleMedia_Form_Handler_Adm
             for ($i = 1; $i <= count($data['thumbSizes'])/2; $i++) {
                 if (!empty($data['thumbSizes']['thumb'.$i.'width']) && !empty($data['thumbSizes']['thumb'.$i.'height'])) {
                     $thumbDimensions[] = array(
-                        'width' => $data['thumbSizes']['thumb'.$i.'width'],
-                        'height' => $data['thumbSizes']['thumb'.$i.'height']
-                    );
+						'width' => $data['thumbSizes']['thumb'.$i.'width'],
+						'height' => $data['thumbSizes']['thumb'.$i.'height']
+					);
                 }
             }
             $this->setVar('thumbDimensions', $thumbDimensions);
 
-            // handle cropSizeMode
+			// handle cropSizeMode
             $this->setVar('cropSizeMode', $data['cropSize']['cropSizeMode']);
-            
-            // handle default collection
-            // TBD
-            
+			
+			// handle defaultCollection Id
+            $this->setVar('defaultCollection', $data['defaultCollections']['defaultCollection']);
+
             LogUtil::registerStatus($this->__('Done! Module configuration updated.'));
         } else if ($args['commandName'] == 'cancel') {
             // nothing to do there

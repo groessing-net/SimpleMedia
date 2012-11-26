@@ -108,9 +108,12 @@
                     {formtextinput id='mediaThumbExt' group='config' maxLength=255 __title='Enter this setting.'}
                 </div> *}
 
-                {* Include a dropdown list for the default collection *}                
-                {*include file='admin/collection/include_selectEditOne.tpl' relItem=$medium aliasName='collection' idPrefix='simmedMedium_Collection' panel=false*}
-            </fieldset>
+				<div class="z-formrow">
+                    {gt text='The default Collection that is used for new Media.' assign='toolTip'}
+                    {formlabel for='defaultCollection' __text='Default collection for new media' class='simplemediaFormTooltips' title=$toolTip}
+                    {formdropdownlist id='defaultCollection' group='defaultCollections'}
+				</div>
+			</fieldset>
 
             <div class="z-buttons z-formbuttons">
                 {formbutton commandName='save' __text='Update configuration' class='z-bt-save'}
