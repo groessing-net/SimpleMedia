@@ -719,7 +719,7 @@ class SimpleMedia_Form_Handler_Admin_Base_Edit extends Zikula_Form_AbstractHandl
     {
         $metaData = $entity->getMetadata();
         if (is_null($metaData)) {
-           $metaDataEntityClass = 'SimpleMedia_Entity_' . ucfirst($this->objectType) . 'MetaData';
+            $metaDataEntityClass = 'SimpleMedia_Entity_' . ucfirst($this->objectType) . 'MetaData';
             $metaData = new $metaDataEntityClass($entity);
         }
     
