@@ -25,7 +25,6 @@
 
     {formsetinitialfocus inputId='title'}
 
-
     <div class="z-panels" id="SimpleMedia_panel">
         <h3 id="z-panel-header-fields" class="z-panel-header z-panel-indicator z-pointer">{gt text='Fields'}</h3>
         <div class="z-panel-content z-panel-active" style="overflow: visible">

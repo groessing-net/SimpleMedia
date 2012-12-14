@@ -829,6 +829,12 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
                     'linkTitle' => __('Edit', $dom),
                     'linkText' => __('Edit', $dom)
                 );
+                $this->_actions[] = array(
+                    'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'medium', 'collection' => $this['id'], 'returnTo' => 'adminDisplayCollection')),
+                    'icon' => 'edit',
+                    'linkTitle' => __('Create media in this collection', $dom),
+                    'linkText' => __('Create media', $dom)
+                );
                 /*
                         $this->_actions[] = array(
                             'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'collection', 'astemplate' => $this['id'])),
