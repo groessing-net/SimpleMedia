@@ -10,14 +10,14 @@
 
 <p class="sectiondesc">Collections form a nested tree that contain one or more media items and nested collections.</p>
 
-{checkpermissionblock component='SimpleMedia:Collection:' instance='.*' level='ACCESS_ADD'}
 {*
+{checkpermissionblock component='SimpleMedia:Collection:' instance='.*' level='ACCESS_ADD'}
     {gt text='Create collection' assign='createTitle'}
     <a href="{modurl modname='SimpleMedia' type='admin' func='edit' ot='collection'}" title="{$createTitle}" class="z-icon-es-add">
         {$createTitle}
     </a>
-*}
 {/checkpermissionblock}
+*}
 {assign var='own' value=0}
 {if isset($showOwnEntries) && $showOwnEntries eq 1}
     {assign var='own' value=1}
