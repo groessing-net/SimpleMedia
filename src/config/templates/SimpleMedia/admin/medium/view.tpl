@@ -12,7 +12,7 @@
 
 {checkpermissionblock component='SimpleMedia:Medium:' instance='.*' level='ACCESS_ADD'}
     {gt text='Create medium' assign='createTitle'}
-    <a href="{modurl modname='SimpleMedia' type='admin' func='edit' ot='medium'}" title="{$createTitle}" class="z-icon-es-add">
+    <a href="{modurl modname='SimpleMedia' type='admin' func='edit' ot='medium' collection=$modvars.SimpleMedia.defaultCollection}" title="{$createTitle}" class="z-icon-es-add">
         {$createTitle}
     </a>
 {/checkpermissionblock}

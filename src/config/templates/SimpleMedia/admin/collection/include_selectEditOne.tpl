@@ -26,8 +26,6 @@
             {if isset($userSelection.$aliasName) && $userSelection.$aliasName ne ''}
                 {* the user has submitted something *}
                 {include file='admin/collection/include_selectEditItemListOne.tpl'  item=$userSelection.$aliasName}
-            {elseif $mode eq 'create' && isset($defaultCollection)}
-                {include file='admin/collection/include_selectEditItemListOne.tpl'  item=$defaultCollection}
             {elseif $mode ne 'create' || isset($relItem.$aliasName)}
                 {include file='admin/collection/include_selectEditItemListOne.tpl'  item=$relItem.$aliasName}
             {else}

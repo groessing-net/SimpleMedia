@@ -26,151 +26,145 @@
     {formsetinitialfocus inputId='title'}
 
 
-    <h3>{gt text='Fields'}</h3>
-    {formvolatile}
-        {assign var='useOnlyCurrentLocale' value=true}
-        {if $modvars.ZConfig.multilingual}
-            {if $supportedLocales ne '' && is_array($supportedLocales) && count($supportedLocales) > 1}
-                {assign var='useOnlyCurrentLocale' value=false}
-                {nocache}
-                {lang assign='currentLanguage'}
-                {foreach item='locale' from=$supportedLocales}
-                    {if $locale eq $currentLanguage}
-                        <fieldset>
-                            <legend>{$locale|getlanguagename|safehtml}</legend>
-                            
-                            <div class="z-formrow">
-                                {formlabel for='title' __text='Title' mandatorysym='1'}
-                                {formtextinput group='medium' id='title' mandatory=true readOnly=false __title='Enter the title of the medium' textMode='singleline' maxLength=255 cssClass='required' }
-                                {simplemediaValidationError id='title' class='required'}
-                            </div>
-                            
-                            <div class="z-formrow">
-                                {formlabel for='description' __text='Description'}
-                                {formtextinput group='medium' id='description' mandatory=false __title='Enter the description of the medium' textMode='multiline' rows='6' cols='50' cssClass='' }
-                            </div>
-                                    
-                        </fieldset>
-                    {/if}
-                {/foreach}
-                {foreach item='locale' from=$supportedLocales}
-                    {if $locale ne $currentLanguage}
-                        <fieldset>
-                            <legend>{$locale|getlanguagename|safehtml}</legend>
-                            
-                            <div class="z-formrow">
-                                {formlabel for="title`$locale`" __text='Title' mandatorysym='1'}
-                                {formtextinput group="medium`$locale`" id="title`$locale`" mandatory=true readOnly=false __title='Enter the title of the medium' textMode='singleline' maxLength=255 cssClass='required' }
-                                {simplemediaValidationError id="title`$locale`" class='required'}
-                            </div>
-                            
-                            <div class="z-formrow">
-                                {formlabel for="description`$locale`" __text='Description'}
-                                {formtextinput group="medium`$locale`" id="description`$locale`" mandatory=false __title='Enter the description of the medium' textMode='multiline' rows='6' cols='50' cssClass='' }
-                            </div>
-                                    
-                        </fieldset>
-                    {/if}
-                {/foreach}
-                {/nocache}
-            {/if}
-        {/if}
-        {if $useOnlyCurrentLocale eq true}
-            {lang assign='locale'}
-            <fieldset>
-                <legend>{$locale|getlanguagename|safehtml}</legend>
-                
-                <div class="z-formrow">
-                    {formlabel for='title' __text='Title' mandatorysym='1'}
-                    {formtextinput group='medium' id='title' mandatory=true readOnly=false __title='Enter the title of the medium' textMode='singleline' maxLength=255 cssClass='required' }
-                    {simplemediaValidationError id='title' class='required'}
-                </div>
-                
-                <div class="z-formrow">
-                    {formlabel for='description' __text='Description'}
-                    {formtextinput group='medium' id='description' mandatory=false __title='Enter the description of the medium' textMode='multiline' rows='6' cols='50' cssClass='' }
-                </div>
-                        
-            </fieldset>
-        {/if}
-    {/formvolatile}
-    <fieldset>
-        <legend>{gt text='Further properties'}</legend>
-        
-        <div class="z-formrow">
-            {assign var='mandatorySym' value='1'}
-            {if $mode ne 'create'}
-                {assign var='mandatorySym' value='0'}
-            {/if}
-            {formlabel for='theFile' __text='The file' mandatorysym=$mandatorySym}<br />{* break required for Google Chrome *}
-            {if $mode eq 'create'}
-                {formuploadinput group='medium' id='theFile' mandatory=true readOnly=false cssClass='required validate-upload' }
-            {else}
-                {formuploadinput group='medium' id='theFile' mandatory=false readOnly=false cssClass=' validate-upload' }
-                <p class="z-formnote"><a id="resetTheFileVal" href="javascript:void(0);" class="z-hide">{gt text='Reset to empty value'}</a></p>
-            {/if}
-            
-                <div class="z-formnote">{gt text='Allowed file extensions:'} <span id="fileextensionstheFile">{$modvars.SimpleMedia.allowedExtensions}</span></div>
-            {if $mode ne 'create'}
-                {if $medium.theFile ne ''}
-                    <div class="z-formnote">
-                        {gt text='Current file'}:
-                        <a href="{$medium.theFileFullPathUrl}" title="{$medium.title|replace:"\"":""}"{if $medium.theFileMeta.isImage} rel="imageviewer[medium]"{/if}>
-                        {if $medium.theFileMeta.isImage}
-                            <img src="{$medium.theFileFullPath|simplemediaImageThumb:'medium':'theFile':80:50}" width="80" height="50" alt="{$medium.title|replace:"\"":""}" />
-                        {else}
-                            {gt text='Download'} ({$medium.theFileMeta.size|simplemediaGetFileSize:$medium.theFileFullPath:false:false})
-                        {/if}
-                        </a>
-                    </div>
-                {/if}
-            {/if}
-            {simplemediaValidationError id='theFile' class='required'}
-            {simplemediaValidationError id='theFile' class='validate-upload'}
-        </div>
-        
-        <div class="z-formrow">
-            {gt text='Used for sorting media within a collection.' assign='toolTip'}
-            {formlabel for='sortValue' __text='Sort value' class='simplemediaFormTooltips' title=$toolTip}
-            {formintinput group='medium' id='sortValue' mandatory=false __title='Enter the sort value of the medium' maxLength=11 cssClass=' validate-digits' }
-            {simplemediaValidationError id='sortValue' class='validate-digits'}
-        </div>
-        
-        <div class="z-formrow">
-            {formlabel for='mediaType' __text='Media type'}
-            {formdropdownlist group='medium' id='mediaType' mandatory=false __title='Choose the media type' selectionMode='single'}
-        </div>
-
-        {*<div class="z-formrow">
-            {gt text='Contains an array of additionalData' assign='toolTip'}
-            {formlabel for='addData1' __text='Additional Data' class='simplemediaFormTooltips' title=$toolTip}
-            <ul style="margin-left: 320px">
-                <li>
-                    {gt text='Copyright:'}
-                    {formtextinput group='addData' id='addDataCopyright' textMode='singleline' maxLength='255' text=$medium.additionalData.copyright style='width: 60px'}
-                </li>
-            {formvolatile}
-            {foreach name='dataLoop' item='addDataItem' key='addDataKey' from=$medium.additionalData}
-                <li>
-                    {$addDataKey|safetext} : 
-                    {formtextinput group='addData' id="addData`$smarty.foreach.dataLoop.iteration`" textMode='singleline' maxLength='255' text=$addDataItem style='width: 60px'}
-                </li>
-            {/foreach}
-            {/formvolatile}
-            </ul>
-        </div>*}
-
-    </fieldset>
-    
     <div class="z-panels" id="SimpleMedia_panel">
-        {if $mode eq 'create'}
-            {modapifunc modname=SimpleMedia type=selection func=getEntity ot='collection' id=$modvars.SimpleMedia.defaultCollection slimMode=true assign=$defaultCollection}
-            {include file='admin/collection/include_selectEditOne.tpl' defaultCollection=$defaultCollection relItem=$medium aliasName='collection' idPrefix='simmedMedium_Collection' panel=false}
-        {else}
-            {include file='admin/collection/include_selectEditOne.tpl' relItem=$medium aliasName='collection' idPrefix='simmedMedium_Collection' panel=false}
-        {/if}
-        {*modapifunc modname=SimpleMedia type=selection func=getEntity ot='collection' id=$modvars.SimpleMedia.defaultCollection assign=medium['collection']}
-        {include file='admin/collection/include_selectEditOne.tpl' relItem=$medium aliasName='collection' idPrefix='simmedMedium_Collection' panel=false*}
+        <h3 id="z-panel-header-fields" class="z-panel-header z-panel-indicator z-pointer">{gt text='Fields'}</h3>
+        <div class="z-panel-content z-panel-active" style="overflow: visible">
+            {formvolatile}
+                {assign var='useOnlyCurrentLocale' value=true}
+                {if $modvars.ZConfig.multilingual}
+                    {if $supportedLocales ne '' && is_array($supportedLocales) && count($supportedLocales) > 1}
+                        {assign var='useOnlyCurrentLocale' value=false}
+                        {nocache}
+                        {lang assign='currentLanguage'}
+                        {foreach item='locale' from=$supportedLocales}
+                            {if $locale eq $currentLanguage}
+                                <fieldset>
+                                    <legend>{$locale|getlanguagename|safehtml}</legend>
+                                    
+                                    <div class="z-formrow">
+                                        {formlabel for='title' __text='Title' mandatorysym='1'}
+                                        {formtextinput group='medium' id='title' mandatory=true readOnly=false __title='Enter the title of the medium' textMode='singleline' maxLength=255 cssClass='required' }
+                                        {simplemediaValidationError id='title' class='required'}
+                                    </div>
+                                    
+                                    <div class="z-formrow">
+                                        {formlabel for='description' __text='Description'}
+                                        {formtextinput group='medium' id='description' mandatory=false __title='Enter the description of the medium' textMode='multiline' rows='6' cols='50' cssClass='' }
+                                    </div>
+                                            
+                                </fieldset>
+                            {/if}
+                        {/foreach}
+                        {foreach item='locale' from=$supportedLocales}
+                            {if $locale ne $currentLanguage}
+                                <fieldset>
+                                    <legend>{$locale|getlanguagename|safehtml}</legend>
+                                    
+                                    <div class="z-formrow">
+                                        {formlabel for="title`$locale`" __text='Title' mandatorysym='1'}
+                                        {formtextinput group="medium`$locale`" id="title`$locale`" mandatory=true readOnly=false __title='Enter the title of the medium' textMode='singleline' maxLength=255 cssClass='required' }
+                                        {simplemediaValidationError id="title`$locale`" class='required'}
+                                    </div>
+                                    
+                                    <div class="z-formrow">
+                                        {formlabel for="description`$locale`" __text='Description'}
+                                        {formtextinput group="medium`$locale`" id="description`$locale`" mandatory=false __title='Enter the description of the medium' textMode='multiline' rows='6' cols='50' cssClass='' }
+                                    </div>
+                                            
+                                </fieldset>
+                            {/if}
+                        {/foreach}
+                        {/nocache}
+                    {/if}
+                {/if}
+                {if $useOnlyCurrentLocale eq true}
+                    {lang assign='locale'}
+                    <fieldset>
+                        <legend>{$locale|getlanguagename|safehtml}</legend>
+                        
+                        <div class="z-formrow">
+                            {formlabel for='title' __text='Title' mandatorysym='1'}
+                            {formtextinput group='medium' id='title' mandatory=true readOnly=false __title='Enter the title of the medium' textMode='singleline' maxLength=255 cssClass='required' }
+                            {simplemediaValidationError id='title' class='required'}
+                        </div>
+                        
+                        <div class="z-formrow">
+                            {formlabel for='description' __text='Description'}
+                            {formtextinput group='medium' id='description' mandatory=false __title='Enter the description of the medium' textMode='multiline' rows='6' cols='50' cssClass='' }
+                        </div>
+                                
+                    </fieldset>
+                {/if}
+            {/formvolatile}
+            <fieldset>
+                <legend>{gt text='Further properties'}</legend>
+                
+                <div class="z-formrow">
+                    {assign var='mandatorySym' value='1'}
+                    {if $mode ne 'create'}
+                        {assign var='mandatorySym' value='0'}
+                    {/if}
+                    {formlabel for='theFile' __text='The file' mandatorysym=$mandatorySym}<br />{* break required for Google Chrome *}
+                    {if $mode eq 'create'}
+                        {formuploadinput group='medium' id='theFile' mandatory=true readOnly=false cssClass='required validate-upload' }
+                    {else}
+                        {formuploadinput group='medium' id='theFile' mandatory=false readOnly=false cssClass=' validate-upload' }
+                        <p class="z-formnote"><a id="resetTheFileVal" href="javascript:void(0);" class="z-hide">{gt text='Reset to empty value'}</a></p>
+                    {/if}                    
+                        <div class="z-formnote">{gt text='Allowed file extensions:'} <span id="fileextensionstheFile">{$modvars.SimpleMedia.allowedExtensions}</span></div>
+                    {if $mode ne 'create'}
+                        {if $medium.theFile ne ''}
+                            <div class="z-formnote">
+                                {gt text='Current file'}:
+                                <a href="{$medium.theFileFullPathUrl}" title="{$medium.title|replace:"\"":""}"{if $medium.theFileMeta.isImage} rel="imageviewer[medium]"{/if}>
+                                {if $medium.theFileMeta.isImage}
+                                    <img src="{$medium.theFileFullPath|simplemediaImageThumb:'medium':'theFile':80:50}" width="80" height="50" alt="{$medium.title|replace:"\"":""}" />
+                                {else}
+                                    {gt text='Download'} ({$medium.theFileMeta.size|simplemediaGetFileSize:$medium.theFileFullPath:false:false})
+                                {/if}
+                                </a>
+                            </div>
+                        {/if}
+                    {/if}
+                    {simplemediaValidationError id='theFile' class='required'}
+                    {simplemediaValidationError id='theFile' class='validate-upload'}
+                </div>
+                
+                <div class="z-formrow">
+                    {gt text='Used for sorting media within a collection.' assign='toolTip'}
+                    {formlabel for='sortValue' __text='Sort value' class='simplemediaFormTooltips' title=$toolTip}
+                    {formintinput group='medium' id='sortValue' mandatory=false __title='Enter the sort value of the medium' maxLength=11 cssClass=' validate-digits' }
+                    {simplemediaValidationError id='sortValue' class='validate-digits'}
+                </div>
+                
+                <div class="z-formrow">
+                    {formlabel for='mediaType' __text='Media type'}
+                    {formdropdownlist group='medium' id='mediaType' mandatory=false __title='Choose the media type' selectionMode='single'}
+                </div>
+
+                <div class="z-formrow">
+                    {gt text='Contains an array of additionalData' assign='toolTip'}
+                    {formlabel for='addData1' __text='Additional Data' class='simplemediaFormTooltips' title=$toolTip}
+                    <ul style="margin-left: 320px">
+                    {formvolatile}
+                    {foreach name='dataLoop' item='addDataItem' key='addDataKey' from=$medium.additionalData}
+                        <li>
+                            {formtextinput group='addData' id="addDataKey`$smarty.foreach.dataLoop.iteration`" textMode='singleline' maxLength='255' text=$addDataKey style='width: 100px'} :
+                            {formtextinput group='addData' id="addData`$smarty.foreach.dataLoop.iteration`" textMode='singleline' maxLength='255' text=$addDataItem style='width: 200px'}
+                        </li>
+                    {/foreach}
+                        <li>
+                            {formtextinput group='addData' id="addDataKey`$smarty.foreach.dataLoop.iteration+1`" textMode='singleline' maxLength='255' text='' style='width: 100px'}
+                            {formtextinput group='addData' id="addData`$smarty.foreach.dataLoop.iteration+1`" textMode='singleline' maxLength='255' text='' style='width: 200px'}
+                        </li>
+                    {/formvolatile}
+                    </ul>
+                </div>
+
+            </fieldset>
+        </div>
+        
+        {include file='admin/collection/include_selectEditOne.tpl' relItem=$medium aliasName='collection' idPrefix='simmedMedium_Collection' panel=false}
         {include file='admin/include_categories_edit.tpl' obj=$medium groupName='mediumObj' panel=false}
         {include file='admin/include_attributes_edit.tpl' obj=$medium panel=true}
         {include file='admin/include_metadata_edit.tpl' obj=$medium panel=true}
@@ -247,11 +241,10 @@
 
     document.observe('dom:loaded', function() {
         simmedInitRelationItemsForm('collection', 'simmedMedium_Collection', true);
-
         simmedAddCommonValidationRules('medium', '{{if $mode eq 'create'}}{{else}}{{$medium.id}}{{/if}}');
 
         // observe button events instead of form submit
-        var valid = new Validation('{{$__formid}}', {onSubmit: false, immediate: true, focusOnError: false});
+        var valid = new Validation('{{$__formid}}', {onSubmit: true, immediate: false, focusOnError: true});
         {{if $mode ne 'create'}}
             var result = valid.validate();
         {{/if}}
@@ -280,8 +273,6 @@
         Zikula.UI.Tooltips($$('.simplemediaFormTooltips'));
         simmedInitUploadField('theFile');
     });
-    
+
 /* ]]> */
 </script>
-
-{zdebug}
