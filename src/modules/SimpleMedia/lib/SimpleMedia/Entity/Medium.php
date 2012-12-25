@@ -29,6 +29,15 @@ class SimpleMedia_Entity_Medium extends SimpleMedia_Entity_Base_Medium
 {
     // feel free to add your own methods here
 
+    /**
+     * Constructor. OVERRIDE
+     */
+    public function __construct()
+    {
+        // Add copyright additionalData
+        $this->additionalData = array('copyright' => '');
+        parent::__construct();
+    }
     
     /**
      * Post-Process the data after the entity has been constructed by the entity manager.
