@@ -30,6 +30,89 @@ class SimpleMedia_Entity_Collection extends SimpleMedia_Entity_Base_Collection
 {
     // feel free to add your own methods here
 
+    /**
+     * Collect available actions for this entity. OVERRIDE
+     */
+    protected function prepareItemActions()
+    {
+        if (!empty($this->_actions)) {
+            return;
+        }
+    
+        $currentType = FormUtil::getPassedValue('type', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
+        $currentFunc = FormUtil::getPassedValue('func', 'main', 'GETPOST', FILTER_SANITIZE_STRING);
+        $dom = ZLanguage::getModuleDomain('SimpleMedia');
+        if ($currentType == 'admin') {
+            if (in_array($currentFunc, array('main', 'view'))) {
+                $this->_actions[] = array(
+                    'url' => array('type' => 'user', 'func' => 'display', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
+                    'icon' => 'preview',
+                    'linkTitle' => __('Open preview page', $dom),
+                    'linkText' => __('Preview', $dom)
+                );
+                $this->_actions[] = array(
+                    'url' => array('type' => 'admin', 'func' => 'display', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
+                    'icon' => 'display',
+                    'linkTitle' => str_replace('"', '', $this['title']),
+                    'linkText' => __('Details', $dom)
+                );
+            }
+            if (in_array($currentFunc, array('main', 'view', 'display'))) {
+                    if (SecurityUtil::checkPermission('SimpleMedia:Collection:', $this->id . '::', ACCESS_EDIT)) {
+                $this->_actions[] = array(
+                    'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
+                    'icon' => 'edit',
+                    'linkTitle' => __('Edit', $dom),
+                    'linkText' => __('Edit', $dom)
+                );
+                
+                // TODO MOVE TO CHILD class !
+                $this->_actions[] = array(
+                    'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'medium', 'collection' => $this['id'], 'returnTo' => 'adminDisplayCollection')),
+                    'icon' => 'edit',
+                    'linkTitle' => __('Create media in this collection', $dom),
+                    'linkText' => __('Create media', $dom)
+                );
+                /*
+                        $this->_actions[] = array(
+                            'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'collection', 'astemplate' => $this['id'])),
+                            'icon' => 'saveas',
+                            'linkTitle' => __('Reuse for new item', $dom),
+                            'linkText' => __('Reuse', $dom)
+                        );
+                */
+                    }
+            }
+            if ($currentFunc == 'display') {
+                $this->_actions[] = array(
+                    'url' => array('type' => 'admin', 'func' => 'view', 'arguments' => array('ot' => 'collection')),
+                    'icon' => 'back',
+                    'linkTitle' => __('Back to overview', $dom),
+                    'linkText' => __('Back to overview', $dom)
+                );
+            }
+        }
+        if ($currentType == 'user') {
+            if (in_array($currentFunc, array('main', 'view'))) {
+                $this->_actions[] = array(
+                    'url' => array('type' => 'user', 'func' => 'display', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
+                    'icon' => 'display',
+                    'linkTitle' => str_replace('"', '', $this['title']),
+                    'linkText' => __('Details', $dom)
+                );
+            }
+            if (in_array($currentFunc, array('main', 'view', 'display'))) {
+            }
+            if ($currentFunc == 'display') {
+                $this->_actions[] = array(
+                    'url' => array('type' => 'user', 'func' => 'view', 'arguments' => array('ot' => 'collection')),
+                    'icon' => 'back',
+                    'linkTitle' => __('Back to overview', $dom),
+                    'linkText' => __('Back to overview', $dom)
+                );
+            }
+        }
+    }
     
     /**
      * Post-Process the data after the entity has been constructed by the entity manager.
