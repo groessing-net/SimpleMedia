@@ -93,12 +93,15 @@
             {$medium.description}
         </td>
         <td headers="hadditionaldata" class="z-left">
-            {foreach item=additionalItem from=$medium.additionalData}
-            {$additionalItem}|
+            {foreach item=additionalVal key=additionalKey from=$medium.additionalData name=additionalData}
+            {$additionalKey}: {$additionalVal|default:"-"}{if !$smarty.foreach.additionalData.last}<br />{/if}
+            {foreachelse}
+            -
             {/foreach}
         </td>
         <td headers="hsortvalue" class="z-right">
             {$medium.sortValue}
+            <br />
         </td>
         <td headers="hmediatype" class="z-left">
             {$medium.mediaType|simplemediaGetListEntry:'medium':'mediaType'|safetext}
@@ -154,4 +157,3 @@
 {/if}
 </div>
 {include file='admin/footer.tpl'}
-

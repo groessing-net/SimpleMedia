@@ -29,8 +29,10 @@
     <dd>{$medium.description}</dd>
     <dt>{gt text='Additional data'}</dt>
     <dd>
-        {foreach item=additionalItem from=$medium.additionalData}
-        {$additionalItem}|
+        {foreach item=additionalVal key=additionalKey from=$medium.additionalData name=additionalData}
+        {$additionalKey}: {$additionalVal|default:"-"}{if !$smarty.foreach.additionalData.last}<br />{/if}
+        {foreachelse}
+        -
         {/foreach}
     </dd>
     <dt>{gt text='Sort value'}</dt>
