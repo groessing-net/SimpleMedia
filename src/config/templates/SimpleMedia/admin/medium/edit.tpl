@@ -144,20 +144,22 @@
                 <div class="z-formrow">
                     {gt text='Contains an array of additionalData' assign='toolTip'}
                     {formlabel for='addData1' __text='Additional Data' class='simplemediaFormTooltips' title=$toolTip}
-                    <ul style="margin-left: 320px">
-                    {formvolatile}
-                    {foreach name='dataLoop' item='addDataItem' key='addDataKey' from=$medium.additionalData}
-                        <li>
-                            {formtextinput group='addData' id="addDataKey`$smarty.foreach.dataLoop.iteration`" textMode='singleline' maxLength='255' text=$addDataKey style='width: 100px'} :
-                            {formtextinput group='addData' id="addData`$smarty.foreach.dataLoop.iteration`" textMode='singleline' maxLength='255' text=$addDataItem style='width: 200px'}
-                        </li>
-                    {/foreach}
-                        <li>
-                            {formtextinput group='addData' id="addDataKey`$smarty.foreach.dataLoop.iteration+1`" textMode='singleline' maxLength='255' text='' style='width: 100px'}
-                            {formtextinput group='addData' id="addData`$smarty.foreach.dataLoop.iteration+1`" textMode='singleline' maxLength='255' text='' style='width: 200px'}
-                        </li>
-                    {/formvolatile}
-                    </ul>
+                    <div style="display:inline"> {* needed to override block style of formrow here *}
+                        <ul style="margin-left: 320px">
+                        {formvolatile}
+                        {foreach name='dataLoop' item='addDataItem' key='addDataKey' from=$medium.additionalData}
+                            <li>
+                                {formtextinput style="display:inline" group='addData' id="addDataKey`$smarty.foreach.dataLoop.iteration`" textMode='singleline' maxLength='255' text=$addDataKey style='width: 100px'} :
+                                {formtextinput group='addData' id="addData`$smarty.foreach.dataLoop.iteration`" textMode='singleline' maxLength='255' text=$addDataItem style='width: 200px'}
+                            </li>
+                        {/foreach}
+                            <li>
+                                {formtextinput group='addData' id="addDataKey`$smarty.foreach.dataLoop.iteration+1`" textMode='singleline' maxLength='255' text='' style='width: 100px'} :
+                                {formtextinput group='addData' id="addData`$smarty.foreach.dataLoop.iteration+1`" textMode='singleline' maxLength='255' text='' style='width: 200px'}
+                            </li>
+                        {/formvolatile}
+                        </ul>
+                    </div>
                 </div>
 
             </fieldset>
