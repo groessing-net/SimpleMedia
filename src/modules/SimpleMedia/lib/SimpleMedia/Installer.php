@@ -75,7 +75,7 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
     
         // create the default data for simple media
         if ($this->createDefaultCategories()) {
-            LogUtil::registerStatus($this->__('A Category tree for SimpleMedia has been created at Modules/SimpleMedia.'));
+            LogUtil::registerStatus($this->__('A Category tree for SimpleMedia has been created at [Root/Modules/SimpleMedia].'));
         }
 
         if ($this->createDefaultData()) {
@@ -199,7 +199,7 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
     {
         $result = parent::uninstall();
         
-        LogUtil::registerStatus($this->__('The SimpleMedia category (Modules/SimpleMedia) with subcategories can be removed manually'));
+        LogUtil::registerStatus($this->__('The SimpleMedia category [Root/Modules/SimpleMedia] with subcategories can be removed manually'));
         
         return $result;
     }
