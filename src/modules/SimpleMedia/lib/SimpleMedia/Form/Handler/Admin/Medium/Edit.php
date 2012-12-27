@@ -33,6 +33,6 @@ class SimpleMedia_Form_Handler_Admin_Medium_Edit extends SimpleMedia_Form_Handle
         if($result != true){
             throw new Zikula_Exception_Fatal(__("You can not upload media as long the upload directory is not set up correctly!"));
         }
-       
+        parent::initialize($view);
     }
 }
