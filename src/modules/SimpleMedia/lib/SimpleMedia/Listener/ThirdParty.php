@@ -25,7 +25,7 @@ class SimpleMedia_Listener_ThirdParty extends SimpleMedia_Listener_Base_ThirdPar
     {
         parent::pendingContentListener($event);
     }
-    
+
     /**
      * Listener for the `module.content.gettypes` event.
      *
@@ -37,6 +37,20 @@ class SimpleMedia_Listener_ThirdParty extends SimpleMedia_Listener_Base_ThirdPar
     public static function contentGetTypes(Zikula_Event $event)
     {
         parent::contentGetTypes($event);
-    
+    }
+
+    /**
+     * Listener for the `module.scribite.editorhelpers` event.
+     * 
+     * This occurs when Scribite iadds pagevars to the editor page.
+     * SimpleMedia will use this to add a javascript helper to add media items.
+     * 
+     * @param Zikula_Event $event
+     */
+    public static function getEditorHelpers(Zikula_Event $event)
+    {
+        $event->getSubject()->add(array('module' => 'SimpleMedia',
+            'type' => 'javascript',
+            'path' => 'modules/SimpleMedia/javascript/SimpleMedia_finder.js'));
     }
 }
