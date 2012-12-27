@@ -191,6 +191,18 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
     }
 
     /**
+     * register persistent module handlers OVERRIDE
+     * 
+     * @return void
+     */
+    public function registerPersistentEventHandlers()
+    {
+        parent::registerPersistentEventHandlers();
+        
+        EventUtil::registerPersistentModuleHandler('SimpleMedia', 'module.scribite.editorhelpers', array('SimpleMedia_Listener_ThirdParty', 'getEditorHelpers'));
+    }
+    
+    /**
      * Uninstall SimpleMedia. OVERRIDE
      *
      * @return boolean True on success, false otherwise.
