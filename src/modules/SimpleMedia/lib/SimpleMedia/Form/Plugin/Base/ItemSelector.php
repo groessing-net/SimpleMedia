@@ -115,7 +115,7 @@ class SimpleMedia_Form_Plugin_Base_ItemSelector extends Zikula_Form_Plugin_TextI
         $properties = ModUtil::apiFunc('SimpleMedia', 'category', 'getAllProperties', array('ot' => $this->objectType));
     }
     $view->assign('properties', $properties)
-         ->assign('catIds', $catIds)
+         ->assign('catIds', $catIds);
 
         return $view->fetch('external/' . $this->objectType . '/select.tpl');
     }
