@@ -41,8 +41,7 @@
             ed.addButton('simplemedia', {
                 title : 'simplemedia.desc',
                 cmd : 'mceSimpleMedia',
-                
-                image : '/images/icons/extrasmall/favorites.png'
+				image : url + '/img/ed_simplemedia.gif'
             });
 
             // Add a node change handler, selects the button in the UI when a image is selected
