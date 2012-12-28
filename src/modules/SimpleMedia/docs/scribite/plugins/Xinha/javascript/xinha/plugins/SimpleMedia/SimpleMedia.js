@@ -18,8 +18,7 @@ function SimpleMedia(editor) {
     cfg.registerButton({
         id       : 'SimpleMedia',
         tooltip  : 'Insert SimpleMedia object',
-     // image    : _editor_url + 'plugins/SimpleMedia/img/ed_SimpleMedia.gif',
-        image    : '/images/icons/extrasmall/favorites.png',
+        image    : _editor_url + 'plugins/SimpleMedia/img/ed_simplemedia.gif',
         textMode : false,
         action   : function (editor) {
             var url = Zikula.Config.baseURL + 'index.php'/*Zikula.Config.entrypoint*/ + '?module=SimpleMedia&type=external&func=finder&editor=xinha';
