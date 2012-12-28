@@ -70,12 +70,10 @@ class SimpleMedia_Base_Installer extends Zikula_AbstractInstaller
         include_once 'modules/SimpleMedia/lib/SimpleMedia/Api/Category.php';
         $categoryApi = new SimpleMedia_Api_Category($this->serviceManager);
     
-//        $primaryRegistry = $categoryApi->getPrimaryProperty(array('ot' => 'Medium'));
-//        CategoryRegistryUtil::insertEntry('SimpleMedia', 'Medium', $primaryRegistry, $rootcat['id']);
-//        $primaryRegistry = $categoryApi->getPrimaryProperty(array('ot' => 'Collection'));
-//        CategoryRegistryUtil::insertEntry('SimpleMedia', 'Collection', $primaryRegistry, $rootcat['id']);
-        CategoryRegistryUtil::insertEntry('SimpleMedia', 'Medium', 'Main', $rootcat['id']);
-        CategoryRegistryUtil::insertEntry('SimpleMedia', 'Collection', 'Main', $rootcat['id']);
+        $primaryRegistry = $categoryApi->getPrimaryProperty(array('ot' => 'Medium'));
+        CategoryRegistryUtil::insertEntry('SimpleMedia', 'Medium', $primaryRegistry, $rootcat['id']);
+        $primaryRegistry = $categoryApi->getPrimaryProperty(array('ot' => 'Collection'));
+        CategoryRegistryUtil::insertEntry('SimpleMedia', 'Collection', $primaryRegistry, $rootcat['id']);
     
         // register persistent event handlers
         $this->registerPersistentEventHandlers();
