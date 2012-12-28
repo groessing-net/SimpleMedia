@@ -69,7 +69,7 @@ class SimpleMedia_Entity_Collection extends SimpleMedia_Entity_Base_Collection
                 // TODO MOVE TO CHILD class !
                 $this->_actions[] = array(
                     'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'medium', 'collection' => $this['id'], 'returnTo' => 'adminDisplayCollection')),
-                    'icon' => 'edit',
+                    'icon' => 'add',
                     'linkTitle' => __('Create media in this collection', $dom),
                     'linkText' => __('Create media', $dom)
                 );
