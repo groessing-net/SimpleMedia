@@ -17,4 +17,20 @@
 class SimpleMedia_Controller_External extends SimpleMedia_Controller_Base_External
 {
     // feel free to extend the external controller here
+    protected $categorisableObjectTypes;
+    
+    /**
+     * Post initialise. OVERRIDE
+     *
+     * Run after construction.
+     *
+     * @return void
+     */
+    protected function postInitialize()
+    {
+        // call the parent class
+        parent::postInitialize();
+
+        $this->categorisableObjectTypes = array('medium', 'collection');
+    }
 }
