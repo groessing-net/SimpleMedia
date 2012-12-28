@@ -52,13 +52,13 @@ class SimpleMedia_Listener_Base_ThirdParty
      */
     public static function contentGetTypes(Zikula_Event $event)
     {
-                // intended is using the add() method to add a plugin like below
-                $types = $event->getSubject();
+        // intended is using the add() method to add a plugin like below
+        $types = $event->getSubject();
     
-                // plugin for showing a single item
-                $types->add('SimpleMedia_ContentType_Item');
+        // plugin for showing a single item
+        $types->add('SimpleMedia_ContentType_Item');
     
-                // plugin for showing a list of multiple items
-                $types->add('SimpleMedia_ContentType_ItemList');
+        // plugin for showing a list of multiple items
+        $types->add('SimpleMedia_ContentType_ItemList');
     }
 }
