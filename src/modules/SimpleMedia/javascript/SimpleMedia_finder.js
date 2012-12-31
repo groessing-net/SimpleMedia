@@ -69,12 +69,9 @@ simplemedia.finder.handleCancel = function () {
         window.close();
         w.focus();
     } else if (editor === 'tinymce') {
-        tinyMCEPopup.close();
-        //simmedClosePopup();
+        simmedClosePopup();
     } else if (editor === 'ckeditor') {
-        w = parent.window;
-        window.close();
-        w.focus();
+        simmedClosePopup();
     } else {
         alert('Close Editor: ' + editor);
     }
@@ -87,7 +84,6 @@ function getPasteSnippet(mode, itemId) {
     itemUrl = $F('url' + itemId);
     itemTitle = $F('title' + itemId);
     itemDescription = $F('desc' + itemId);
-
     pasteMode = $F('SimpleMedia_pasteas');
 
     if (pasteMode === '2' || pasteMode !== '1') {
@@ -144,9 +140,11 @@ simplemedia.finder.selectItem = function (itemId) {
         }
     } else if (editor === 'tinymce') {
         html = getPasteSnippet('html', itemId);
-        tinyMCEPopup.editor.execCommand('mceInsertContent', false, html);
-        tinyMCEPopup.close();
-        return;
+        window.opener.tinyMCE.activeEditor.execCommand('mceInsertContent', false, html);
+        // other tinymce commands: mceImage, mceInsertLink, mceReplaceContent, see http://www.tinymce.com/wiki.php/Command_identifiers
+//        tinyMCEPopup.editor.execCommand('mceInsertContent', false, html);
+//        tinyMCEPopup.close();
+//        return;
     } else if (editor === 'ckeditor') {
         // get the html to insert and place it in the editor
         html = getPasteSnippet('html', itemId);
