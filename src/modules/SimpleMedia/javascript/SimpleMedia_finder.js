@@ -27,11 +27,23 @@ function SimpleMediaFinderXinha(editor, simmedURL) {
     popupAttributes = getPopupAttributes();
     window.open(simmedURL, '', popupAttributes);
 }
+/**
+ * Open a popup window with the finder triggered by a CKEditor button.
+ */
+function SimpleMediaFinderCKEditor(editor, simmedURL) {
+    // Save editor for access in selector window
+    currentSimpleMediaEditor = editor;
+
+    editor.popup( 
+        Zikula.Config.baseURL + Zikula.Config.entrypoint + '?module=SimpleMedia&type=external&func=finder&editor=ckeditor',
+        /*width*/ '80%', /*height*/ '70%',
+        'location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,modal=yes,alwaysRaised=yes,resizable=yes,scrollbars=yes'
+    );
+}
 
 
-
+// The simplemedia variable
 var simplemedia = {};
-
 simplemedia.finder = {};
 
 simplemedia.finder.onLoad = function (baseId, selectedId) {
@@ -60,7 +72,9 @@ simplemedia.finder.handleCancel = function () {
         tinyMCEPopup.close();
         //simmedClosePopup();
     } else if (editor === 'ckeditor') {
-        /** to be done*/
+        w = parent.window;
+        window.close();
+        w.focus();
     } else {
         alert('Close Editor: ' + editor);
     }
@@ -134,7 +148,11 @@ simplemedia.finder.selectItem = function (itemId) {
         tinyMCEPopup.close();
         return;
     } else if (editor === 'ckeditor') {
-        /** to be done*/
+        // get the html to insert and place it in the editor
+        html = getPasteSnippet('html', itemId);
+        if (window.opener.currentSimpleMediaEditor !== null) {
+            window.opener.currentSimpleMediaEditor.insertHtml(html);
+        }
     } else {
         alert('Insert into Editor: ' + editor);
     }
@@ -146,8 +164,6 @@ function simmedClosePopup() {
     window.opener.focus();
     window.close();
 }
-
-
 
 
 //=============================================================================

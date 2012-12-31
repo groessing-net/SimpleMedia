@@ -131,7 +131,7 @@ class SimpleMedia_Controller_Base_External extends Zikula_AbstractController
         $repository = $this->entityManager->getRepository('SimpleMedia_Entity_' . ucfirst($objectType));
     
         $editor = (isset($args['editor']) && !empty($args['editor'])) ? $args['editor'] : $getData->filter('editor', '', FILTER_SANITIZE_STRING);
-        if (empty($editor) || !in_array($editor, array('xinha', 'tinymce'/*, 'ckeditor'*/))) {
+        if (empty($editor) || !in_array($editor, array('xinha', 'tinymce', 'ckeditor'))) {
             return 'Error: Invalid editor context given for external controller action.';
         }
     
