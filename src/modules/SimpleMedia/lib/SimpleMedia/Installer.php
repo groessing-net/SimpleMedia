@@ -200,6 +200,8 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
         parent::registerPersistentEventHandlers();
         
         EventUtil::registerPersistentModuleHandler('SimpleMedia', 'module.scribite.editorhelpers', array('SimpleMedia_Listener_ThirdParty', 'getEditorHelpers'));
+        EventUtil::registerPersistentModuleHandler('SimpleMedia', 'moduleplugin.tinymce.externalplugins', array('SimpleMedia_Listener_ThirdParty', 'getTinyMcePlugins'));
+        EventUtil::registerPersistentModuleHandler('SimpleMedia', 'moduleplugin.ckeditor.externalplugins', array('SimpleMedia_Listener_ThirdParty', 'getCKEditorPlugins'));
     }
     
     /**
