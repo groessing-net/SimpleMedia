@@ -42,7 +42,7 @@ class SimpleMedia_Listener_ThirdParty extends SimpleMedia_Listener_Base_ThirdPar
     /**
      * Listener for the `module.scribite.editorhelpers` event.
      * 
-     * This occurs when Scribite iadds pagevars to the editor page.
+     * This occurs when Scribite adds pagevars to the editor page.
      * SimpleMedia will use this to add a javascript helper to add media items.
      * 
      * @param Zikula_Event $event
@@ -53,4 +53,31 @@ class SimpleMedia_Listener_ThirdParty extends SimpleMedia_Listener_Base_ThirdPar
             'type' => 'javascript',
             'path' => 'modules/SimpleMedia/javascript/SimpleMedia_finder.js'));
     }
+    
+    /**
+     * Listener for `moduleplugin.tinymce.externalplugins` event.
+     * adds external plugin to TinyMCE
+     * 
+     * @param Zikula_Event $event 
+     */
+    public static function getTinyMcePlugins(Zikula_Event $event)
+    {
+        $event->getSubject()->add(array('name' => 'simplemedia',
+                 'path' => 'modules/SimpleMedia/docs/scribite/plugins/TinyMCE/vendor/tiny_mce/plugins/simplemedia/editor_plugin.js'));
+    }
+    
+    /**
+     * Listener for `moduleplugin.ckeditor.externalplugins` event
+     * add external plugin to CKEditor
+     * 
+     * @param Zikula_Event $event 
+     */
+    public static  function getCKEditorPlugins(Zikula_Event $event)
+    {
+        $event->getSubject()->add(array('name' => 'simplemedia',
+                 'path' => 'modules/SimpleMedia/docs/scribite/plugins/CKEditor/vendor/ckeditor/plugins/simplemedia/',
+                 'file' => 'editor_plugin.js',
+                 'img' => 'ed_simplemedia.gif'));
+    }
+    
 }
