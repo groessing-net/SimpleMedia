@@ -190,14 +190,19 @@ simplemedia.itemSelector.onLoad = function (baseId, selectedId) {
                            .observe('keypress', simplemedia.itemSelector.onParamChanged);
 
     simplemedia.itemSelector.getItemList();
+    
+    // Add show images as thumbnails / list
+    // Add show name/size/date
 };
 
+// if a selection parameter for the list to show changes
 simplemedia.itemSelector.onParamChanged = function () {
     $('ajax_indicator').removeClassName('z-hide');
 
     simplemedia.itemSelector.getItemList();
 };
 
+// The items in the item (media/collections) div
 simplemedia.itemSelector.getItemList = function () {
     var baseId, pars, request;
 
