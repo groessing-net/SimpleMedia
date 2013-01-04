@@ -20,24 +20,25 @@ Implemented classes:
 
 Additional files:
 -----------------
-x  * images/logo*.png
-x  * javascript/jsCropperUI-1.2.2/
-x  * lib/SimpleMedia/Util/Manual.php
-x  * lib/SimpleMedia/Util/Mime.php
-x  * lib/vendor/flvplayer/
-x  * lib/vendor/mp3/
-x  * templates/plugins/function.getinlinesnippet.php
-x  * templates/plugins/function.simplemediaSelectorMedium.php
-x  * templates/inline/*
+  * images/logo*.png
+  * javascript/jsCropperUI-1.2.2/
+  * lib/SimpleMedia/Util/Manual.php
+  * lib/SimpleMedia/Util/Mime.php
+  * lib/vendor/flvplayer/
+  * lib/vendor/mp3/
+  * templates/plugins/function.getinlinesnippet.php
+  * templates/plugins/function.simplemediaSelectorMedium.php
+  * templates/inline/*
   * SCRIBITE
-    - editor plugins (xinha + tinymce)
+    - editor plugins (xinha + tinymce + ckeditor)
     - user editor header (tinymce)
     - user api customisation for javascript file inclusion
+  * Added Util/Iptc.php for exif/iptc handling
 
 
 Overridden templates in /config
 -------------------------------
-
+See dir
 
 
 
