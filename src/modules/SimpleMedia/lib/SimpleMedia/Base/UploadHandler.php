@@ -270,7 +270,6 @@ class SimpleMedia_Base_UploadHandler
                     break;
         }
     
-    
         $iterIndex = -1;
         do {
             if ($namingScheme == 0) {
