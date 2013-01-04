@@ -17,6 +17,48 @@
 class SimpleMedia_UploadHandler extends SimpleMedia_Base_UploadHandler
 {
     // feel free to add your upload handler enhancements here
+
+    /**
+     * @var array List of file types to be considered as movies.
+     */
+    protected $movieFileTypes;
+
+    /**
+     * @var array List of file types to be considered as audio.
+     */
+    protected $audioFileTypes;
+
+    /**
+     * @var array List of file types to be considered as documents.
+     */
+    protected $documentFileTypes;
+
+    /**
+     * Constructor initialising the supported object types.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        
+        // see for instance http://en.wikipedia.org/wiki/List_of_file_formats
+        $this->imageFileTypes = array('gif', 'jpeg', 'jpg', 'png', 'tif', 'tiff', 'bmp'); // raster images
+        $this->audioFileTypes = array('aac', 'mp3', 'wav', 'aif', 'mid');
+        $this->movieFileTypes = array('mpg', 'mpeg', 'mp4', 'mov', 'wmv', 'avi', 'swf', 'flv', 'rm', 'f4v', 'h264');
+
+        $otherimageFileTypes = array('psd', 'eps', 'ps', 'ai', 'svg', 'odg', 'emf', 'dwg', 'dxf');
+        $ebookFileTypes = array('epub', 'mobi');
+        $camerarawFileTypes = array('dng', 'cr2', 'nef');
+        $geoFileTypes = array('kml', 'gpx');
+        $dtpFileTypes = array('qxd', 'fm', 'indd');
+        $this->documentFileTypes = array_merge(
+            array('pdf', 'doc', 'xls', 'ppt', 'docx', 'xlsx', 'pptx', 'odt', 'ods', 'odp', 'pages', 'numbers', 'key', 'keynote', 'txt', 'rtf', 'csv', 'tex'), 
+            $otherimageFileTypes, $ebookFileTypes, $camerarawFileTypes, $geoFileTypes, $dtpFileTypes
+        );
+        
+        // zip and other package files will go into other
+    }
+
+
     /**
      * Determines the allowed file extensions for a given object type.
      *
@@ -32,7 +74,6 @@ class SimpleMedia_UploadHandler extends SimpleMedia_Base_UploadHandler
         $allowedExtensions = array();
         switch ($objectType) {
             case 'medium':
-                //$allowedExtensions = array('gif', 'jpeg', 'jpg', 'png', 'pdf', 'doc', 'xls', 'ppt', 'docx', 'xlsx', 'pptx', 'odt', 'ods', 'odp', 'arj', 'zip', 'rar', 'tar', 'tgz', 'gz', 'bz2', 'txt', 'rtf', 'swf', 'flv', 'mp3', 'mp4', 'avi', 'mpg', 'mpeg', 'mov');
                 $allowedExtensions = explode(',', str_replace(' ', '', ModUtil::getVar('SimpleMedia', 'allowedExtensions')));
                     break;
         }
@@ -43,6 +84,7 @@ class SimpleMedia_UploadHandler extends SimpleMedia_Base_UploadHandler
             }
         }
     
+        // check explicit for forbidden (executable) types 
         if (in_array($extension, $this->forbiddenFileTypes)) {
             return false;
         }
