@@ -406,9 +406,12 @@ class SimpleMedia_Entity_Repository_Base_Medium extends EntityRepository
     
         // count the total number of affected items
         $count = Paginate::getTotalQueryResults($query);
-    
-        $query->setFirstResult($offset)
-              ->setMaxResults($resultsPerPage);
+
+        // See https://github.com/Guite/MostGenerator/issues/227
+        // Temporarily changed to use Paginate
+//        $query->setFirstResult($offset)
+//              ->setMaxResults($resultsPerPage);
+        $query = Paginate::getPaginateQuery($query, $offset, $resultsPerPage);
         return array($query, $count);
     }
     
