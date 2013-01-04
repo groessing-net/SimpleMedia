@@ -76,7 +76,7 @@ class SimpleMedia_Listener_ThirdParty extends SimpleMedia_Listener_Base_ThirdPar
     {
         $event->getSubject()->add(array('name' => 'simplemedia',
                  'path' => 'modules/SimpleMedia/docs/scribite/plugins/CKEditor/vendor/ckeditor/plugins/simplemedia/',
-                 'file' => 'editor_plugin.js',
+                 'file' => 'plugin.js',
                  'img' => 'ed_simplemedia.gif'));
     }
     
