@@ -1,5 +1,6 @@
-﻿SimpleMedia is a media and image module. It is developed for Zikula 1.3.x
+SimpleMedia is a media and image module. It is developed for Zikula 1.3.x
 
-The module is created with MOST (http://modulestudio.de/) by Guite (Axel) and only for the latest Zikula 1.3.x
+The basic module is generated with MOST (http://modulestudio.de/) by Guite (Axel) and only for the latest Zikula >= 1.3.x.
+Further development of the code and templates is ongoing.
 
 See for more information the wiki page: https://github.com/zikula-ev/SimpleMedia/wiki
