@@ -2,7 +2,7 @@
  * @license Copyright (c) 2003-2013, SimpleMedia - Erik Spaan. All rights reserved.
  */
 
-CKEDITOR.plugins.add( 'simplemedia',
+CKEDITOR.plugins.add('simplemedia',
 {
 	requires: 'popup',
 	lang: 'en,nl,de',
@@ -17,11 +17,13 @@ CKEDITOR.plugins.add( 'simplemedia',
                     SimpleMediaFinderCKEditor(editor, url);
 				}
 			});
-		editor.ui.addButton( 'SimpleMedia',
-		{
-			label: 'Insert SimpleMedia object',
-			command: 'insertSimpleMedia',
-			icon: this.path + 'images/ed_simplemedia.png'
-		} );
+		editor.ui.addButton( 
+		    'simplemedia',
+            {
+                label: 'Insert SimpleMedia object',
+                command: 'insertSimpleMedia',
+                icon: this.path + 'images/ed_simplemedia.png'
+            }
+        );
 	}
 } );
