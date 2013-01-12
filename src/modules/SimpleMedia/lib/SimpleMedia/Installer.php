@@ -100,7 +100,7 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
     protected function createDefaultData()
     {
         // call the parent class
-        $result = parent::createDefaultData();
+        parent::createDefaultData();
 
         // add a root collection 
         try {
@@ -115,7 +115,6 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
             return LogUtil::registerError($e->getMessage());
         }
 
-        return true;
     }
     
     /**
