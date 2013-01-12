@@ -60,6 +60,7 @@ abstract class SimpleMedia_Entity_Base_Medium extends Zikula_EntityAccess
     
     /**
      * REMOVED Gedmo \ Translatable See https://github.com/Guite/MostGenerator/issues/226
+     * @Gedmo\Sluggable(slugField="slug", position=1)
      * @ORM\Column(length=255)
      * @var string $title.
      */
