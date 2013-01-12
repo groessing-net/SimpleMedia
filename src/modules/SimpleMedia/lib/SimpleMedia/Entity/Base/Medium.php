@@ -59,8 +59,7 @@ abstract class SimpleMedia_Entity_Base_Medium extends Zikula_EntityAccess
     protected $id = 0;
     
     /**
-     * @Gedmo\Translatable
-     * @Gedmo\Sluggable(slugField="slug", position=1)
+     * REMOVED Gedmo \ Translatable See https://github.com/Guite/MostGenerator/issues/226
      * @ORM\Column(length=255)
      * @var string $title.
      */
@@ -94,7 +93,7 @@ abstract class SimpleMedia_Entity_Base_Medium extends Zikula_EntityAccess
      */
     protected $theFileFullPathUrl = '';
     /**
-     * @Gedmo\Translatable
+     * REMOVED Gedmp \ Translatable See https://github.com/Guite/MostGenerator/issues/226
      * @ORM\Column(type="text", length=2000)
      * @var text $description.
      */
@@ -120,7 +119,7 @@ abstract class SimpleMedia_Entity_Base_Medium extends Zikula_EntityAccess
     
     
     /**
-     * @Gedmo\Translatable
+     * REMOVED Translatable See https://github.com/Guite/MostGenerator/issues/226
      * @Gedmo\Slug(style="default", separator="-")
      * @ORM\Column(type="string", length=255)
      * @var string $slug.

@@ -59,14 +59,14 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
     protected $id = 0;
     
     /**
-     * @Gedmo\Translatable
+     * REMOVED Translatable See https://github.com/Guite/MostGenerator/issues/226
      * @ORM\Column(length=255)
      * @var string $title.
      */
     protected $title = '';
     
     /**
-     * @Gedmo\Translatable
+     * REMOVED Translatable See https://github.com/Guite/MostGenerator/issues/226
      * @ORM\Column(type="text", length=2000)
      * @var text $description.
      */
