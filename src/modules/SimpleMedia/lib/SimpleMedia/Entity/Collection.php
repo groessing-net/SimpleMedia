@@ -66,7 +66,6 @@ class SimpleMedia_Entity_Collection extends SimpleMedia_Entity_Base_Collection
                     'linkText' => __('Edit', $dom)
                 );
                 
-                // TODO MOVE TO CHILD class !
                 $this->_actions[] = array(
                     'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'medium', 'collection' => $this['id'], 'returnTo' => 'adminDisplayCollection')),
                     'icon' => 'add',
@@ -100,8 +99,24 @@ class SimpleMedia_Entity_Collection extends SimpleMedia_Entity_Base_Collection
                     'linkTitle' => str_replace('"', '', $this['title']),
                     'linkText' => __('Details', $dom)
                 );
+
+                if (SecurityUtil::checkPermission('SimpleMedia:Collection:', $this->id . '::', ACCESS_EDIT)) {
+                    $this->_actions[] = array(
+                        'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'collection', 'id' => $this['id'], 'returnTo' => 'userDisplayCollection')),
+                        'icon' => 'edit',
+                        'linkTitle' => __('Edit', $dom),
+                        'linkText' => __('Edit', $dom)
+                    );
+                    $this->_actions[] = array(
+                        'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'medium', 'collection' => $this['id'], 'returnTo' => 'userDisplayCollection')),
+                        'icon' => 'add',
+                        'linkTitle' => __('Create media in this collection', $dom),
+                        'linkText' => __('Create media', $dom)
+                    );
+                }
             }
             if (in_array($currentFunc, array('main', 'view', 'display'))) {
+                // nothing
             }
             if ($currentFunc == 'display') {
                 $this->_actions[] = array(
