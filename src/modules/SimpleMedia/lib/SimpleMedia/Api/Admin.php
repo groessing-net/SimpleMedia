@@ -17,4 +17,37 @@
 class SimpleMedia_Api_Admin extends SimpleMedia_Api_Base_Admin
 {
     // feel free to add own api methods here
+
+    /**
+     * Returns available admin panel links. OVERRIDE
+     *
+     * @return array Array of admin links.
+     */
+    public function getlinks()
+    {
+        $links = array();
+
+        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
+            $links[] = array('url' => ModUtil::url($this->name, 'user', 'main'),
+                             'text' => $this->__('Frontend'),
+                             'title' => $this->__('Switch to user area.'),
+                             'class' => 'z-icon-es-home');
+        }
+        if (SecurityUtil::checkPermission($this->name . ':Collection:', '::', ACCESS_ADMIN)) {
+            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'view', array('ot' => 'collection', 'tpl' => 'tree')),
+                             'text' => $this->__('Collections'),
+                             'title' => $this->__('Collection list'));
+        }
+        if (SecurityUtil::checkPermission($this->name . ':Medium:', '::', ACCESS_ADMIN)) {
+            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'view', array('ot' => 'medium')),
+                             'text' => $this->__('Media'),
+                             'title' => $this->__('Medium list'));
+        }
+        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
+            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'config'),
+                             'text' => $this->__('Configuration'),
+                             'title' => $this->__('Manage settings for this application'));
+        }
+        return $links;
+    }
 }
