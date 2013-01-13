@@ -61,11 +61,13 @@
             {sortlink __linktext='Parent' sort='parent' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='collection'}
         </th>
         <th id="hpreviewimage" scope="col" class="z-right">
-            {sortlink __linktext='Preview image' sort='previewImage' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='collection'}
+            {gt text='Preview image'}
         </th>
+        {*
         <th id="hsortvalue" scope="col" class="z-right">
             {sortlink __linktext='Sort value' sort='sortValue' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='collection'}
         </th>
+        *}
         <th id="hitemactions" scope="col" class="z-right z-order-unsorted">{gt text='Actions'}</th>
     </tr>
     </thead>
@@ -99,11 +101,17 @@
             {/if}
         </td>
         <td headers="hpreviewimage" class="z-right">
+            {if $collection.previewImage != 0}
             {$collection.previewImage}
+            {else}
+            <em>{gt text='not selected'}</em>
+            {/if}
         </td>
+        {*
         <td headers="hsortvalue" class="z-right">
             {$collection.sortValue}
         </td>
+        *}
         <td id="itemactions{$collection.id}" headers="hitemactions" class="z-right z-nowrap z-w02">
             {if count($collection._actions) gt 0}
                 {foreach item='option' from=$collection._actions}

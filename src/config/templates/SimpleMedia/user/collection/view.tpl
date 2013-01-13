@@ -48,12 +48,14 @@
         <th id="hdescription" scope="col" class="z-left">
             {sortlink __linktext='Description' sort='description' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='user' func='view' ot='collection'}
         </th>
+        {* not usable to display
         <th id="hpreviewimage" scope="col" class="z-right">
             {sortlink __linktext='Preview image' sort='previewImage' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='user' func='view' ot='collection'}
         </th>
         <th id="hsortvalue" scope="col" class="z-right">
             {sortlink __linktext='Sort value' sort='sortValue' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='user' func='view' ot='collection'}
         </th>
+        *}
         <th id="hitemactions" scope="col" class="z-right z-order-unsorted">{gt text='Actions'}</th>
     </tr>
     </thead>
@@ -62,17 +64,21 @@
 {foreach item='collection' from=$items}
     <tr class="{cycle values='z-odd, z-even'}">
         <td headers="htitle" class="z-left">
+            <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$collection.id}" title="{gt text='Details'}">
             {$collection.title|notifyfilters:'simplemedia.filterhook.collections'}
+            </a>
         </td>
         <td headers="hdescription" class="z-left">
             {$collection.description}
         </td>
+        {* not usable to display
         <td headers="hpreviewimage" class="z-right">
             {$collection.previewImage}
         </td>
         <td headers="hsortvalue" class="z-right">
             {$collection.sortValue}
-        </td>
+        </td> 
+        *}
         <td id="itemactions{$collection.id}" headers="hitemactions" class="z-right z-nowrap z-w02">
             {if count($collection._actions) gt 0}
                 {foreach item='option' from=$collection._actions}
