@@ -79,11 +79,23 @@
         <td headers="hdescription" class="z-left">
             {$collection.description}
         </td>
-        <td headers="hpreviewimage" class="z-right">
-            {if !empty($collection.parent)}
-            {$collection.parent.title}
+        <td headers="hparent" class="z-right">
+            {if isset($collection.parent) && $collection.parent ne null}
+                <a href="{modurl modname='SimpleMedia' type='admin' func='display' ot='collection' id=$collection.parent.id}">
+                  {$collection.parent.title|default:""}
+                </a>
+                <a id="collectionItem{$collection.id}_rel_{$collection.parent.id}Display" href="{modurl modname='SimpleMedia' type='admin' func='display' ot='collection' id=$collection.parent.id theme='Printer'}" title="{gt text='Open quick view window'}" class="z-hide">
+                    {icon type='view' size='extrasmall' __alt='Quick view'}
+                </a>
+                <script type="text/javascript">
+                /* <![CDATA[ */
+                    document.observe('dom:loaded', function() {
+                        simmedInitInlineWindow($('collectionItem{{$collection.id}}_rel_{{$collection.parent.id}}Display'), '{{$collection.parent.title|replace:"'":""}}');
+                    });
+                /* ]]> */
+                </script>
             {else}
-            <em>{gt text='none'}</em>
+                <em>{gt text='none'}</em>
             {/if}
         </td>
         <td headers="hpreviewimage" class="z-right">
