@@ -42,7 +42,6 @@
         <col id="cthefile" />
         <col id="cdescription" />
         <col id="cadditionaldata" />
-        <col id="csortvalue" />
         <col id="cmediatype" />
         <col id="ccollection" />
         <col id="citemactions" />
@@ -60,9 +59,6 @@
         </th>
         <th id="hadditionaldata" scope="col" class="z-left">
             {sortlink __linktext='Additional data' sort='additionalData' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main collection=$collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='medium'}
-        </th>
-        <th id="hsortvalue" scope="col" class="z-right">
-            {sortlink __linktext='Sort value' sort='sortValue' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main collection=$collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='medium'}
         </th>
         <th id="hmediatype" scope="col" class="z-left">
             {sortlink __linktext='Media type' sort='mediaType' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main collection=$collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='admin' func='view' ot='medium'}
@@ -98,10 +94,6 @@
             {foreachelse}
             -
             {/foreach}
-        </td>
-        <td headers="hsortvalue" class="z-right">
-            {$medium.sortValue}
-            <br />
         </td>
         <td headers="hmediatype" class="z-left">
             {$medium.mediaType|simplemediaGetListEntry:'medium':'mediaType'|safetext}

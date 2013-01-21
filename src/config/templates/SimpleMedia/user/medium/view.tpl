@@ -34,7 +34,6 @@
         <col id="cthefile" />
         <col id="cdescription" />
         <col id="cadditionaldata" />
-        <col id="csortvalue" />
         <col id="cmediatype" />
         <col id="ccollection" />
         <col id="citemactions" />
@@ -54,9 +53,6 @@
         <th id="hadditionaldata" scope="col" class="z-left">
             {gt text='Additional data'}
             {*sortlink __linktext='Additional data' sort='additionalData' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main collection=$collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='user' func='view' ot='medium'*}
-        </th>
-        <th id="hsortvalue" scope="col" class="z-right">
-            {sortlink __linktext='Sort value' sort='sortValue' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main collection=$collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='user' func='view' ot='medium'}
         </th>
         <th id="hmediatype" scope="col" class="z-left">
             {sortlink __linktext='Media type' sort='mediaType' currentsort=$sort sortdir=$sdir all=$all own=$own catidMain=$catIdList.Main collection=$collection mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize modname='SimpleMedia' type='user' func='view' ot='medium'}
@@ -90,12 +86,11 @@
             {$medium.description}
         </td>
         <td headers="hadditionaldata" class="z-left">
-            {foreach item=additionalItem from=$medium.additionalData}
-            {$additionalItem}|
+            {foreach item=additionalVal key=additionalKey from=$medium.additionalData name=additionalData}
+            {$additionalKey}: {$additionalVal|default:"-"}{if !$smarty.foreach.additionalData.last}<br />{/if}
+            {foreachelse}
+            -
             {/foreach}
-        </td>
-        <td headers="hsortvalue" class="z-right">
-            {$medium.sortValue}
         </td>
         <td headers="hmediatype" class="z-left">
             {$medium.mediaType|simplemediaGetListEntry:'medium':'mediaType'|safetext}
@@ -177,5 +172,5 @@
 {/foreach}
 </div>
 </div>
-{include file='user/footer.tpl'}
+{* include file='user/footer.tpl' *}
 
