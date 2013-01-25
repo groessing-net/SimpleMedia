@@ -50,6 +50,7 @@
                         </li>
                     {/formvolatile}
                     </ol>
+                    <div class="z-sub z-formnote">{gt text='Thumbnails are generated with the Imagine plugin in the Zikula Core.<br />Turning Legacy off in config/config.php reduces memory consumption a lot.'}</div>
                 </div>
                 <div class="z-formrow">
                     {gt text='The default thumbnail that is used from the set of Thumbdimensions' assign='toolTip'}
