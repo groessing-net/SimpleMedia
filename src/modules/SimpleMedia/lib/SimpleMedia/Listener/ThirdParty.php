@@ -63,7 +63,7 @@ class SimpleMedia_Listener_ThirdParty extends SimpleMedia_Listener_Base_ThirdPar
     public static function getTinyMcePlugins(Zikula_Event $event)
     {
         $event->getSubject()->add(array('name' => 'simplemedia',
-                 'path' => 'modules/SimpleMedia/docs/scribite/plugins/TinyMCE/vendor/tiny_mce/plugins/simplemedia/editor_plugin.js'));
+                 'path' => 'modules/SimpleMedia/docs/scribite/plugins/TinyMce/vendor/tiny_mce/plugins/simplemedia/editor_plugin.js'));
     }
     
     /**
