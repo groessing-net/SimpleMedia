@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:modulestudio="http://modulestudio.de/modulestudio" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
+  <notation:Diagram xmi:id="_-BbvoD7xEeO3pt1Oo6nObg" type="Module" measurementUnit="Pixel">
+    <children xmi:type="notation:Shape" xmi:id="_-RHxcD7xEeO3pt1Oo6nObg" type="2001" fontName="monospaced" fontHeight="12" lineColor="4210752">
+      <children xmi:type="notation:DecorationNode" xmi:id="_-RKNsD7xEeO3pt1Oo6nObg" type="5001"/>
+      <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_-RHxcT7xEeO3pt1Oo6nObg" diagramLink="_AJV3UD7yEeO3pt1Oo6nObg" hint="Model"/>
+      <element xmi:type="modulestudio:Models" href="SimpleMedia2_target135.mostapp#SimpleMedia.Model"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_-RHxcj7xEeO3pt1Oo6nObg"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_-RKNsT7xEeO3pt1Oo6nObg" type="2001" fontName="monospaced" fontHeight="12" lineColor="4210752">
+      <children xmi:type="notation:DecorationNode" xmi:id="_-RK0wD7xEeO3pt1Oo6nObg" type="5001"/>
+      <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_-RKNsj7xEeO3pt1Oo6nObg" hint="Model"/>
+      <element xmi:type="modulestudio:Models" href="SimpleMedia2_target135.mostapp#//@models.1"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_-RKNsz7xEeO3pt1Oo6nObg" x="115"/>
+    </children>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_-BbvoT7xEeO3pt1Oo6nObg"/>
+    <element xmi:type="modulestudio:Application" href="SimpleMedia2_target135.mostapp#SimpleMedia"/>
+  </notation:Diagram>
+  <notation:Diagram xmi:id="_AJV3UD7yEeO3pt1Oo6nObg" type="Model" measurementUnit="Pixel">
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_AJV3UT7yEeO3pt1Oo6nObg"/>
+    <element xmi:type="modulestudio:Models" href="SimpleMedia2_target135.mostapp#SimpleMedia.Model"/>
+  </notation:Diagram>
+</xmi:XMI>

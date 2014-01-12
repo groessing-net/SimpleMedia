@@ -7,7 +7,7 @@ application SimpleMedia {
 	version "2.0.0"
 	prefix simmed
 	modelPath ""
-	targetCoreVersion ZK136
+	targetCoreVersion ZK135
 	modelLayer {
 		modelContainer Model {
 			numExampleRows 0
@@ -27,6 +27,7 @@ application SimpleMedia {
 							
 						    allowedExtensions
 "gif, jpeg, jpg, png, pdf, doc, xls, ppt, docx, xlsx, pptx, odt, ods, odp, arj, zip, rar, tar, tgz, gz, bz2, txt, rtf, swf, flv, mp3, mp4, avi, mpg, mpeg, mov"
+						    allowedFileSize 5000000
 							subFolderName ""
 						},
 						text description {
