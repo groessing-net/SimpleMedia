@@ -1,6 +1,7 @@
 'use strict';
 
-function simmedToday(format) {
+function simmedToday(format)
+{
     var timestamp, todayDate, month, day, hours, minutes, seconds;
 
     timestamp = new Date();
@@ -38,7 +39,8 @@ function simmedToday(format) {
 }
 
 // returns YYYY-MM-DD even if date is in DD.MM.YYYY
-function simmedReadDate(val, includeTime) {
+function simmedReadDate(val, includeTime)
+{
     // look if we have YYYY-MM-DD
     if (val.substr(4, 1) === '-' && val.substr(7, 1) === '-') {
         return val;
@@ -57,62 +59,24 @@ function simmedReadDate(val, includeTime) {
 /**
  * Add special validation rules.
  */
-function simmedAddCommonValidationRules(objectType, id) {
+function simmedAddCommonValidationRules(objectType, id)
+{
     Validation.addAllThese([
-        ['validate-nospace', Zikula.__('No spaces', 'module_SimpleMedia'), function(val, elem) {
+        ['validate-nospace', Zikula.__('No spaces', 'module_simplemedia_js'), function(val, elem) {
             var valStr;
             valStr = new String(val);
             return (valStr.indexOf(' ') === -1);
         }],
-        ['validate-htmlcolour', Zikula.__('Please select a valid html colour code.', 'module_SimpleMedia'), function(val, elem) {
-            var valStr;
-            valStr = new String(val);
-            return Validation.get('IsEmpty').test(val) || (/^#[0-9a-f]{3}([0-9a-f]{3})?$/i.test(valStr));
-        }],
-        ['validate-upload', Zikula.__('Please select a valid file extension.', 'module_SimpleMedia'), function(val, elem) {
+        ['validate-upload', Zikula.__('Please select a valid file extension.', 'module_simplemedia_js'), function(val, elem) {
             var allowedExtensions;
             if (val === '') {
                 return true;
             }
             var fileExtension = '.' + val.substr(val.lastIndexOf('.') + 1);
-            allowedExtensions = $('fileextensions' + elem.id).innerHTML;
+            allowedExtensions = $(elem.id + 'FileExtensions').innerHTML;
             allowedExtensions = '(.' + allowedExtensions.replace(/, /g, '|.').replace(/,/g, '|.') + ')$';
             allowedExtensions = new RegExp(allowedExtensions, 'i');
             return allowedExtensions.test(val);
         }],
-        ['validate-datetime-past', Zikula.__('Please select a value in the past.', 'module_SimpleMedia'), function(val, elem) {
-            var valStr, cmpVal;
-            valStr = new String(val);
-            cmpVal = simmedReadDate(valStr, true);
-            return Validation.get('IsEmpty').test(val) || (cmpVal < simmedToday('datetime'));
-        }],
-        ['validate-datetime-future', Zikula.__('Please select a value in the future.', 'module_SimpleMedia'), function(val, elem) {
-            var valStr, cmpVal;
-            valStr = new String(val);
-            cmpVal = simmedReadDate(valStr, true);
-            return Validation.get('IsEmpty').test(val) || (cmpVal >= simmedToday('datetime'));
-        }],
-        ['validate-date-past', Zikula.__('Please select a value in the past.', 'module_SimpleMedia'), function(val, elem) {
-            var valStr, cmpVal;
-            valStr = new String(val);
-            cmpVal = simmedReadDate(valStr, false);
-            return Validation.get('IsEmpty').test(val) || (cmpVal < simmedToday('date'));
-        }],
-        ['validate-date-future', Zikula.__('Please select a value in the future.', 'module_SimpleMedia'), function(val, elem) {
-            var valStr, cmpVal;
-            valStr = new String(val);
-            cmpVal = simmedReadDate(valStr, false);
-            return Validation.get('IsEmpty').test(val) || (cmpVal >= simmedToday('date'));
-        }],
-        ['validate-time-past', Zikula.__('Please select a value in the past.', 'module_SimpleMedia'), function(val, elem) {
-            var cmpVal;
-            cmpVal = new String(val);
-            return Validation.get('IsEmpty').test(val) || (cmpVal < simmedToday('time'));
-        }],
-        ['validate-time-future', Zikula.__('Please select a value in the future.', 'module_SimpleMedia'), function(val, elem) {
-            var cmpVal;
-            cmpVal = new String(val);
-            return Validation.get('IsEmpty').test(val) || (cmpVal >= simmedToday('time'));
-        }]
     ]);
 }

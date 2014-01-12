@@ -6,7 +6,8 @@ var currentNodeId = 0;
  * Helper function to start several different ajax actions
  * performing tree related amendments and operations.
  */
-function simmedPerformTreeOperation(objectType, rootId, op) {
+function simmedPerformTreeOperation(objectType, rootId, op)
+{
     var opParam, pars, request;
 
     opParam = ((op === 'moveNodeUp' || op === 'moveNodeDown') ? 'moveNode' : op);
@@ -65,8 +66,9 @@ simmedTreeContextMenu = Class.create(Zikula.UI.ContextMenu, {
 /**
  * Initialise event handlers for all nodes of a given tree root.
  */
-function simmedInitTreeNodes(objectType, controller, rootId, hasDisplay, hasEdit) {
-    $$('#itemtree' + rootId + ' a').each(function (elem) {
+function simmedInitTreeNodes(objectType, controller, rootId, hasDisplay, hasEdit)
+{
+    $$('#itemTree' + rootId + ' a').each(function (elem) {
         var liRef, isRoot, contextMenu;
 
         // get reference to list item
@@ -77,28 +79,44 @@ function simmedInitTreeNodes(objectType, controller, rootId, hasDisplay, hasEdit
         elem.id = liRef.id + 'link';
 
         // and use it to attach a context menu
-        contextMenu = new simmedContextMenu(elem.id, { leftClick: true, animation: false });
+        contextMenu = new simmedTreeContextMenu(elem.id, { leftClick: true, animation: false });
         if (hasDisplay === true) {
             contextMenu.addItem({
-                label: '<img src="images/icons/extrasmall/kview.png" width="16" height="16" alt="' + Zikula.__('Display', 'module_simplemedia_js') + '" /> '
+                label: '<img src="' + Zikula.Config.baseURL + 'images/icons/extrasmall/kview.png" width="16" height="16" alt="' + Zikula.__('Display', 'module_simplemedia_js') + '" /> '
                      + Zikula.__('Display', 'module_simplemedia_js'),
-                callback: function () {
+                callback: function (selectedMenuItem, isRightClick) {
+                    var url;
+
                     currentNodeId = liRef.id.replace('tree' + rootId + 'node_', '');
-                    window.location = Zikula.Config.baseURL + 'index.php?module=SimpleMedia&type=' + controller + '&func=display&ot=' + objectType + '&id=' + currentNodeId;
+                    url = Zikula.Config.baseURL + 'index.php?module=SimpleMedia&type=' + controller + '&func=display&ot=' + objectType + '&id=' + currentNodeId;
+
+                    if (isRightClick) {
+                        window.open(url);
+                    } else {
+                        window.location = url;
+                    }
                 }
             });
         }
         if (hasEdit === true) {
             contextMenu.addItem({
-                label: '<img src="images/icons/extrasmall/edit.png" width="16" height="16" alt="' + Zikula.__('Edit', 'module_simplemedia_js') + '" /> '
+                label: '<img src="' + Zikula.Config.baseURL + 'images/icons/extrasmall/edit.png" width="16" height="16" alt="' + Zikula.__('Edit', 'module_simplemedia_js') + '" /> '
                      + Zikula.__('Edit', 'module_simplemedia_js'),
-                callback: function () {
+                callback: function (selectedMenuItem, isRightClick) {
+                    var url;
+
                     currentNodeId = liRef.id.replace('tree' + rootId + 'node_', '');
-                    window.location = Zikula.Config.baseURL + 'index.php?module=SimpleMedia&type=' + controller + '&func=edit&ot=' + objectType + '&id=' + currentNodeId;
+                    url = Zikula.Config.baseURL + 'index.php?module=SimpleMedia&type=' + controller + '&func=edit&ot=' + objectType + '&id=' + currentNodeId;
+
+                    if (isRightClick) {
+                        window.open(url);
+                    } else {
+                        window.location = url;
+                    }
                 }
             });
             contextMenu.addItem({
-                label: '<img src="images/icons/extrasmall/edit_add.png" width="16" height="16" alt="' + Zikula.__('Create media', 'module_simplemedia_js') + '" /> '
+                label: '<img src="' + Zikula.Config.baseURL + images/icons/extrasmall/edit_add.png" width="16" height="16" alt="' + Zikula.__('Create media', 'module_simplemedia_js') + '" /> '
                      + Zikula.__('Create media', 'module_simplemedia_js'),
                 callback: function () {
                     currentNodeId = liRef.id.replace('tree' + rootId + 'node_', '');
@@ -107,7 +125,7 @@ function simmedInitTreeNodes(objectType, controller, rootId, hasDisplay, hasEdit
             });
         }
         contextMenu.addItem({
-            label: '<img src="images/icons/extrasmall/insert_table_row.png" width="16" height="16" alt="' + Zikula.__('Add child node', 'module_simplemedia_js') + '" /> '
+            label: '<img src="' + Zikula.Config.baseURL + 'images/icons/extrasmall/insert_table_row.png" width="16" height="16" alt="' + Zikula.__('Add child node', 'module_simplemedia_js') + '" /> '
                  + Zikula.__('Add child node', 'module_simplemedia_js'),
             callback: function () {
                 currentNodeId = liRef.id.replace('tree' + rootId + 'node_', '');
@@ -115,7 +133,7 @@ function simmedInitTreeNodes(objectType, controller, rootId, hasDisplay, hasEdit
             }
         });
         contextMenu.addItem({
-            label: '<img src="images/icons/extrasmall/14_layer_deletelayer.png" width="16" height="16" alt="' + Zikula.__('Delete node', 'module_simplemedia_js') + '" /> '
+            label: '<img src="' + Zikula.Config.baseURL + 'images/icons/extrasmall/14_layer_deletelayer.png" width="16" height="16" alt="' + Zikula.__('Delete node', 'module_simplemedia_js') + '" /> '
                  + Zikula.__('Delete node', 'module_simplemedia_js'),
             callback: function () {
                 var confirmQuestion;
@@ -131,7 +149,7 @@ function simmedInitTreeNodes(objectType, controller, rootId, hasDisplay, hasEdit
             }
         });
         contextMenu.addItem({
-            label: '<img src="images/icons/extrasmall/14_layer_raiselayer.png" width="16" height="16" alt="' + Zikula.__('Move up', 'module_simplemedia_js') + '" /> '
+            label: '<img src="' + Zikula.Config.baseURL + 'images/icons/extrasmall/14_layer_raiselayer.png" width="16" height="16" alt="' + Zikula.__('Move up', 'module_simplemedia_js') + '" /> '
                  + Zikula.__('Move up', 'module_simplemedia_js'),
             condition: function () {
                 return !isRoot && !liRef.hasClassName('z-tree-first'); // has previous sibling
@@ -142,7 +160,7 @@ function simmedInitTreeNodes(objectType, controller, rootId, hasDisplay, hasEdit
             }
         });
         contextMenu.addItem({
-            label: '<img src="images/icons/extrasmall/14_layer_lowerlayer.png" width="16" height="16" alt="' + Zikula.__('Move down', 'module_simplemedia_js') + '" /> '
+            label: '<img src="' + Zikula.Config.baseURL + 'images/icons/extrasmall/14_layer_lowerlayer.png" width="16" height="16" alt="' + Zikula.__('Move down', 'module_simplemedia_js') + '" /> '
                  + Zikula.__('Move down', 'module_simplemedia_js'),
             condition: function () {
                 return !isRoot && !liRef.hasClassName('z-tree-last'); // has next sibling
@@ -166,7 +184,8 @@ function simmedInitTreeNodes(objectType, controller, rootId, hasDisplay, hasEdit
  *
  * @return true on success, otherwise the change will be reverted
  */
-function simmedTreeSave(node, params, data) {
+function simmedTreeSave(node, params, data)
+{
     var nodeParts, rootId, nodeId, destId, pars, request;
 
     // do not allow inserts on root level

@@ -7,7 +7,8 @@ var currentSimpleMediaInput = null;
  * Returns the attributes used for the popup window. 
  * @return {String}
  */
-function getPopupAttributes() {
+function getPopupAttributes()
+{
     var pWidth, pHeight;
 
     pWidth = screen.width * 0.75;
@@ -18,8 +19,9 @@ function getPopupAttributes() {
 /**
  * Open a popup window with the finder triggered by a Xinha button.
  */
-function SimpleMediaFinderXinha(editor, simmedURL) {
-	var popupAttributes;
+function SimpleMediaFinderXinha(editor, simmedURL)
+{
+    var popupAttributes;
 
     // Save editor for access in selector window
     currentSimpleMediaEditor = editor;
@@ -27,14 +29,16 @@ function SimpleMediaFinderXinha(editor, simmedURL) {
     popupAttributes = getPopupAttributes();
     window.open(simmedURL, '', popupAttributes);
 }
+
 /**
  * Open a popup window with the finder triggered by a CKEditor button.
  */
-function SimpleMediaFinderCKEditor(editor, simmedURL) {
+function SimpleMediaFinderCKEditor(editor, simmedURL)
+{
     // Save editor for access in selector window
     currentSimpleMediaEditor = editor;
 
-    editor.popup( 
+    editor.popup(
         Zikula.Config.baseURL + Zikula.Config.entrypoint + '?module=SimpleMedia&type=external&func=finder&editor=ckeditor',
         /*width*/ '80%', /*height*/ '70%',
         'location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,modal=yes,alwaysRaised=yes,resizable=yes,scrollbars=yes'
@@ -44,23 +48,28 @@ function SimpleMediaFinderCKEditor(editor, simmedURL) {
 
 // The simplemedia variable
 var simplemedia = {};
+
 simplemedia.finder = {};
 
-simplemedia.finder.onLoad = function (baseId, selectedId) {
-    $('SimpleMedia_sort').observe('change', simplemedia.finder.onParamChanged);
-    $('SimpleMedia_sortdir').observe('change', simplemedia.finder.onParamChanged);
-    $('SimpleMedia_pagesize').observe('change', simplemedia.finder.onParamChanged);
-    $('SimpleMedia_gosearch').observe('click', simplemedia.finder.onParamChanged)
-                           .observe('keypress', simplemedia.finder.onParamChanged);
-    $('SimpleMedia_submit').addClassName('z-hide');
-    $('SimpleMedia_cancel').observe('click', simplemedia.finder.handleCancel);
+simplemedia.finder.onLoad = function (baseId, selectedId)
+{
+    $$('div.categoryselector select').invoke('observe', 'change', simplemedia.finder.onParamChanged);
+    $('simpleMediaSort').observe('change', simplemedia.finder.onParamChanged);
+    $('simpleMediaSortDir').observe('change', simplemedia.finder.onParamChanged);
+    $('simpleMediaPageSize').observe('change', simplemedia.finder.onParamChanged);
+    $('simpleMediaSearchGo').observe('click', simplemedia.finder.onParamChanged);
+    $('simpleMediaSearchGo').observe('keypress', simplemedia.finder.onParamChanged);
+    $('simpleMediaSubmit').addClassName('z-hide');
+    $('simpleMediaCancel').observe('click', simplemedia.finder.handleCancel);
 };
 
-simplemedia.finder.onParamChanged = function () {
-    $('selectorForm').submit();
+simplemedia.finder.onParamChanged = function ()
+{
+    $('simpleMediaSelectorForm').submit();
 };
 
-simplemedia.finder.handleCancel = function () {
+simplemedia.finder.handleCancel = function ()
+{
     var editor, w;
 
     editor = $F('editorName');
@@ -78,13 +87,14 @@ simplemedia.finder.handleCancel = function () {
 };
 
 
-function getPasteSnippet(mode, itemId) {
+function getPasteSnippet(mode, itemId)
+{
     var itemUrl, itemTitle, itemDescription, pasteMode;
 
     itemUrl = $F('url' + itemId);
     itemTitle = $F('title' + itemId);
     itemDescription = $F('desc' + itemId);
-    pasteMode = $F('SimpleMedia_pasteas');
+    pasteMode = $F('simpleMediaPasteAs');
 
     if (pasteMode === '2' || pasteMode !== '1') {
         return itemId;
@@ -102,7 +112,8 @@ function getPasteSnippet(mode, itemId) {
 
 
 // User clicks on "select item" button
-simplemedia.finder.selectItem = function (itemId) {
+simplemedia.finder.selectItem = function (itemId)
+{
     var editor, html;
 
     editor = $F('editorName');
@@ -158,10 +169,13 @@ simplemedia.finder.selectItem = function (itemId) {
 };
 
 
-function simmedClosePopup() {
+function simmedClosePopup()
+{
     window.opener.focus();
     window.close();
 }
+
+
 
 
 //=============================================================================
@@ -173,21 +187,24 @@ simplemedia.itemSelector.items = {};
 simplemedia.itemSelector.baseId = 0;
 simplemedia.itemSelector.selectedId = 0;
 
-simplemedia.itemSelector.onLoad = function (baseId, selectedId) {
+simplemedia.itemSelector.onLoad = function (baseId, selectedId)
+{
     simplemedia.itemSelector.baseId = baseId;
     simplemedia.itemSelector.selectedId = selectedId;
 
     // required as a changed object type requires a new instance of the item selector plugin
-    $(baseId + '_objecttype').observe('change', simplemedia.itemSelector.onParamChanged);
+    $('simpleMediaObjectType').observe('change', simplemedia.itemSelector.onParamChanged);
 
-    if ($(baseId + '_catid') !== undefined) {
-        $(baseId + '_catid').observe('change', simplemedia.itemSelector.onParamChanged);
+    if ($(baseId + '_catidMain') != undefined) {
+        $(baseId + '_catidMain').observe('change', simplemedia.itemSelector.onParamChanged);
+    } else if ($(baseId + '_catidsMain') != undefined) {
+        $(baseId + '_catidsMain').observe('change', simplemedia.itemSelector.onParamChanged);
     }
-    $(baseId + '_id').observe('change', simplemedia.itemSelector.onItemChanged);
-    $(baseId + '_sort').observe('change', simplemedia.itemSelector.onParamChanged);
-    $(baseId + '_sortdir').observe('change', simplemedia.itemSelector.onParamChanged);
-    $('SimpleMedia_gosearch').observe('click', simplemedia.itemSelector.onParamChanged)
-                           .observe('keypress', simplemedia.itemSelector.onParamChanged);
+    $(baseId + 'Id').observe('change', simplemedia.itemSelector.onItemChanged);
+    $(baseId + 'Sort').observe('change', simplemedia.itemSelector.onParamChanged);
+    $(baseId + 'SortDir').observe('change', simplemedia.itemSelector.onParamChanged);
+    $('simpleMediaSearchGo').observe('click', simplemedia.itemSelector.onParamChanged);
+    $('simpleMediaSearchGo').observe('keypress', simplemedia.itemSelector.onParamChanged);
 
     simplemedia.itemSelector.getItemList();
     
@@ -195,8 +212,8 @@ simplemedia.itemSelector.onLoad = function (baseId, selectedId) {
     // Add show name/size/date
 };
 
-// if a selection parameter for the list to show changes
-simplemedia.itemSelector.onParamChanged = function () {
+simplemedia.itemSelector.onParamChanged = function ()
+{
     $('ajax_indicator').removeClassName('z-hide');
 
     simplemedia.itemSelector.getItemList();
@@ -207,13 +224,15 @@ simplemedia.itemSelector.getItemList = function () {
     var baseId, pars, request;
 
     baseId = simplemedia.itemSelector.baseId;
-    pars = 'objectType=' + baseId + '&';
-    if ($(baseId + '_catid') !== undefined) {
-        pars += 'catid=' + $F(baseId + '_catid') + '&';
+    pars = 'ot=' + baseId + '&';
+    if ($(baseId + '_catidMain') != undefined) {
+        pars += 'catidMain=' + $F(baseId + '_catidMain') + '&';
+    } else if ($(baseId + '_catidsMain') != undefined) {
+        pars += 'catidsMain=' + $F(baseId + '_catidsMain') + '&';
     }
-    pars += 'sort=' + $F(baseId + '_sort') + '&' +
-            'sortdir=' + $F(baseId + '_sortdir') + '&' +
-            'searchterm=' + $F(baseId + '_searchterm');
+    pars += 'sort=' + $F(baseId + 'Sort') + '&' +
+            'sortdir=' + $F(baseId + 'SortDir') + '&' +
+            'searchterm=' + $F(baseId + 'SearchTerm');
 
     request = new Zikula.Ajax.Request('ajax.php?module=SimpleMedia&func=getItemListFinder', {
         method: 'post',
@@ -232,11 +251,12 @@ simplemedia.itemSelector.getItemList = function () {
     });
 };
 
-simplemedia.itemSelector.updateItemDropdownEntries = function () {
+simplemedia.itemSelector.updateItemDropdownEntries = function ()
+{
     var baseId, itemSelector, items, i, item;
 
     baseId = simplemedia.itemSelector.baseId;
-    itemSelector = $(baseId + '_id');
+    itemSelector = $(baseId + 'Id');
     itemSelector.length = 0;
 
     items = simplemedia.itemSelector.items[baseId];
@@ -246,17 +266,18 @@ simplemedia.itemSelector.updateItemDropdownEntries = function () {
     }
 
     if (simplemedia.itemSelector.selectedId > 0) {
-        $(baseId + '_id').value = simplemedia.itemSelector.selectedId;
+        $(baseId + 'Id').value = simplemedia.itemSelector.selectedId;
     }
 };
 
-simplemedia.itemSelector.updatePreview = function () {
+simplemedia.itemSelector.updatePreview = function ()
+{
     var baseId, items, selectedElement, i;
 
     baseId = simplemedia.itemSelector.baseId;
     items = simplemedia.itemSelector.items[baseId];
 
-    $(baseId + '_previewcontainer').addClassName('z-hide');
+    $(baseId + 'PreviewContainer').addClassName('z-hide');
 
     if (items.length === 0) {
         return;
@@ -273,18 +294,19 @@ simplemedia.itemSelector.updatePreview = function () {
     }
 
     if (selectedElement !== null) {
-        $(baseId + '_previewcontainer').update(window.atob(selectedElement.previewInfo))
-                                       .removeClassName('z-hide');
+        $(baseId + 'PreviewContainer').update(window.atob(selectedElement.previewInfo))
+                                      .removeClassName('z-hide');
     }
 };
 
-simplemedia.itemSelector.onItemChanged = function () {
+simplemedia.itemSelector.onItemChanged = function ()
+{
     var baseId, itemSelector, preview;
 
     baseId = simplemedia.itemSelector.baseId;
-    itemSelector = $(baseId + '_id');
+    itemSelector = $(baseId + 'Id');
     preview = window.atob(simplemedia.itemSelector.items[baseId][itemSelector.selectedIndex].previewInfo);
 
-    $(baseId + '_previewcontainer').update(preview);
-    simplemedia.itemSelector.selectedId = $F(baseId + '_id');
+    $(baseId + 'PreviewContainer').update(preview);
+    simplemedia.itemSelector.selectedId = $F(baseId + 'Id');
 };

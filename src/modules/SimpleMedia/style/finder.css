@@ -4,48 +4,48 @@ body {
     text-align: left;
 }
 
-.simmedform fieldset,
-.simmedform fieldset legend {
+.simplemedia-finderform fieldset,
+.simplemedia-finderform fieldset legend {
     background-color: #fff;
     border: none;
 }
 
-#simmeditemcontainer {
+#simplemediaItemContainer {
     background-color: #eee;
-    height: 350px;
+    height: 300px;
     overflow: auto;
     padding: 5px;
 }
 
-#simmeditemcontainer ul {
+#simplemediaItemContainer ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-#simmeditemcontainer a {
+#simplemediaItemContainer a {
     color: #000;
     margin: 0.1em 0.2em;
     text-decoration: underline;
 }
-#simmeditemcontainer a:hover,
-#simmeditemcontainer a:focus,
-#simmeditemcontainer a:active {
+#simplemediaItemContainer a:hover,
+#simplemediaItemContainer a:focus,
+#simplemediaItemContainer a:active {
     color: #900;
     text-decoration: none;
 }
 
-#simmeditemcontainer a img {
+#simplemediaItemContainer a img {
     border: none;
 }
 
-#simmeditemcontainer a img {
+#simplemediaItemContainer a img {
     border: 1px solid #ccc;
     background-color: #f5f5f5;
     padding: 0.5em;
 }
-#simmeditemcontainer a:hover img,
-#simmeditemcontainer a:focus img,
-#simmeditemcontainer a:active img {
+#simplemediaItemContainer a:hover img,
+#simplemediaItemContainer a:focus img,
+#simplemediaItemContainer a:active img {
     background-color: #fff;
 }

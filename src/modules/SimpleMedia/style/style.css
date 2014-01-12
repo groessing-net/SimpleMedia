@@ -4,11 +4,11 @@ div#z-maincontent.z-module-simplemedia table tbody tr td {
 }
 
 /* display pages */
-.simplemedia-display.withrightbox div.z-panel-content {
+.simplemedia-display.with-rightbox div.z-panel-content {
     float: left;
     width: 79%;
 }
-.simplemedia-display div.simplemediarightbox {
+.simplemedia-display div.simplemedia-rightbox {
     float: right;
     margin: 0 1em;
     padding: .5em;
@@ -16,18 +16,22 @@ div#z-maincontent.z-module-simplemedia table tbody tr td {
     /*border: 1px solid #666;*/
 }
 
-.simplemedia-display div.simplemediarightbox h3 {
+.simplemedia-display div.simplemedia-rightbox h3 {
     color: #333;
     font-weight: 400;
-    border-bottom: 1px solid #CCC;
+    border-bottom: 1px solid #ccc;
     padding-bottom: 8px;
 }
 
-.simplemedia-display div.simplemediarightbox p.manageLink {
+.simplemedia-display div.simplemedia-rightbox p.managelink {
     margin-left: 18px;
 }
 
-.z-treecontainer {
+div.simplemedia-mapcontainer {
+    height: 400px;
+}
+
+.z-tree-container {
     border: 1px solid #ccc;
     width: 400px;
     float: left;
@@ -58,12 +62,16 @@ div.z-formrow input.validation-passed, div.z-formrow textarea.validation-passed 
 }
 
 /* edit pages */
-div.simmedRelationLeftSide {
+form.z-form select.z-form-dropdownlist,
+form.z-form input.z-form-upload {
+    float: left;
+}
+div.simplemedia-relation-leftside {
     float: left;
     width: 25%;
 }
 
-div.simmedRelationRightSide {
+div.simplemedia-relation-rightside {
     float: right;
     width: 65%;
 }
@@ -74,7 +82,7 @@ div.simplemedia-edit .z-panel-content legend {
 }
 
 
-div.simmedAutoCompleteWrap {
+div.simplemedia-autocomplete-wrap {
     position: absolute;
     height: 40px;
     margin: 0;
@@ -83,7 +91,7 @@ div.simmedAutoCompleteWrap {
     top: 10px;
 }
 
-div.simmedAutoComplete {
+div.simplemedia-autocomplete {
     position: relative !important;
     top: 2px !important;
     width: 191px !important;
@@ -93,15 +101,15 @@ div.simmedAutoComplete {
     padding: 0;
 }
 
-div.simmedAutoComplete {
+div.simplemedia-autocomplete {
     left: 0 !important;
 }
-div.simmedAutoComplete ul {
+div.simplemedia-autocomplete ul {
     margin: 0;
     padding: 0;
 }
 
-div.simmedAutoComplete ul li {
+div.simplemedia-autocomplete ul li {
     margin: 0;
     padding: 0.2em 0 0.2em 20px;
     list-style-type: none;
@@ -112,44 +120,45 @@ div.simmedAutoComplete ul li {
     background-repeat: no-repeat;
 }
 
-div.simmedAutoComplete ul li {
+div.simplemedia-autocomplete ul li {
     background-image: url("../../../images/icons/extrasmall/tab_right.png");
 }
 
-div.simmedAutoComplete ul li.selected {
+div.simplemedia-autocomplete ul li.selected {
     background-color: #ffb;
 }
 
-div.simmedAutoComplete ul li div.itemtitle {
+div.simplemedia-autocomplete ul li div.itemtitle {
     font-weight: 700;
     font-size: 12px;
     line-height: 1.2em;
 }
-div.simmedAutoComplete ul li div.itemdesc {
+div.simplemedia-autocomplete ul li div.itemdesc {
     font-size: 10px;
     color: #888;
 }
 
-button.simmedInlineButton {
+button.simplemedia-inline-button {
     margin-top: 1em;
 }
 
-div.simplemedia-view form.simmedQuickNavForm {
+div.simplemedia-view form.simplemedia-quicknav {
     margin: 10px 0;
     padding: 8px 12px;
     border: 1px solid #ccc;
 }
 
-div.simplemedia-view form.simmedQuickNavForm fieldset {
+div.simplemedia-view form.simplemedia-quicknav fieldset {
     padding: 3px 10px;
     margin-bottom: 0;
 }
 
-div.simplemedia-view form.simmedQuickNavForm fieldset h3 {
+div.simplemedia-view form.simplemedia-quicknav fieldset h3 {
     margin-top: 0;
+    display: none;
 }
 
-div.simplemedia-view form.simmedQuickNavForm fieldset #num {
+div.simplemedia-view form.simplemedia-quicknav fieldset #num {
     width: 50px;
     text-align: right;
 }

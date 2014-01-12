@@ -2,18 +2,64 @@
 
 
 /**
+ * Override method of Scriptaculous auto completer method.
+ * Purpose: better feedback if no results are found (#247).
+ * See http://stackoverflow.com/questions/657839/scriptaculous-ajax-autocomplete-empty-response for more information.
+ */
+Ajax.Autocompleter.prototype.updateChoices = function (choices)
+{
+    if (!this.changed && this.hasFocus) {
+        if (!choices || choices == '<ul></ul>') {
+            this.stopIndicator();
+            var idPrefix = this.options.indicator.replace('Indicator', '');
+            if ($(idPrefix + 'NoResultsHint') != undefined) {
+                $(idPrefix + 'NoResultsHint').removeClassName('z-hide');
+            }
+        } else {
+            this.update.innerHTML = choices;
+            Element.cleanWhitespace(this.update);
+            Element.cleanWhitespace(this.update.down());
+
+            if (this.update.firstChild && this.update.down().childNodes) {
+                this.entryCount = this.update.down().childNodes.length;
+                for (var i = 0; i < this.entryCount; i++) {
+                    var entry = this.getEntry(i);
+                    entry.autocompleteIndex = i;
+                    this.addObservers(entry);
+                }
+            } else {
+                this.entryCount = 0;
+            }
+
+            this.stopIndicator();
+            this.index = 0;
+
+            if (this.entryCount == 1 && this.options.autoSelect) {
+                this.selectEntry();
+                this.hide();
+            } else {
+                this.render();
+            }
+        }
+    }
+}
+
+/**
  * Resets the value of an upload / file input field.
  */
-function simmedResetUploadField(fieldName) {
+function simmedResetUploadField(fieldName)
+{
     if ($(fieldName) != undefined) {
         $(fieldName).setAttribute('type', 'input');
         $(fieldName).setAttribute('type', 'file');
     }
 }
+
 /**
  * Initialises the reset button for a certain upload input.
  */
-function simmedInitUploadField(fieldName) {
+function simmedInitUploadField(fieldName)
+{
     if ($('reset' + fieldName.capitalize() + 'Val') != undefined) {
         $('reset' + fieldName.capitalize() + 'Val').observe('click', function (evt) {
             evt.preventDefault();
@@ -23,32 +69,43 @@ function simmedInitUploadField(fieldName) {
 }
 
 /**
- * Resets the value of a date or datetime input field.
+ * Example method for initialising geo coding functionality in JavaScript.
+ * In contrast to the map picker this one determines coordinates for a given address.
+ * To use this please customise the form field names to your needs.
+ * There is also a method on PHP level available in the \SimpleMedia_Util_Controller class.
  */
-function simmedResetDateField(fieldName) {
-    if ($(fieldName) != undefined) {
-        $(fieldName).value = '';
-    }
-    if ($(fieldName + 'cal') != undefined) {
-        $(fieldName + 'cal').update(Zikula.__('No date set.', 'module_SimpleMedia'));
-    }
+function simmedInitGeoCoding()
+{
+    $('linkGetCoordinates').observe('click', function (evt) {
+        simmedDoGeoCoding();
+    });
 }
-/**
- * Initialises the reset button for a certain date input.
- */
-function simmedInitDateField(fieldName) {
-    if ($('reset' + fieldName.capitalize() + 'Val') != undefined) {
-        $('reset' + fieldName.capitalize() + 'Val').observe('click', function (evt) {
-            evt.preventDefault();
-            simmedResetDateField(fieldName);
-        }).removeClassName('z-hide');
+
+function simmedDoGeoCoding()
+{
+    var geocoder = new mxn.Geocoder('googlev3', simmedGeoCodeReturn, simmedGeoCodeErrorCallback);
+
+    var address = {
+        address : $F('street') + ' ' + $F('houseNumber') + ' ' + $F('zipcode') + ' ' + $F('city') + ' ' + $F('country')
+    };
+    geocoder.geocode(address);
+
+    function simmedGeoCodeErrorCallback (status) {
+        Zikula.UI.Alert(Zikula.__('Error during geocoding:', 'module_SimpleMedia') + ' ' + status);
+    }
+
+    function simmedGeoCodeReturn (location) {
+        Form.Element.setValue('latitude', location.point.lat.toFixed(4));
+        Form.Element.setValue('longitude', location.point.lng.toFixed(4));
+        newCoordinatesEventHandler();
     }
 }
 
 /**
  * Toggles the fields of an auto completion field.
  */
-function simmedToggleRelatedItemForm(idPrefix) {
+function simmedToggleRelatedItemForm(idPrefix)
+{
     // if we don't have a toggle link do nothing
     if ($(idPrefix + 'AddLink') === undefined) {
         return;
@@ -64,7 +121,8 @@ function simmedToggleRelatedItemForm(idPrefix) {
 /**
  * Resets an auto completion field.
  */
-function simmedResetRelatedItemForm(idPrefix) {
+function simmedResetRelatedItemForm(idPrefix)
+{
     // hide the sub form
     simmedToggleRelatedItemForm(idPrefix);
 
@@ -77,7 +135,8 @@ function simmedResetRelatedItemForm(idPrefix) {
  * For edit forms we use "iframe: true" to ensure file uploads work without problems.
  * For all other windows we use "iframe: false" because we want the escape key working.
  */
-function simmedCreateWindowInstance(containerElem, useIframe) {
+function simmedCreateWindowInstance(containerElem, useIframe)
+{
     var newWindow;
 
     // define the new window instance
@@ -104,7 +163,8 @@ function simmedCreateWindowInstance(containerElem, useIframe) {
 /**
  * Observe a link for opening an inline window
  */
-function simmedInitInlineWindow(objectType, containerID) {
+function simmedInitInlineWindow(objectType, containerID)
+{
     var found, newItem;
 
     // whether the handler has been found
@@ -144,7 +204,8 @@ function simmedInitInlineWindow(objectType, containerID) {
 /**
  * Removes a related item from the list of selected ones.
  */
-function simmedRemoveRelatedItem(idPrefix, removeId) {
+function simmedRemoveRelatedItem(idPrefix, removeId)
+{
     var itemIds, itemIdsArr;
 
     itemIds = $F(idPrefix + 'ItemList');
@@ -159,9 +220,10 @@ function simmedRemoveRelatedItem(idPrefix, removeId) {
 }
 
 /**
- * Add a related item to selection which has been chosen by auto completion
+ * Adds a related item to selection which has been chosen by auto completion.
  */
-function simmedSelectRelatedItem(objectType, idPrefix, inputField, selectedListItem) {
+function simmedSelectRelatedItem(objectType, idPrefix, inputField, selectedListItem)
+{
     var newItemId, newTitle, includeEditing, editLink, removeLink, elemPrefix, itemPreview, li, editHref, fldPreview, itemIds, itemIdsArr;
 
     newItemId = selectedListItem.id;
@@ -170,8 +232,8 @@ function simmedSelectRelatedItem(objectType, idPrefix, inputField, selectedListI
     elemPrefix = idPrefix + 'Reference_' + newItemId;
     itemPreview = '';
 
-    if ($('itempreview' + selectedListItem.id) !== null) {
-        itemPreview = $('itempreview' + selectedListItem.id).innerHTML;
+    if ($('itemPreview' + selectedListItem.id) !== null) {
+        itemPreview = $('itemPreview' + selectedListItem.id).innerHTML;
     }
 
     var li = Builder.node('li', {id: elemPrefix}, newTitle);
@@ -223,7 +285,8 @@ function simmedSelectRelatedItem(objectType, idPrefix, inputField, selectedListI
 /**
  * Initialise a relation field section with autocompletion and optional edit capabilities
  */
-function simmedInitRelationItemsForm(objectType, idPrefix, includeEditing) {
+function simmedInitRelationItemsForm(objectType, idPrefix, includeEditing)
+{
     var acOptions, itemIds, itemIdsArr;
 
     // add handling for the toggle link if existing
@@ -253,6 +316,11 @@ function simmedInitRelationItemsForm(objectType, idPrefix, includeEditing) {
             if ($(idPrefix + 'ItemList') !== undefined) {
                 queryString += '&exclude=' + $F(idPrefix + 'ItemList');
             }
+
+            if ($(idPrefix + 'NoResultsHint') != undefined) {
+                $(idPrefix + 'NoResultsHint').addClassName('z-hide');
+            }
+
             return queryString;
         },
         afterUpdateElement: function (inputField, selectedListItem) {
@@ -302,7 +370,8 @@ function simmedInitRelationItemsForm(objectType, idPrefix, includeEditing) {
 /**
  * Closes an iframe from the document displayed in it
  */
-function simmedCloseWindowFromInside(idPrefix, itemId) {
+function simmedCloseWindowFromInside(idPrefix, itemId)
+{
     // if there is no parent window do nothing
     if (window.parent === '') {
         return;
