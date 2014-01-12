@@ -1,10 +1,10 @@
 {* Purpose of this template: Display search options *}
-<input type="hidden" id="active_simplemedia" name="active[SimpleMedia]" value="1" checked="checked" />
+<input type="hidden" id="simpleMediaActive" name="active[SimpleMedia]" value="1" checked="checked" />
 <div>
-    <input type="checkbox" id="active_simplemedia_media" name="search_simplemedia_types['medium']" value="1"{if $active_medium} checked="checked"{/if} />
-    <label for="active_simplemedia_media">{gt text='Media' domain='module_simplemedia'}</label>
+    <input type="checkbox" id="simpleMediaMedia" name="simpleMediaSearchTypes[]" value="medium"{if $active_medium} checked="checked"{/if} />
+    <label for="active_simpleMediaMedia">{gt text='Media' domain='module_simplemedia'}</label>
 </div>
 <div>
-    <input type="checkbox" id="active_simplemedia_collections" name="search_simplemedia_types['collection']" value="1"{if $active_collection} checked="checked"{/if} />
-    <label for="active_simplemedia_collections">{gt text='Collections' domain='module_simplemedia'}</label>
+    <input type="checkbox" id="simpleMediaCollections" name="simpleMediaSearchTypes[]" value="collection"{if $active_collection} checked="checked"{/if} />
+    <label for="active_simpleMediaCollections">{gt text='Collections' domain='module_simplemedia'}</label>
 </div>

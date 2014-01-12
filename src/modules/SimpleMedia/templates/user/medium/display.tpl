@@ -1,108 +1,118 @@
 {* purpose of this template: media display view in user area *}
 {include file='user/header.tpl'}
 <div class="simplemedia-medium simplemedia-display">
-{gt text='Medium' assign='templateTitle'}
-{assign var='templateTitle' value=$medium.title|default:$templateTitle}
-{pagesetvar name='title' value=$templateTitle|@html_entity_decode}
-<div class="z-frontendcontainer">
-    <h2>{$templateTitle|notifyfilters:'simplemedia.filter_hooks.media.filter'}{icon id='itemactionstrigger' type='options' size='extrasmall' __alt='Actions' class='z-pointer z-hide'}</h2>
+    {gt text='Medium' assign='templateTitle'}
+    {assign var='templateTitle' value=$medium->getTitleFromDisplayPattern()|default:$templateTitle}
+    {pagesetvar name='title' value=$templateTitle|@html_entity_decode}
+    <h2>{$templateTitle|notifyfilters:'simplemedia.filter_hooks.media.filter'}{icon id='itemActionsTrigger' type='options' size='extrasmall' __alt='Actions' class='z-pointer z-hide'}</h2>
 
-
-{if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
-<div class="z-panels" id="SimpleMedia_panel">
-    <h3 id="z-panel-header-fields" class="z-panel-header z-panel-indicator z-pointer z-panel-active">{gt text='Fields'}</h3>
-    <div class="z-panel-content z-panel-active" style="overflow: visible">
-{/if}
-<dl>
-    <dt>{gt text='The file'}</dt>
-    <dd>  <a href="{$medium.theFileFullPathURL}" title="{$medium.title|replace:"\"":""}"{if $medium.theFileMeta.isImage} rel="imageviewer[medium]"{/if}>
-      {if $medium.theFileMeta.isImage}
-          <img src="{$medium.theFileFullPath|simplemediaImageThumb:'medium':'theFile':250:150}" width="250" height="150" alt="{$medium.title|replace:"\"":""}" />
-      {else}
-          {gt text='Download'} ({$medium.theFileMeta.size|simplemediaGetFileSize:$medium.theFileFullPath:false:false})
-      {/if}
-      </a>
-    </dd>
-    <dt>{gt text='Description'}</dt>
-    <dd>{$medium.description}</dd>
-    <dt>{gt text='Additional data'}</dt>
-    <dd>{$medium.additionalData}</dd>
-    <dt>{gt text='Sort value'}</dt>
-    <dd>{$medium.sortValue}</dd>
-    <dt>{gt text='Media type'}</dt>
-    <dd>{$medium.mediaType|simplemediaGetListEntry:'medium':'mediaType'|safetext}</dd>
-    <dt>{gt text='Collection'}</dt>
-    <dd>
-    {if isset($medium.Collection) && $medium.Collection ne null}
-      {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
-      <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$medium.Collection.id}">
-        {$medium.Collection.title|default:""}
-      </a>
-      <a id="collectionItem{$medium.Collection.id}Display" href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$medium.Collection.id theme='Printer' forcelongurl=true}" title="{gt text='Open quick view window'}" class="z-hide">
-          {icon type='view' size='extrasmall' __alt='Quick view'}
-      </a>
-      <script type="text/javascript">
-      /* <![CDATA[ */
-          document.observe('dom:loaded', function() {
-              simmedInitInlineWindow($('collectionItem{{$medium.Collection.id}}Display'), '{{$medium.Collection.title|replace:"'":""}}');
-          });
-      /* ]]> */
-      </script>
-      {else}
-    {$medium.Collection.title|default:""}
-      {/if}
-    {else}
-        {gt text='No set.'}
-    {/if}
-    </dd>
-    
-</dl>
-{if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
-    </div>
-{/if}
-{include file='user/include_attributes_display.tpl' obj=$medium panel=true}
-{include file='user/include_categories_display.tpl' obj=$medium panel=true}
-{include file='user/include_metadata_display.tpl' obj=$medium panel=true}
-{include file='user/include_standardfields_display.tpl' obj=$medium panel=true}
-
-{if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
-    {* include display hooks *}
-    {notifydisplayhooks eventname='simplemedia.ui_hooks.media.display_view' id=$medium.id urlobject=$currentUrlObject assign='hooks'}
-    {foreach key='providerArea' item='hook' from=$hooks}
-        <h3 class="z-panel-header z-panel-indicator z-pointer">{$providerArea}</h3>
-        <div class="z-panel-content" style="display: none">{$hook}</div>
-    {/foreach}
-    {if count($medium._actions) gt 0}
-        <p id="itemactions">
-        {foreach item='option' from=$medium._actions}
-            <a href="{$option.url.type|simplemediaActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}" class="z-icon-es-{$option.icon}">{$option.linkText|safetext}</a>
-        {/foreach}
-        </p>
+    <dl>
+        <dt>{gt text='Title'}</dt>
+        <dd>{$medium.title}</dd>
+        <dt>{gt text='The file'}</dt>
+        <dd>  <a href="{$medium.theFileFullPathURL}" title="{$medium->getTitleFromDisplayPattern()|replace:"\"":""}"{if $medium.theFileMeta.isImage} rel="imageviewer[medium]"{/if}>
+          {if $medium.theFileMeta.isImage}
+              {thumb image=$medium.theFileFullPath objectid="medium-`$medium.id`" preset=$mediumThumbPresetTheFile tag=true img_alt=$medium->getTitleFromDisplayPattern()}
+          {else}
+              {gt text='Download'} ({$medium.theFileMeta.size|simplemediaGetFileSize:$medium.theFileFullPath:false:false})
+          {/if}
+          </a>
+        </dd>
+        <dt>{gt text='Description'}</dt>
+        <dd>{$medium.description}</dd>
+        <dt>{gt text='Zipcode'}</dt>
+        <dd>{$medium.zipcode}</dd>
+        <dt>{gt text='Preview image'}</dt>
+        <dd>{$medium.previewImage}</dd>
+        <dt>{gt text='Sort value'}</dt>
+        <dd>{$medium.sortValue}</dd>
+        <dt>{gt text='Media type'}</dt>
+        <dd>{$medium.mediaType|simplemediaGetListEntry:'medium':'mediaType'|safetext}</dd>
+        <dt>{gt text='Views count'}</dt>
+        <dd>{$medium.viewsCount}</dd>
+        <dt>{gt text='Latitude'}</dt>
+        <dd>{$medium.latitude|simplemediaFormatGeoData}</dd>
+        <dt>{gt text='Longitude'}</dt>
+        <dd>{$medium.longitude|simplemediaFormatGeoData}</dd>
+        <dt>{gt text='Collection'}</dt>
+        <dd>
+        {if isset($medium.Collection) && $medium.Collection ne null}
+          {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
+          <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$medium.Collection.id}">{strip}
+            {$medium.Collection->getTitleFromDisplayPattern()|default:""}
+          {/strip}</a>
+          <a id="collectionItem{$medium.Collection.id}Display" href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$medium.Collection.id theme='Printer' forcelongurl=true}" title="{gt text='Open quick view window'}" class="z-hide">{icon type='view' size='extrasmall' __alt='Quick view'}</a>
+          <script type="text/javascript">
+          /* <![CDATA[ */
+              document.observe('dom:loaded', function() {
+                  simmedInitInlineWindow($('collectionItem{{$medium.Collection.id}}Display'), '{{$medium.Collection->getTitleFromDisplayPattern()|replace:"'":""}}');
+              });
+          /* ]]> */
+          </script>
+          {else}
+            {$medium.Collection->getTitleFromDisplayPattern()|default:""}
+          {/if}
+        {else}
+            {gt text='Not set.'}
+        {/if}
+        </dd>
+        
+    </dl>
+    <h3 class="simplemedia-map">{gt text='Map'}</h3>
+    {pageaddvarblock name='header'}
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+        <script type="text/javascript" src="{$baseurl}plugins/Mapstraction/lib/vendor/mxn/mxn.js?(googlev3)"></script>
         <script type="text/javascript">
         /* <![CDATA[ */
-            document.observe('dom:loaded', function() {
-                simmedInitItemActions('medium', 'display', 'itemactions');
+            var mapstraction;
+            Event.observe(window, 'load', function() {
+                mapstraction = new mxn.Mapstraction('mapContainer', 'googlev3');
+                mapstraction.addControls({
+                    pan: true,
+                    zoom: 'small',
+                    map_type: true
+                });
+    
+                var latlon = new mxn.LatLonPoint({{$medium.latitude|simplemediaFormatGeoData}}, {{$medium.longitude|simplemediaFormatGeoData}});
+    
+                mapstraction.setMapType(mxn.Mapstraction.SATELLITE);
+                mapstraction.setCenterAndZoom(latlon, 18);
+                mapstraction.mousePosition('position');
+    
+                // add a marker
+                var marker = new mxn.Marker(latlon);
+                mapstraction.addMarker(marker, true);
             });
         /* ]]> */
         </script>
-    {/if}
-{/if}
+    {/pageaddvarblock}
+    <div id="mapContainer" class="simplemedia-mapcontainer">
+    </div>
+    {include file='user/include_attributes_display.tpl' obj=$medium}
+    {include file='user/include_categories_display.tpl' obj=$medium}
+    {include file='user/include_metadata_display.tpl' obj=$medium}
+    {include file='user/include_standardfields_display.tpl' obj=$medium}
 
-</div>
+    {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
+        {* include display hooks *}
+        {notifydisplayhooks eventname='simplemedia.ui_hooks.media.display_view' id=$medium.id urlobject=$currentUrlObject assign='hooks'}
+        {foreach key='providerArea' item='hook' from=$hooks}
+            {$hook}
+        {/foreach}
+        {if count($medium._actions) gt 0}
+            <p id="itemActions">
+            {foreach item='option' from=$medium._actions}
+                <a href="{$option.url.type|simplemediaActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}" class="z-icon-es-{$option.icon}">{$option.linkText|safetext}</a>
+            {/foreach}
+            </p>
+            <script type="text/javascript">
+            /* <![CDATA[ */
+                document.observe('dom:loaded', function() {
+                    simmedInitItemActions('medium', 'display', 'itemActions');
+                });
+            /* ]]> */
+            </script>
+        {/if}
+    {/if}
 </div>
 {include file='user/footer.tpl'}
-
-{if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
-    <script type="text/javascript">
-    /* <![CDATA[ */
-        document.observe('dom:loaded', function() {
-            var panel = new Zikula.UI.Panels('SimpleMedia_panel', {
-                headerSelector: 'h3',
-                headerClassName: 'z-panel-header z-panel-indicator',
-                contentClassName: 'z-panel-content',
-                active: ['z-panel-header-fields']
-            });
-        });
-    /* ]]> */
-    </script>
-{/if}

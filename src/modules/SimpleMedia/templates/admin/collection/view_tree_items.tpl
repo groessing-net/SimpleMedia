@@ -7,8 +7,8 @@
 {* initialise additional gettext domain for translations within javascript *}
 {pageaddvar name='jsgettext' value='module_simplemedia_js:SimpleMedia'}
 
-<div id="collection_tree{$rootId}" class="z-treecontainer">
-    <div id="treeitems{$rootId}" class="z-treeitems">
+<div id="collectionTree{$rootId}" class="z-tree-container">
+    <div id="collectionTreeItems{$rootId}" class="z-tree-items">
     {if $hasNodes}
         {simplemediaTreeJS objectType='collection' tree=$items controller='admin' root=$rootId sortable=true}
     {/if}

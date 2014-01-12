@@ -13,7 +13,7 @@
     <channel>
         <title>{$channelTitle}</title>
         <link>{$baseurl|escape:'html'}</link>
-        <atom:link href="{php}echo substr(System::getBaseURL(), 0, strlen(System::getBaseURL())-1);{/php}{getcurrenturi}" rel="self" type="application/rss+xml" />
+        <atom:link href="{php}echo substr(\System::getBaseURL(), 0, strlen(\System::getBaseURL())-1);{/php}{getcurrenturi}" rel="self" type="application/rss+xml" />
         <description>{$channelDesc} - {$modvars.ZConfig.slogan}</description>
         <language>{lang}</language>
         {* commented out as $imagepath is not defined and we can't know whether this logo exists or not
@@ -29,7 +29,7 @@
 
 {foreach item='collection' from=$items}
     <item>
-        <title><![CDATA[{if isset($collection.updatedDate) && $collection.updatedDate ne null}{$collection.updatedDate|dateformat} - {/if}{$collection.title|notifyfilters:'simplemedia.filterhook.collections'}]]></title>
+        <title><![CDATA[{if isset($collection.updatedDate) && $collection.updatedDate ne null}{$collection.updatedDate|dateformat} - {/if}{$collection->getTitleFromDisplayPattern()|notifyfilters:'simplemedia.filterhook.collections'}]]></title>
         <link>{modurl modname='SimpleMedia' type='admin' func='display' ot='collection' id=$collection.id fqurl='1'}</link>
         <guid>{modurl modname='SimpleMedia' type='admin' func='display' ot='collection' id=$collection.id fqurl='1'}</guid>
         {if isset($collection.createdUserId)}
@@ -37,9 +37,8 @@
             {usergetvar name='name' uid=$collection.createdUserId assign='cr_name'}
             <author>{usergetvar name='email' uid=$collection.createdUserId} ({$cr_name|default:$cr_uname})</author>
         {/if}
-        {* TODO for later
-        <category><![CDATA[{gt text='Categories'}: {$collection.categories}]]></category>
-        *}
+
+        <category><![CDATA[{gt text='Categories'}: {foreach name='categoryLoop' key='propName' item='catMapping' from=$collection.categories}{$catMapping.category.name|safetext}{if !$smarty.foreach.categoryLoop.last}, {/if}{/foreach}]]></category>
 
         <description>
             <![CDATA[

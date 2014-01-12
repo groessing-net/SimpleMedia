@@ -1,11 +1,11 @@
 {* Purpose of this template: Display collections within an external context *}
 <dl>
-    {foreach item='item' from=$items}
-        <dt>{$item.title}</dt>
-        {if $item.description}
-            <dd>{$item.description|truncate:200:"..."}</dd>
+    {foreach item='collection' from=$items}
+        <dt>{$collection->getTitleFromDisplayPattern()}</dt>
+        {if $collection.description}
+            <dd>{$collection.description|truncate:200:"..."}</dd>
         {/if}
-        <dd><a href="{modurl modname='SimpleMedia' type='user' func='display' ot=$objectType id=$item.id}">{gt text='Read more'}</a>
+        <dd><a href="{modurl modname='SimpleMedia' type='user' func='display' ot=$objectType id=$collection.id}">{gt text='Read more'}</a>
         </dd>
     {foreachelse}
         <dt>{gt text='No entries found.'}</dt>

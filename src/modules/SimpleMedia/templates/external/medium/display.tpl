@@ -1,23 +1,23 @@
 {* Purpose of this template: Display one certain medium within an external context *}
-<div id="medium{$medium.de.guite.modulestudio.metamodel.modulestudio.impl.IntegerFieldImpl@566e9e64 (name: id, documentation: null) (defaultValue: null, mandatory: true, nullable: false, leading: false, primaryKey: true, readonly: false, unique: true, translatable: false, sluggablePosition: 0, sortableGroup: false) (length: 9, sortablePosition: false) (minValue: 0, maxValue: 0, aggregateFor: , version: false)}" class="simmedexternalmedium">
+<div id="medium{$medium.id}" class="simplemedia-external-medium">
 {if $displayMode eq 'link'}
-    <p class="simmedexternallink">
-    <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='medium' id=$medium.id slug=$medium.slug}" title="{$medium.title|replace:"\"":""}">
-    {$medium.title|notifyfilters:'simplemedia.filter_hooks.media.filter'}
+    <p class="simplemedia-external-link">
+    <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='medium' id=$medium.id slug=$medium.slug}" title="{$medium->getTitleFromDisplayPattern()|replace:"\"":""}">
+    {$medium->getTitleFromDisplayPattern()|notifyfilters:'simplemedia.filter_hooks.media.filter'}
     </a>
     </p>
 {/if}
-{checkpermissionblock component='SimpleMedia::' instance='.*' level='ACCESS_EDIT'}
+{checkpermissionblock component='SimpleMedia::' instance='::' level='ACCESS_EDIT'}
     {if $displayMode eq 'embed'}
-        <p class="simmedexternaltitle">
-            <strong>{$medium.title|notifyfilters:'simplemedia.filter_hooks.media.filter'}</strong>
+        <p class="simplemedia-external-title">
+            <strong>{$medium->getTitleFromDisplayPattern()|notifyfilters:'simplemedia.filter_hooks.media.filter'}</strong>
         </p>
     {/if}
 {/checkpermissionblock}
 
 {if $displayMode eq 'link'}
 {elseif $displayMode eq 'embed'}
-    <div class="simmedexternalsnippet">
+    <div class="simplemedia-external-snippet">
         &nbsp;
     </div>
 
@@ -30,7 +30,7 @@
 
     {* you can enable more details about the item: *}
     {*
-        <p class="simmedexternaldesc">
+        <p class="simplemedia-external-description">
             {if $medium.description ne ''}{$medium.description}<br />{/if}
             {assignedcategorieslist categories=$medium.categories doctrine2=true}
         </p>

@@ -1,9 +1,9 @@
 {* Purpose of this template: Display collections in html mailings *}
 {*
 <ul>
-{foreach item='item' from=$items}
+{foreach item='collection' from=$items}
     <li>
-        <a href="{modurl modname='SimpleMedia' type='user' func='display' ot=$objectType id=$item.id fqurl=true}">{$item.title}
+        <a href="{modurl modname='SimpleMedia' type='user' func='display' ot=$objectType id=$collection.id fqurl=true}">{$collection->getTitleFromDisplayPattern()}
         </a>
     </li>
 {foreachelse}
@@ -12,4 +12,4 @@
 </ul>
 *}
 
-{include file='contenttype/itemlist_Collection_display_description.tpl'}
+{include file='contenttype/itemlist_collection_display_description.tpl'}

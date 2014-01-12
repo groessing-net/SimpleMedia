@@ -1,4 +1,4 @@
-{* purpose of this template: media atom feed in admin area *}
+{* purpose of this template: media atom feed in user area *}
 {simplemediaTemplateHeaders contentType='application/atom+xml'}<?xml version="1.0" encoding="{charset assign='charset'}{if $charset eq 'ISO-8859-15'}ISO-8859-1{else}{$charset}{/if}" ?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 {gt text='Latest media' assign='channelTitle'}
@@ -10,20 +10,20 @@
     </author>
 {assign var='numItems' value=$items|@count}
 {if $numItems}
-{capture assign='uniqueID'}tag:{$baseurl|replace:'http://':''|replace:'/':''},{$items[0].createdDate|dateformat|default:$smarty.now|dateformat:'%Y-%m-%d'}:{modurl modname='SimpleMedia' type='admin' func='display' ot='medium' id=$items[0].id slug=$items[0].slug}{/capture}
+{capture assign='uniqueID'}tag:{$baseurl|replace:'http://':''|replace:'/':''},{$items[0].createdDate|dateformat|default:$smarty.now|dateformat:'%Y-%m-%d'}:{modurl modname='SimpleMedia' type='user' func='display' ot='medium' id=$items[0].id slug=$items[0].slug}{/capture}
     <id>{$uniqueID}</id>
     <updated>{$items[0].updatedDate|default:$smarty.now|dateformat:'%Y-%m-%dT%H:%M:%SZ'}</updated>
 {/if}
-    <link rel="alternate" type="text/html" hreflang="{lang}" href="{modurl modname='SimpleMedia' type='admin' func='main' fqurl=1}" />
-    <link rel="self" type="application/atom+xml" href="{php}echo substr(System::getBaseURL(), 0, strlen(System::getBaseURL())-1);{/php}{getcurrenturi}" />
+    <link rel="alternate" type="text/html" hreflang="{lang}" href="{modurl modname='SimpleMedia' type='user' func='main' fqurl=1}" />
+    <link rel="self" type="application/atom+xml" href="{php}echo substr(\System::getBaseURL(), 0, strlen(\System::getBaseURL())-1);{/php}{getcurrenturi}" />
     <rights>Copyright (c) {php}echo date('Y');{/php}, {$baseurl}</rights>
 
 {foreach item='medium' from=$items}
     <entry>
-        <title type="html">{$medium.title|notifyfilters:'simplemedia.filterhook.media'}</title>
-        <link rel="alternate" type="text/html" href="{modurl modname='SimpleMedia' type='admin' func='display' ot='medium' id=$medium.id slug=$medium.slug fqurl='1'}" />
+        <title type="html">{$medium->getTitleFromDisplayPattern()|notifyfilters:'simplemedia.filterhook.media'}</title>
+        <link rel="alternate" type="text/html" href="{modurl modname='SimpleMedia' type='user' func='display' ot='medium' id=$medium.id slug=$medium.slug fqurl='1'}" />
 
-        {capture assign='uniqueID'}tag:{$baseurl|replace:'http://':''|replace:'/':''},{$medium.createdDate|dateformat|default:$smarty.now|dateformat:'%Y-%m-%d'}:{modurl modname='SimpleMedia' type='admin' func='display' ot='medium' id=$medium.id slug=$medium.slug}{/capture}
+        {capture assign='uniqueID'}tag:{$baseurl|replace:'http://':''|replace:'/':''},{$medium.createdDate|dateformat|default:$smarty.now|dateformat:'%Y-%m-%d'}:{modurl modname='SimpleMedia' type='user' func='display' ot='medium' id=$medium.id slug=$medium.slug}{/capture}
         <id>{$uniqueID}</id>
         {if isset($medium.updatedDate) && $medium.updatedDate ne null}
             <updated>{$medium.updatedDate|dateformat:'%Y-%m-%dT%H:%M:%SZ'}</updated>
@@ -50,7 +50,7 @@
         </summary>
         <content type="html">
             <![CDATA[
-            {$medium.title|replace:'<br>':'<br />'}
+            {$medium.zipcode|replace:'<br>':'<br />'}
             ]]>
         </content>
     </entry>

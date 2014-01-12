@@ -1,9 +1,9 @@
 {* Purpose of this template: Display media in html mailings *}
 {*
 <ul>
-{foreach item='item' from=$items}
+{foreach item='medium' from=$items}
     <li>
-        <a href="{modurl modname='SimpleMedia' type='user' func='display' ot=$objectType id=$item.id slug=$item.slug fqurl=true}">{$item.title}
+        <a href="{modurl modname='SimpleMedia' type='user' func='display' ot=$objectType id=$medium.id slug=$medium.slug fqurl=true}">{$medium->getTitleFromDisplayPattern()}
         </a>
     </li>
 {foreachelse}
@@ -12,4 +12,4 @@
 </ul>
 *}
 
-{include file='contenttype/itemlist_Medium_display_description.tpl'}
+{include file='contenttype/itemlist_medium_display_description.tpl'}

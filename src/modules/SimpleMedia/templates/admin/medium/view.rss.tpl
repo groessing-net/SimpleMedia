@@ -13,7 +13,7 @@
     <channel>
         <title>{$channelTitle}</title>
         <link>{$baseurl|escape:'html'}</link>
-        <atom:link href="{php}echo substr(System::getBaseURL(), 0, strlen(System::getBaseURL())-1);{/php}{getcurrenturi}" rel="self" type="application/rss+xml" />
+        <atom:link href="{php}echo substr(\System::getBaseURL(), 0, strlen(\System::getBaseURL())-1);{/php}{getcurrenturi}" rel="self" type="application/rss+xml" />
         <description>{$channelDesc} - {$modvars.ZConfig.slogan}</description>
         <language>{lang}</language>
         {* commented out as $imagepath is not defined and we can't know whether this logo exists or not
@@ -29,7 +29,7 @@
 
 {foreach item='medium' from=$items}
     <item>
-        <title><![CDATA[{if isset($medium.updatedDate) && $medium.updatedDate ne null}{$medium.updatedDate|dateformat} - {/if}{$medium.title|notifyfilters:'simplemedia.filterhook.media'}]]></title>
+        <title><![CDATA[{if isset($medium.updatedDate) && $medium.updatedDate ne null}{$medium.updatedDate|dateformat} - {/if}{$medium->getTitleFromDisplayPattern()|notifyfilters:'simplemedia.filterhook.media'}]]></title>
         <link>{modurl modname='SimpleMedia' type='admin' func='display' ot='medium' id=$medium.id slug=$medium.slug fqurl='1'}</link>
         <guid>{modurl modname='SimpleMedia' type='admin' func='display' ot='medium' id=$medium.id slug=$medium.slug fqurl='1'}</guid>
         {if isset($medium.createdUserId)}
@@ -39,9 +39,8 @@
             {elseif isset($medium.__META__) && isset($medium.__META__.author)}
                 <author>{$medium.__META__.author}</author>
         {/if}
-        {* TODO for later
-        <category><![CDATA[{gt text='Categories'}: {$medium.categories}]]></category>
-        *}
+
+        <category><![CDATA[{gt text='Categories'}: {foreach name='categoryLoop' key='propName' item='catMapping' from=$medium.categories}{$catMapping.category.name|safetext}{if !$smarty.foreach.categoryLoop.last}, {/if}{/foreach}]]></category>
 
         <description>
             <![CDATA[

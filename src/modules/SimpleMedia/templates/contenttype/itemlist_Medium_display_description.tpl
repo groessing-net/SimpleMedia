@@ -1,11 +1,11 @@
 {* Purpose of this template: Display media within an external context *}
 <dl>
-    {foreach item='item' from=$items}
-        <dt>{$item.title}</dt>
-        {if $item.description}
-            <dd>{$item.description|truncate:200:"..."}</dd>
+    {foreach item='medium' from=$items}
+        <dt>{$medium->getTitleFromDisplayPattern()}</dt>
+        {if $medium.description}
+            <dd>{$medium.description|truncate:200:"..."}</dd>
         {/if}
-        <dd><a href="{modurl modname='SimpleMedia' type='user' func='display' ot=$objectType id=$item.id slug=$item.slug}">{gt text='Read more'}</a>
+        <dd><a href="{modurl modname='SimpleMedia' type='user' func='display' ot=$objectType id=$medium.id slug=$medium.slug}">{gt text='Read more'}</a>
         </dd>
     {foreachelse}
         <dt>{gt text='No entries found.'}</dt>

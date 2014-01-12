@@ -1,4 +1,4 @@
-{* purpose of this template: collections atom feed in user area *}
+{* purpose of this template: collections atom feed in admin area *}
 {simplemediaTemplateHeaders contentType='application/atom+xml'}<?xml version="1.0" encoding="{charset assign='charset'}{if $charset eq 'ISO-8859-15'}ISO-8859-1{else}{$charset}{/if}" ?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 {gt text='Latest collections' assign='channelTitle'}
@@ -10,20 +10,20 @@
     </author>
 {assign var='numItems' value=$items|@count}
 {if $numItems}
-{capture assign='uniqueID'}tag:{$baseurl|replace:'http://':''|replace:'/':''},{$items[0].createdDate|dateformat|default:$smarty.now|dateformat:'%Y-%m-%d'}:{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$items[0].id}{/capture}
+{capture assign='uniqueID'}tag:{$baseurl|replace:'http://':''|replace:'/':''},{$items[0].createdDate|dateformat|default:$smarty.now|dateformat:'%Y-%m-%d'}:{modurl modname='SimpleMedia' type='admin' func='display' ot='collection' id=$items[0].id}{/capture}
     <id>{$uniqueID}</id>
     <updated>{$items[0].updatedDate|default:$smarty.now|dateformat:'%Y-%m-%dT%H:%M:%SZ'}</updated>
 {/if}
-    <link rel="alternate" type="text/html" hreflang="{lang}" href="{modurl modname='SimpleMedia' type='user' func='main' fqurl=1}" />
-    <link rel="self" type="application/atom+xml" href="{php}echo substr(System::getBaseURL(), 0, strlen(System::getBaseURL())-1);{/php}{getcurrenturi}" />
+    <link rel="alternate" type="text/html" hreflang="{lang}" href="{modurl modname='SimpleMedia' type='admin' func='main' fqurl=1}" />
+    <link rel="self" type="application/atom+xml" href="{php}echo substr(\System::getBaseURL(), 0, strlen(\System::getBaseURL())-1);{/php}{getcurrenturi}" />
     <rights>Copyright (c) {php}echo date('Y');{/php}, {$baseurl}</rights>
 
 {foreach item='collection' from=$items}
     <entry>
-        <title type="html">{$collection.title|notifyfilters:'simplemedia.filterhook.collections'}</title>
-        <link rel="alternate" type="text/html" href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$collection.id fqurl='1'}" />
+        <title type="html">{$collection->getTitleFromDisplayPattern()|notifyfilters:'simplemedia.filterhook.collections'}</title>
+        <link rel="alternate" type="text/html" href="{modurl modname='SimpleMedia' type='admin' func='display' ot='collection' id=$collection.id fqurl='1'}" />
 
-        {capture assign='uniqueID'}tag:{$baseurl|replace:'http://':''|replace:'/':''},{$collection.createdDate|dateformat|default:$smarty.now|dateformat:'%Y-%m-%d'}:{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$collection.id}{/capture}
+        {capture assign='uniqueID'}tag:{$baseurl|replace:'http://':''|replace:'/':''},{$collection.createdDate|dateformat|default:$smarty.now|dateformat:'%Y-%m-%d'}:{modurl modname='SimpleMedia' type='admin' func='display' ot='collection' id=$collection.id}{/capture}
         <id>{$uniqueID}</id>
         {if isset($collection.updatedDate) && $collection.updatedDate ne null}
             <updated>{$collection.updatedDate|dateformat:'%Y-%m-%dT%H:%M:%SZ'}</updated>
@@ -48,7 +48,7 @@
         </summary>
         <content type="html">
             <![CDATA[
-            {$collection.title|replace:'<br>':'<br />'}
+            {$collection->getTitleFromDisplayPattern()|replace:'<br>':'<br />'}
             ]]>
         </content>
     </entry>

@@ -3,24 +3,24 @@
     {assign var='nolink' value=false}
 {/if}
 {if isset($items) && $items ne null && count($items) gt 0}
-<ul class="relatedItemList medium">
+<ul class="simplemedia-related-item-list medium">
 {foreach name='relLoop' item='item' from=$items}
     <li>
+{strip}
 {if !$nolink}
-    <a href="{modurl modname='SimpleMedia' type='admin' func='display' ot='medium' id=$item.id slug=$item.slug}" title="{$item.title|replace:"\"":""}">
+    <a href="{modurl modname='SimpleMedia' type='admin' func='display' ot='medium' id=$item.id slug=$item.slug}" title="{$item->getTitleFromDisplayPattern()|replace:"\"":""}">
 {/if}
-{$item.title}
+    {$item->getTitleFromDisplayPattern()}
 {if !$nolink}
     </a>
-    <a id="mediumItem{$item.id}Display" href="{modurl modname='SimpleMedia' type='admin' func='display' ot='medium' id=$item.id slug=$item.slug theme='Printer'}" title="{gt text='Open quick view window'}" class="z-hide">
-        {icon type='view' size='extrasmall' __alt='Quick view'}
-    </a>
+    <a id="mediumItem{$item.id}Display" href="{modurl modname='SimpleMedia' type='admin' func='display' ot='medium' id=$item.id slug=$item.slug theme='Printer'}" title="{gt text='Open quick view window'}" class="z-hide">{icon type='view' size='extrasmall' __alt='Quick view'}</a>
 {/if}
+{/strip}
 {if !$nolink}
 <script type="text/javascript">
 /* <![CDATA[ */
     document.observe('dom:loaded', function() {
-        simmedInitInlineWindow($('mediumItem{{$item.id}}Display'), '{{$item.title|replace:"'":""}}');
+        simmedInitInlineWindow($('mediumItem{{$item.id}}Display'), '{{$item->getTitleFromDisplayPattern()|replace:"'":""}}');
     });
 /* ]]> */
 </script>
