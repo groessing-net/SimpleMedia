@@ -735,7 +735,7 @@ abstract class SimpleMedia_Entity_Base_Medium extends Zikula_EntityAccess
     /**
      * Get metadata.
      *
-     * @return nullSimpleMedia_Entity_MediumMetaData
+     * @return SimpleMedia_Entity_MediumMetaData
      */
     public function getMetadata()
     {
@@ -745,11 +745,11 @@ abstract class SimpleMedia_Entity_Base_Medium extends Zikula_EntityAccess
     /**
      * Set metadata.
      *
-     * @param nullSimpleMedia_Entity_MediumMetaData $metadata.
+     * @param SimpleMedia_Entity_MediumMetaData $metadata.
      *
      * @return void
      */
-    public function setMetadata(nullSimpleMedia_Entity_MediumMetaData $metadata = null)
+    public function setMetadata(SimpleMedia_Entity_MediumMetaData $metadata = null)
     {
         $this->metadata = $metadata;
     }

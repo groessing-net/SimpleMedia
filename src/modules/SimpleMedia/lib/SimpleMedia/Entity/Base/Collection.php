@@ -580,7 +580,7 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
     /**
      * Get parent.
      *
-     * @return nullSimpleMedia_Entity_Collection
+     * @return SimpleMedia_Entity_Collection
      */
     public function getParent()
     {
@@ -590,11 +590,11 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
     /**
      * Set parent.
      *
-     * @param nullSimpleMedia_Entity_Collection $parent.
+     * @param SimpleMedia_Entity_Collection $parent.
      *
      * @return void
      */
-    public function setParent(nullSimpleMedia_Entity_Collection $parent = null)
+    public function setParent(SimpleMedia_Entity_Collection $parent = null)
     {
         $this->parent = $parent;
     }
