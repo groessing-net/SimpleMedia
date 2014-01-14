@@ -18,49 +18,4 @@
 class SimpleMedia_Form_Handler_Admin_Edit extends SimpleMedia_Form_Handler_Admin_Base_Edit
 {
     // feel free to extend the base handler class here
-
-    /**
-     * Initialise translations. OVERRIDE
-     *
-     * @param Zikula_EntityAccess $entity treated entity instance.
-     */
-    protected function initTranslationsForEdit($entity)
-    {
-        // retrieve translated fields
-/* See https://github.com/zikula-ev/SimpleMedia/issues/76 COMMENTED OUT TRANSLATIONS
-        $translatableHelper = new SimpleMedia_Util_Translatable($this->view->getServiceManager());
-        $translations = $translatableHelper->prepareEntityForEdit($this->objectType, $entity);
-    
-        // assign translations
-        foreach ($translations as $locale => $translationData) {
-            $this->view->assign($this->objectTypeLower . $locale, $translationData);
-        }
-    
-        // assign list of installed languages for translatable extension
-        $this->view->assign('supportedLocales', ZLanguage::getInstalledLanguages());
-*/
-    }
-
-    /**
-     * Prepare update of translations. OVERRIDE
-     *
-     * @param Zikula_EntityAccess $entity   currently treated entity instance.
-     * @param Array               $formData additional form data outside the entity scope.
-     */
-    protected function processTranslationsForUpdate($entity, $formData)
-    {
-/* See https://github.com/zikula-ev/SimpleMedia/issues/76 COMMENTED OUT TRANSLATIONS
-        $entityTransClass = $this->name . '_Entity_' . ucfirst($this->objectType) . 'Translation';
-        $transRepository = $this->entityManager->getRepository($entityTransClass);
-    
-        $translatableHelper = new SimpleMedia_Util_Translatable($this->view->getServiceManager());
-        $translations = $translatableHelper->processEntityAfterEdit($this->objectType, $formData);
-    
-        foreach ($translations as $translation) {
-            foreach ($translation['fields'] as $fieldName => $value) {
-                $transRepository->translate($entity, $fieldName, $translation['locale'], $value);
-            }
-        }
-*/
-    }
 }

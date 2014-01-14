@@ -56,34 +56,28 @@ class SimpleMedia_Entity_Collection extends SimpleMedia_Entity_Base_Collection
                 $this->_actions[] = array(
                     'url' => array('type' => 'admin', 'func' => 'display', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
                     'icon' => 'display',
-                    'linkTitle' => str_replace('"', '', $this['title']),
+                    'linkTitle' => str_replace('"', '', $this->getTitleFromDisplayPattern()),
                     'linkText' => __('Details', $dom)
                 );
             }
             if (in_array($currentFunc, array('main', 'view', 'display'))) {
-                    if (SecurityUtil::checkPermission('SimpleMedia:Collection:', $this->id . '::', ACCESS_EDIT)) {
-                $this->_actions[] = array(
-                    'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
-                    'icon' => 'edit',
-                    'linkTitle' => __('Edit', $dom),
-                    'linkText' => __('Edit', $dom)
-                );
-                
-                $this->_actions[] = array(
-                    'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'medium', 'collection' => $this['id'], 'returnTo' => 'adminDisplayCollection')),
-                    'icon' => 'add',
-                    'linkTitle' => __('Create media in this collection', $dom),
-                    'linkText' => __('Create media', $dom)
-                );
-                /*
-                        $this->_actions[] = array(
-                            'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'collection', 'astemplate' => $this['id'])),
-                            'icon' => 'saveas',
-                            'linkTitle' => __('Reuse for new item', $dom),
-                            'linkText' => __('Reuse', $dom)
-                        );
-                */
-                    }
+                $component = 'SimpleMedia:Collection:';
+                $instance = $this->id . '::';
+                if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
+                    $this->_actions[] = array(
+                        'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
+                        'icon' => 'edit',
+                        'linkTitle' => __('Edit', $dom),
+                        'linkText' => __('Edit', $dom)
+                    );
+					// OVERRIDE: action added to directly create media in this collection from the menu
+					$this->_actions[] = array(
+						'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'medium', 'collection' => $this['id'], 'returnTo' => 'adminDisplayCollection')),
+						'icon' => 'add',
+						'linkTitle' => __('Create media in this collection', $dom),
+						'linkText' => __('Create media', $dom)
+					);
+                }
             }
             if ($currentFunc == 'display') {
                 $this->_actions[] = array(
@@ -93,33 +87,37 @@ class SimpleMedia_Entity_Collection extends SimpleMedia_Entity_Base_Collection
                     'linkText' => __('Back to overview', $dom)
                 );
             }
+    
+            // more actions for adding new related items
+            $authAdmin = SecurityUtil::checkPermission($component, $instance, ACCESS_ADMIN);
+            $uid = UserUtil::getVar('uid');
+            if ($authAdmin || (isset($uid) && isset($this->createdUserId) && $this->createdUserId == $uid)) {
+    
+                $urlArgs = array('ot' => 'medium',
+                                 'collection' => $this->id);
+                if ($currentFunc == 'view') {
+                    $urlArgs['returnTo'] = 'adminViewCollection';
+                } elseif ($currentFunc == 'display') {
+                    $urlArgs['returnTo'] = 'adminDisplayCollection';
+                }
+                $this->_actions[] = array(
+                    'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => $urlArgs),
+                    'icon' => 'add',
+                    'linkTitle' => __('Create medium', $dom),
+                    'linkText' => __('Create medium', $dom)
+                );
+            }
         }
         if ($currentType == 'user') {
             if (in_array($currentFunc, array('main', 'view'))) {
                 $this->_actions[] = array(
                     'url' => array('type' => 'user', 'func' => 'display', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
                     'icon' => 'display',
-                    'linkTitle' => str_replace('"', '', $this['title']),
+                    'linkTitle' => str_replace('"', '', $this->getTitleFromDisplayPattern()),
                     'linkText' => __('Details', $dom)
                 );
-
-                if (SecurityUtil::checkPermission('SimpleMedia:Collection:', $this->id . '::', ACCESS_EDIT)) {
-                    $this->_actions[] = array(
-                        'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'collection', 'id' => $this['id'], 'returnTo' => 'userDisplayCollection')),
-                        'icon' => 'edit',
-                        'linkTitle' => __('Edit', $dom),
-                        'linkText' => __('Edit', $dom)
-                    );
-                    $this->_actions[] = array(
-                        'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'medium', 'collection' => $this['id'], 'returnTo' => 'userDisplayCollection')),
-                        'icon' => 'add',
-                        'linkTitle' => __('Create media in this collection', $dom),
-                        'linkText' => __('Create media', $dom)
-                    );
-                }
             }
             if (in_array($currentFunc, array('main', 'view', 'display'))) {
-                // nothing
             }
             if ($currentFunc == 'display') {
                 $this->_actions[] = array(

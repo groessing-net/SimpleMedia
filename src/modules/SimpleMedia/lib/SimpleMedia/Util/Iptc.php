@@ -22,7 +22,7 @@
  * @author   Bruno Thiago Leite Agutoli <brunotla1@gmail.com>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @version  Release: 0.0.1
- * @link     https://github.com/agutoli
+ * @link     https://github.com/agutoli/Image_Iptc
  * @link     https://github.com/zikula-ev/SimpleMedia
  */
 

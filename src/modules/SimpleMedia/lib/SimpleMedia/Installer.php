@@ -19,16 +19,25 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
     // feel free to extend the installer here
 
     /**
-     * Install the SimpleMedia application. OVERRIDE
+     * Install the SimpleMedia application. 
+	 * OVERRIDE:
+	 * - allowedExtension used in upload folder creation
+	 * - some modvars that use an array are set correct
+	 * - more extensive category creation via method
+	 * - createDefaultData also creates a default collection
      *
      * @return boolean True on success, or false.
      */
     public function install()
     {
+		// default smaller set of allowed extensions, configurable from the admin panel
+		$allowedExtensions = 'gif, jpeg, jpg, png, pdf, txt, mp3, mp4, avi, mpg, mpeg, mov';
+		
         // Check if upload directories exist and if needed create them
         try {
             $controllerHelper = new SimpleMedia_Util_Controller($this->serviceManager);
-            $result = $controllerHelper->checkAndCreateAllUploadFolders();
+            // Don't use the general call $result = $controllerHelper->checkAndCreateAllUploadFolders();
+            $result = $controllerHelper->checkAndCreateUploadFolder('medium', 'theFile', $allowedExtensions);
             if ($result) {
                 LogUtil::registerStatus($this->__f('The file upload directory is created at [%s].', FileUtil::getDataDirectory() . '/SimpleMedia/'));
             }
@@ -62,7 +71,7 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
         $this->setVar('shrinkDimensions', array('width' => 1600, 'height' => 1200));
         $this->setVar('useThumbCropper', false);
         $this->setVar('cropSizeMode', 0);
-        $this->setVar('allowedExtensions', 'gif, jpeg, jpg, png, pdf, txt, mp3, mp4, avi, mpg, mpeg, mov');
+        $this->setVar('allowedExtensions', $allowedExtensions);
         $this->setVar('maxUploadFileSize', 5000);
         $this->setVar('minWidthForUpload', 100);
         $this->setVar('defaultCollection', 1);
@@ -90,13 +99,13 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
         // register hook subscriber bundles
         HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
 
-
         // initialisation successful
         return true;
     }
 
     /**
-     * Create the default data for SimpleMedia. OVERRIDE
+     * Create the default data for SimpleMedia. 
+	 * OVERRIDE: added default collection creation
      *
      * @return void
      */
@@ -208,7 +217,8 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
     }
 
     /**
-     * register persistent module handlers OVERRIDE
+     * register persistent module handlers 
+	 * OVERRIDE: added scribite external plugins for tinymce, ckeditor
      * 
      * @return void
      */
@@ -222,7 +232,8 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
     }
     
     /**
-     * Uninstall SimpleMedia. OVERRIDE
+     * Uninstall SimpleMedia. 
+	 * OVERRIDE: added extra message on category tree removal
      *
      * @return boolean True on success, false otherwise.
      */

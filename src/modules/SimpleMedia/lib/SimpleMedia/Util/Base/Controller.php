@@ -211,19 +211,19 @@ class SimpleMedia_Util_Base_Controller extends Zikula_AbstractBase
     protected function checkAndCreateUploadFolder($objectType, $fieldName, $allowedExtensions = '')
     {
         $uploadPath = $this->getFileBaseFolder($objectType, $fieldName, true);
-
+    
         // Check if directory exist and try to create it if needed
         if (!is_dir($uploadPath) && !FileUtil::mkdirs($uploadPath, 0777)) {
             LogUtil::registerStatus($this->__f('The upload directory "%s" does not exist and could not be created. Try to create it yourself and make sure that this folder is accessible via the web and writable by the webserver.', array($uploadPath)));
             return false;
         }
-
+    
         // Check if directory is writable and change permissions if needed
         if (!is_writable($uploadPath) && !chmod($uploadPath, 0777)) {
             LogUtil::registerStatus($this->__f('Warning! The upload directory at "%s" exists but is not writable by the webserver.', array($uploadPath)));
             return false;
         }
-
+    
         // Write a htaccess file into the upload directory
         $htaccessFilePath = $uploadPath . '/.htaccess';
         $htaccessFileTemplate = 'modules/SimpleMedia/docs/htaccessTemplate';
@@ -235,53 +235,8 @@ class SimpleMedia_Util_Base_Controller extends Zikula_AbstractBase
                 return false;
             }
         }
-
+    
         return true;
-
-
-/*        $uploadPath = $this->getFileBaseFolder($objectType, $fieldName, true);
-    
-        // Check if directory exist and try to create it if needed
-        if (!is_dir($uploadPath) && !FileUtil::mkdirs($uploadPath, 0777)) {
-            LogUtil::registerStatus($this->__f('The upload directory "%s" does not exist and could not be created. Try to create it yourself and make sure that this folder is accessible via the web and writable by the webserver.', array($uploadPath)));
-            return false;
-        }
-    
-        // Check if directory is writable and change permissions if needed
-        if (!is_writable($uploadPath) && !chmod($uploadPath, 0777)) {
-            LogUtil::registerStatus($this->__f('Warning! The upload directory at "%s" exists but is not writable by the webserver.', array($uploadPath)));
-            return false;
-        }
-
-        $uploadHandler = new SimpleMedia_UploadHandler();
-        $thumbFolder = $uploadHandler->getThumbnailFolderName($objectType, $fieldName);
-        $thumbPath = $uploadPath . $thumbFolder . '/';
-
-        // Check if directory exist and try to create it if needed
-        if (!is_dir($thumbPath) && !FileUtil::mkdirs($thumbPath, 0777)) {
-            LogUtil::registerStatus(__f('Warning! The upload thumbnail directory "%s" does not exist and could not be created. Try to create it yourself and make sure that this folder is accessible via the web and writable by the webserver.', array($thumbPath), $dom));
-            return false;
-        }
-
-        // Check if directory is writable and change permissions if needed
-        if (!is_writable($thumbPath) && !chmod($thumbPath, 0777)) {
-            LogUtil::registerStatus(__f('Warning! The upload thumbnail directory at "%s" exists but is not writable by the webserver.', array($thumbPath), $dom));
-            return false;
-        }
-
-        // Write a htaccess file into the upload directory
-        $htaccessFilePath = $uploadPath . '/.htaccess';
-        $htaccessFileTemplate = 'modules/SimpleMedia/docs/htaccessTemplate';
-        if (!file_exists($htaccessFilePath) && file_exists($htaccessFileTemplate)) {
-            $extensions = str_replace(',', '|', str_replace(' ', '', $allowedExtensions));
-            $htaccessContent = str_replace('__EXTENSIONS__', $extensions, FileUtil::readFile($htaccessFileTemplate));
-            if (!FileUtil::writeFile($htaccessFilePath, $htaccessContent)) {
-                LogUtil::registerStatus($this->__f('Warning! Could not write the .htaccess file at "%s".', array($htaccessFilePath)));
-                return false;
-            }
-        }
-    
-        return true;*/
     }
 
     /**

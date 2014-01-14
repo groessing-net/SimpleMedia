@@ -37,9 +37,6 @@ div.simplemedia-mapcontainer {
     float: left;
     margin-right: 16px;
 }
-.simplemediaColourPicker {
-    cursor: pointer;
-}
 /* validation */
 div.z-formrow input.required, div.z-formrow textarea.required {
     border: 1px solid #00a8e6;

@@ -31,7 +31,7 @@ class SimpleMedia_Util_Base_Image extends Zikula_AbstractBase
         if (!in_array($context, array('controllerAction', 'api', 'actionHandler', 'block', 'contentType'))) {
             $context = 'controllerAction';
         }
-
+    
         $presetName = '';
         if ($context == 'controllerAction') {
             if (!isset($args['controller'])) {
@@ -40,7 +40,7 @@ class SimpleMedia_Util_Base_Image extends Zikula_AbstractBase
             if (!isset($args['action'])) {
                 $args['action'] = 'main';
             }
-
+    
             if ($args['controller'] == 'ajax' && $args['action'] == 'getItemListAutoCompletion') {
                 $presetName = $this->name . '_ajax_autocomplete';
             } else {
@@ -50,9 +50,9 @@ class SimpleMedia_Util_Base_Image extends Zikula_AbstractBase
         if (empty($presetName)) {
             $presetName = $this->name . '_default';
         }
-
+    
         $preset = $this->getCustomPreset($objectType, $fieldName, $presetName, $context, $args);
-
+    
         return $preset;
     }
 
@@ -75,7 +75,7 @@ class SimpleMedia_Util_Base_Image extends Zikula_AbstractBase
             'mode'      => 'inset',  // inset or outset
             'extension' => null      // file extension for thumbnails (jpg, png, gif; null for original file type)
         );
-
+    
         if ($presetName == $this->name . '_ajax_autocomplete') {
             $presetData['width'] = 100;
             $presetData['height'] = 80;
@@ -91,9 +91,9 @@ class SimpleMedia_Util_Base_Image extends Zikula_AbstractBase
                 $presetData['height'] = 150;
             }
         }
-
+    
         $preset = new SystemPlugin_Imagine_Preset($presetName, $presetData);
-
+    
         return $preset;
     }
 }

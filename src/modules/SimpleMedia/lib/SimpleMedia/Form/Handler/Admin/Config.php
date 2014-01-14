@@ -50,9 +50,23 @@ class SimpleMedia_Form_Handler_Admin_Config extends SimpleMedia_Form_Handler_Adm
 		$this->view->assign('cropSize', $cropSize);
     }
 	
-     /**
-     * Command event handler OVERRIDE
+    /**
+     * Command event handler. OVERRIDE
+	 * OVERRIDE: Added methods for handling thumbdimensions, cropsize and defaultcollection
      *
+     * This event handler is called when a command is issued by the user. Commands are typically something
+     * that originates from a {@link Zikula_Form_Plugin_Button} plugin. The passed args contains different properties
+     * depending on the command source, but you should at least find a <var>$args['commandName']</var>
+     * value indicating the name of the command. The command name is normally specified by the plugin
+     * that initiated the command.
+     *
+     * @param Zikula_Form_View $view The form view instance.
+     * @param array            $args Additional arguments.
+     *
+     * @see Zikula_Form_Plugin_Button
+     * @see Zikula_Form_Plugin_ImageButton
+     *
+     * @return mixed Redirect or false on errors.
      */
     public function handleCommand(Zikula_Form_View $view, &$args)
     {
@@ -65,11 +79,17 @@ class SimpleMedia_Form_Handler_Admin_Config extends SimpleMedia_Form_Handler_Adm
             // retrieve form data
             $data = $this->view->getValues();
 
-            // update all standard module vars
-            if (!$this->setVars($data['config'])) {
-                return LogUtil::registerError($this->__('Error! Failed to set configuration variables.'));
+            // update all module vars
+            try {
+                $this->setVars($data['config']);
+            } catch (\Exception $e) {
+                $msg = $this->__('Error! Failed to set configuration variables.');
+                if (System::isDevelopmentMode()) {
+                    $msg .= ' ' . $e->getMessage();
+                }
+                return LogUtil::registerError($msg);
             }
-
+			
             // handle shrinkdimensions array
             if ($data['config']['enableShrinking']) {
                 $this->setVar('shrinkDimensions', array('width' => $data['maxSize']['shrinkWidth'], 'height' => $data['maxSize']['shrinkHeight']));
@@ -100,7 +120,8 @@ class SimpleMedia_Form_Handler_Admin_Config extends SimpleMedia_Form_Handler_Adm
 
         // redirect back to the config page
         $url = ModUtil::url($this->name, 'admin', 'config');
+
         return $this->view->redirect($url);
     }
-    
+
 }

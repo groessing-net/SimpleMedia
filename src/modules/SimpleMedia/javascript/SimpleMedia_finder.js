@@ -220,7 +220,8 @@ simplemedia.itemSelector.onParamChanged = function ()
 };
 
 // The items in the item (media/collections) div
-simplemedia.itemSelector.getItemList = function () {
+simplemedia.itemSelector.getItemList = function ()
+{
     var baseId, pars, request;
 
     baseId = simplemedia.itemSelector.baseId;
