@@ -44,6 +44,8 @@ class SimpleMedia_Entity_Collection extends SimpleMedia_Entity_Base_Collection
     
         $currentType = FormUtil::getPassedValue('type', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
         $currentFunc = FormUtil::getPassedValue('func', 'main', 'GETPOST', FILTER_SANITIZE_STRING);
+		$component = 'SimpleMedia:Collection:';
+		$instance = $this->id . '::';
         $dom = ZLanguage::getModuleDomain('SimpleMedia');
         if ($currentType == 'admin') {
             if (in_array($currentFunc, array('main', 'view'))) {
@@ -61,8 +63,6 @@ class SimpleMedia_Entity_Collection extends SimpleMedia_Entity_Base_Collection
                 );
             }
             if (in_array($currentFunc, array('main', 'view', 'display'))) {
-                $component = 'SimpleMedia:Collection:';
-                $instance = $this->id . '::';
                 if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
                     $this->_actions[] = array(
                         'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
@@ -83,9 +83,9 @@ class SimpleMedia_Entity_Collection extends SimpleMedia_Entity_Base_Collection
     
             // more actions for adding new related items
             //$authAdmin = SecurityUtil::checkPermission($component, $instance, ACCESS_ADMIN);
-            $authEdit = SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT);
+            $authAdd = SecurityUtil::checkPermission($component, $instance, ACCESS_ADD);
             $uid = UserUtil::getVar('uid');
-            if ($authEdit || (isset($uid) && isset($this->createdUserId) && $this->createdUserId == $uid)) {
+            if ($authAdd || (isset($uid) && isset($this->createdUserId) && $this->createdUserId == $uid)) {
     
                 $urlArgs = array('ot' => 'medium',
                                  'collection' => $this->id);
@@ -112,6 +112,34 @@ class SimpleMedia_Entity_Collection extends SimpleMedia_Entity_Base_Collection
                 );
             }
             if (in_array($currentFunc, array('main', 'view', 'display'))) {
+				// direct admin function from the frontend when permission allow
+                if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
+                    $this->_actions[] = array(
+                        'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
+                        'icon' => 'edit',
+                        'linkTitle' => __('Edit', $dom),
+                        'linkText' => __('Edit', $dom)
+                    );
+                }
+				// more actions for adding new related items
+				$authAdd = SecurityUtil::checkPermission($component, $instance, ACCESS_ADD);
+				$uid = UserUtil::getVar('uid');
+				if ($authAdd || (isset($uid) && isset($this->createdUserId) && $this->createdUserId == $uid)) {
+		
+					$urlArgs = array('ot' => 'medium',
+									 'collection' => $this->id);
+					if ($currentFunc == 'view') {
+						$urlArgs['returnTo'] = 'adminViewCollection';
+					} elseif ($currentFunc == 'display') {
+						$urlArgs['returnTo'] = 'adminDisplayCollection';
+					}
+					$this->_actions[] = array(
+						'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => $urlArgs),
+						'icon' => 'add',
+						'linkTitle' => __('Create medium', $dom),
+						'linkText' => __('Create medium', $dom)
+					);
+				}
             }
             if ($currentFunc == 'display') {
                 $this->_actions[] = array(

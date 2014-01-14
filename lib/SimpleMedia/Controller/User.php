@@ -17,4 +17,16 @@
 class SimpleMedia_Controller_User extends SimpleMedia_Controller_Base_User
 {
     // feel free to add your own controller methods here
-}
+
+    /**
+     * This method is the default function handling the user area called without defining arguments.
+	 * OVERRIDE: collection is now default ot
+     *
+     *
+     * @return mixed Output.
+     */
+    public function main()
+    {
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_OVERVIEW), LogUtil::getErrorMsgPermission());
+        return $this->redirect(ModUtil::url($this->name, 'user', 'view', array('ot' => 'collection')));
+    }}
