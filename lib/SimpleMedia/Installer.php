@@ -21,23 +21,18 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
     /**
      * Install the SimpleMedia application. 
 	 * OVERRIDE:
-	 * - allowedExtension used in upload folder creation
-	 * - some modvars that use an array are set correct
-	 * - more extensive category creation via method
+	 * - some modvars are set specifically here
+	 * - more extensive category creation via separate method
 	 * - createDefaultData also creates a default collection
      *
      * @return boolean True on success, or false.
      */
     public function install()
     {
-		// default smaller set of allowed extensions, configurable from the admin panel
-		$allowedExtensions = 'gif, jpeg, jpg, png, pdf, txt, mp3, mp4, avi, mpg, mpeg, mov';
-		
         // Check if upload directories exist and if needed create them
         try {
             $controllerHelper = new SimpleMedia_Util_Controller($this->serviceManager);
-            // Don't use the general call $result = $controllerHelper->checkAndCreateAllUploadFolders();
-            $result = $controllerHelper->checkAndCreateUploadFolder('medium', 'theFile', $allowedExtensions);
+            $result = $controllerHelper->checkAndCreateAllUploadFolders();
             if ($result) {
                 LogUtil::registerStatus($this->__f('The file upload directory is created at [%s].', FileUtil::getDataDirectory() . '/SimpleMedia/'));
             }
@@ -71,7 +66,7 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
         $this->setVar('shrinkDimensions', array('width' => 1600, 'height' => 1200));
         $this->setVar('useThumbCropper', false);
         $this->setVar('cropSizeMode', 0);
-        $this->setVar('allowedExtensions', $allowedExtensions);
+        $this->setVar('allowedExtensions', 'gif, jpeg, jpg, png, pdf, txt, mp3, mp4, avi, mpg, mpeg, mov, zip');
         $this->setVar('maxUploadFileSize', 5000);
         $this->setVar('minWidthForUpload', 100);
         $this->setVar('defaultCollection', 1);
@@ -114,14 +109,18 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
         // call the parent class
         parent::createDefaultData($categoryRegistryIdsPerEntity);
 
-        // add a root collection 
+        // add a default root collection
         try {
             $collection = new SimpleMedia_Entity_Collection();
             $collection->setTitle($this->__('Default collection'));
             $collection->setDescription($this->__('This is the default root collection for your media and collections'));
+			// make collection approved from start
+			$collection->setWorkflowState('approved');
+			// categories not set (yet)
+			
             $this->entityManager->persist($collection);
             $this->entityManager->flush();
-			// set this as default collection for new media
+			// set this as default collection id for new media
 			$this->setVar('defaultCollection', $collection->getId());
         } catch (Exception $e) {
             return LogUtil::registerError($e->getMessage());
@@ -134,7 +133,7 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
      *
      * @return void
      */
-    protected function createDefaultCategories($categoryRegistryIdsPerEntity)
+    protected function createDefaultCategories(&$categoryRegistryIdsPerEntity)
     {
         // add default entry for category registry (property named Main)
         include_once 'modules/SimpleMedia/lib/SimpleMedia/Api/Base/Category.php';
@@ -200,7 +199,6 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
             LogUtil::registerError($this->__f('Error! Could not create a category registry for the %s entity.', array('medium')));
         }
         $categoryRegistryIdsPerEntity['medium'] = $registryData['id'];
-
 
         $registryData = array();
         $registryData['modname'] = $this->name;

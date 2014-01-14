@@ -116,7 +116,7 @@ function simmedInitTreeNodes(objectType, controller, rootId, hasDisplay, hasEdit
                 }
             });
             contextMenu.addItem({
-                label: '<img src="' + Zikula.Config.baseURL + images/icons/extrasmall/edit_add.png" width="16" height="16" alt="' + Zikula.__('Create media', 'module_simplemedia_js') + '" /> '
+                label: '<img src="' + Zikula.Config.baseURL + 'images/icons/extrasmall/edit_add.png" width="16" height="16" alt="' + Zikula.__('Create media', 'module_simplemedia_js') + '" /> '
                      + Zikula.__('Create media', 'module_simplemedia_js'),
                 callback: function () {
                     currentNodeId = liRef.id.replace('tree' + rootId + 'node_', '');

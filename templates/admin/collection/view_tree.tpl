@@ -1,5 +1,7 @@
 {* purpose of this template: collections tree view in admin area *}
 {include file='admin/header.tpl'}
+{pageaddvar name='javascript' value='modules/SimpleMedia/javascript/SimpleMedia_tree.js'}
+
 <div class="simplemedia-collection simplemedia-viewhierarchy">
     {gt text='Collection hierarchy' assign='templateTitle'}
     {pagesetvar name='title' value=$templateTitle}

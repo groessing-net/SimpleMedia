@@ -54,9 +54,9 @@
                 {if $medium.theFile ne ''}
                     <span class="z-formnote">
                         {gt text='Current file'}:
-                        <a href="{$medium.theFileFullPathUrl}" title="{$medium->getTitleFromDisplayPattern()|replace:"\"":""}"{if $medium.theFileMeta.isImage} rel="imageviewer[medium]"{/if}>
+                        <a href="{$medium.theFileFullPathUrl}" title="{$mediumObj->getTitleFromDisplayPattern()|replace:"\"":""}"{if $medium.theFileMeta.isImage} rel="imageviewer[medium]"{/if}>
                         {if $medium.theFileMeta.isImage}
-                            {thumb image=$medium.theFileFullPath objectid="medium-`$medium.id`" preset=$mediumThumbPresetTheFile tag=true img_alt=$medium->getTitleFromDisplayPattern()}
+                            {thumb image=$medium.theFileFullPath objectid="medium-`$medium.id`" preset=$mediumThumbPresetTheFile tag=true img_alt=$mediumObj->getTitleFromDisplayPattern()}
                         {else}
                             {gt text='Download'} ({$medium.theFileMeta.size|simplemediaGetFileSize:$medium.theFileFullPath:false:false})
                         {/if}

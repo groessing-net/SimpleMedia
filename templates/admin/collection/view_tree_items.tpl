@@ -15,7 +15,7 @@
     </div>
 </div>
 
-{pageaddvar name='javascript' value='modules/SimpleMedia/javascript/SimpleMedia_tree.js'}
+{* pageaddvar name='javascript' value='modules/SimpleMedia/javascript/SimpleMedia_tree.js' *}
 <script type="text/javascript">
 /* <![CDATA[ */
     document.observe('dom:loaded', function() {

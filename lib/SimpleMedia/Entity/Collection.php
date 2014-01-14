@@ -70,13 +70,6 @@ class SimpleMedia_Entity_Collection extends SimpleMedia_Entity_Base_Collection
                         'linkTitle' => __('Edit', $dom),
                         'linkText' => __('Edit', $dom)
                     );
-					// OVERRIDE: action added to directly create media in this collection from the menu
-					$this->_actions[] = array(
-						'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'medium', 'collection' => $this['id'], 'returnTo' => 'adminDisplayCollection')),
-						'icon' => 'add',
-						'linkTitle' => __('Create media in this collection', $dom),
-						'linkText' => __('Create media', $dom)
-					);
                 }
             }
             if ($currentFunc == 'display') {
@@ -89,9 +82,10 @@ class SimpleMedia_Entity_Collection extends SimpleMedia_Entity_Base_Collection
             }
     
             // more actions for adding new related items
-            $authAdmin = SecurityUtil::checkPermission($component, $instance, ACCESS_ADMIN);
+            //$authAdmin = SecurityUtil::checkPermission($component, $instance, ACCESS_ADMIN);
+            $authEdit = SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT);
             $uid = UserUtil::getVar('uid');
-            if ($authAdmin || (isset($uid) && isset($this->createdUserId) && $this->createdUserId == $uid)) {
+            if ($authEdit || (isset($uid) && isset($this->createdUserId) && $this->createdUserId == $uid)) {
     
                 $urlArgs = array('ot' => 'medium',
                                  'collection' => $this->id);
