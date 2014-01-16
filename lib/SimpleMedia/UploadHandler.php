@@ -56,8 +56,8 @@ class SimpleMedia_UploadHandler extends SimpleMedia_Base_UploadHandler
         );
         // zip and other package files will go into other
 		
-		// use modvar in kB for file size
-        $this->allowedFileSizes = array('medium' => array('theFile' => (int)(ModUtil::getVar('SimpleMedia', 'maxUploadFileSize')/1000)));
+		// use modvar in kBytes for file size in Bytes
+        $this->allowedFileSizes = array('medium' => array('theFile' => ModUtil::getVar('SimpleMedia', 'maxUploadFileSize')*1024));
     }
 
     /**
