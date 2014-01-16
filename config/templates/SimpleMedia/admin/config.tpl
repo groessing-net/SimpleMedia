@@ -1,6 +1,5 @@
 {* purpose of this template: module configuration *}
 {include file='admin/header.tpl'}
-
 <div class="simplemedia-config">
     {gt text='Settings' assign='templateTitle'}
     {pagesetvar name='title' value=$templateTitle}
@@ -10,32 +9,34 @@
     </div>
 
     {form cssClass='z-form'}
-
         {* add validation summary and a <div> element for styling the form *}
         {simplemediaFormFrame}
             {formsetinitialfocus inputId='pageSize'}
+            {gt text='Media settings' assign='tabTitle'}
             <fieldset>
-                <legend>{gt text='Here you can manage all basic settings for SimpleMedia'}</legend>
+                <legend>{$tabTitle}</legend>
+            
+                <p class="z-confirmationmsg">{gt text='Manage all configuration settings for SimpleMedia'|nl2br}</p>
             
                 <div class="z-formrow">
                     {gt text='Number of items on a page (backend)' assign='toolTip'}
-                    {formlabel for='pageSize' __text='Page size' class='simplemediaFormTooltips' title=$toolTip}
-                    {formintinput id='pageSize' group='config' maxLength=255 __title='Enter this setting. Only digits are allowed.'}
+                    {formlabel for='pageSize' __text='Page size backend' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {formintinput id='pageSize' group='config' maxLength=255 __title='Enter the page size. Only digits are allowed.'}
                 </div>
                 <div class="z-formrow">
                     {gt text='Number of media on a page (frontend)' assign='toolTip'}
-                    {formlabel for='mediaPageSize' __text='Media page size' class='simplemediaFormTooltips' title=$toolTip}
-                    {formintinput id='mediaPageSize' group='config' maxLength=255 __title='Enter this setting. Only digits are allowed.'}
+                    {formlabel for='mediaPageSize' __text='Media page size frontend' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {formintinput id='mediaPageSize' group='config' maxLength=255 __title='Enter the media page size. Only digits are allowed.'}
                 </div>
                 <div class="z-formrow">
                     {gt text='Number of collections on a page (frontend)' assign='toolTip'}
-                    {formlabel for='collectionsPageSize' __text='Collections page size' class='simplemediaFormTooltips' title=$toolTip}
-                    {formintinput id='collectionsPageSize' group='config' maxLength=255 __title='Enter this setting. Only digits are allowed.'}
+                    {formlabel for='collectionsPageSize' __text='Collections page size frontend' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {formintinput id='collectionsPageSize' group='config' maxLength=255 __title='Enter the collections page size. Only digits are allowed.'}
                 </div>
                 <div class="z-formrow">
                     {gt text='Contains an array of thumbnail widthxheight dimensions array ( array ( width => 200, height => 150 ) )' assign='toolTip'}
-                    {formlabel for='thumb1width' __text='Thumb dimensions (w x h)' class='simplemediaFormTooltips' title=$toolTip}
-                    {* formtextinput id='thumbDimensions' group='config' maxLength=255 __title='Enter this setting.' *}
+                    {formlabel for='thumbDimensions' __text='Thumbnail dimensions' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+						{* formtextinput id='thumbDimensions' group='config' maxLength=255 __title='Enter the thumb dimensions.' *}
                     <ol style="margin-left: 320px">
                     {formvolatile}
                     {foreach name='thumbLoop' item='thumbSize' from=$modvars.SimpleMedia.thumbDimensions}
@@ -50,24 +51,24 @@
                         </li>
                     {/formvolatile}
                     </ol>
-                    <div class="z-sub z-formnote">{gt text='Thumbnails are generated with the Imagine plugin in the Zikula Core.<br />Turning Legacy off in config/config.php reduces memory consumption a lot.'}</div>
+                    <div class="z-sub z-formnote">{gt text='Thumbnails are generated with the Imagine plugin in the Zikula Core.<br />Turning legacy_prefilters off in config/config.php reduces memory consumption a lot.'}</div>
                 </div>
                 <div class="z-formrow">
                     {gt text='The default thumbnail that is used from the set of Thumbdimensions' assign='toolTip'}
-                    {formlabel for='defaultThumbNumber' __text='Default thumb number' class='simplemediaFormTooltips' title=$toolTip}
-                    {formintinput id='defaultThumbNumber' group='config' maxLength=255 __title='Enter this setting. Only digits are allowed.'}
+                    {formlabel for='defaultThumbNumber' __text='Default thumbnail number' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {formintinput id='defaultThumbNumber' group='config' maxLength=255 __title='Enter the default thumb number. Only digits are allowed.'}
                 </div>
                 <div class="z-formrow">
                     {gt text='Enable shrinking to maximum image dimensions, original image not stored' assign='toolTip'}
-                    {formlabel for='enableShrinking' __text='Enable shrinking' class='simplemediaFormTooltips' title=$toolTip}
-                    {formcheckbox id='enableShrinking' group='config'}
+                    {formlabel for='enableShrinking' __text='Enable shrink to maximum image dimensions' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {formcheckbox id='enableShrinking' group='config'}
                 </div>
                 <div class="z-formrow" id="shrinkDimensionsRow">
                     {* gt text='Maximum image dimensions after shrink (w x h)' assign='toolTip'}
-                    {formlabel for='shrinkDimensions' __text='Shrink dimensions' class='simplemediaFormTooltips' title=$toolTip}
-                    {formtextinput id='shrinkDimensions' group='config' maxLength=255 __title='Enter this setting.' *}
+                    {formlabel for='shrinkDimensions' __text='Shrink dimensions' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {formtextinput id='shrinkDimensions' group='config' maxLength=255 __title='Enter the shrink dimensions.' *}
                     {gt text='Maximum image dimensions after shrink (w x h)' assign='toolTip'}
-                    {formlabel for='shrinkWidth' __text='Shrink to max dimensions (w x h)' class='simplemediaFormTooltips' title=$toolTip}
+                    {formlabel for='shrinkWidth' __text='Maximum image dimensions after shrink (w x h)' cssClass='simplemedia-form-tooltips ' title=$toolTip}
                     <div>
                         {formintinput group='maxSize' id='shrinkWidth' size='8' maxLength='4' text=$modvars.SimpleMedia.shrinkDimensions.width} x
                         {formintinput group='maxSize' id='shrinkHeight' size='8' maxLength='4' text=$modvars.SimpleMedia.shrinkDimensions.height} {gt text='pixels'}
@@ -75,46 +76,64 @@
                 </div>
                 <div class="z-formrow">
                     {gt text='Use cropper for the thumbnail image' assign='toolTip'}
-                    {formlabel for='useThumbCropper' __text='Use thumb cropper' class='simplemediaFormTooltips' title=$toolTip}
-                    {formcheckbox id='useThumbCropper' group='config'}
+                    {formlabel for='useThumbCropper' __text='Use thumbnail cropper' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {formcheckbox id='useThumbCropper' group='config'}
                 </div>
                 <div class="z-formrow" id="cropSizeModeRow">
+                    {* gt text='Cropping size mode' assign='toolTip'}
+                    {formlabel for='cropSizeMode' __text='Crop size mode' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {formintinput id='cropSizeMode' group='config' maxLength=255 __title='Enter the crop size mode. Only digits are allowed.' *}
                     {gt text='Cropping size mode' assign='toolTip'}
-                    {formlabel for='cropSizeMode' __text='Crop size mode' class='simplemediaFormTooltips' title=$toolTip}
-                    {* formintinput id='cropSizeMode' group='config' maxLength=255 __title='Enter this setting. Only digits are allowed.' *}
+                    {formlabel for='cropSizeMode' __text='Crop size mode' cssClass='simplemedia-form-tooltips ' title=$toolTip}
                     {formdropdownlist id='cropSizeMode' group='cropSize'}
                 </div>
                 <div class="z-formrow">
                     {gt text='Allowed file extensions for file upload' assign='toolTip'}
-                    {formlabel for='allowedExtensions' __text='Allowed extensions' class='simplemediaFormTooltips' title=$toolTip}
-                    {formtextinput id='allowedExtensions' group='config' maxLength=255 __title='Enter this setting.'}
+                    {formlabel for='allowedExtensions' __text='Allowed file extensions' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {formtextinput id='allowedExtensions' group='config' maxLength=255 __title='Enter the allowed extensions.'}
                 </div>
                 <div class="z-formrow">
-                    {formlabel for='maxUploadFileSize' __text='Maximum upload file size in kB'}
-                    {formintinput id='maxUploadFileSize' group='config' maxLength=255 __title='Enter this setting. Only digits are allowed.'}
-                </div>
-                {* hard coded for now <div class="z-formrow">
-                    {gt text='The location under userdata/SimpleMedia where the uploaded files are stored.' assign='toolTip'}
-                    {formlabel for='mediaDir' __text='Media dir' class='simplemediaFormTooltips' title=$toolTip}
-                    {formtextinput id='mediaDir' group='config' maxLength=255 __title='Enter this setting.'}
+                    {gt text='Maximum File Size during upload in kB. Default after install is 5 MB.' assign='toolTip'}
+                    {formlabel for='maxUploadFileSize' __text='Maximum upload file size' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {formintinput id='maxUploadFileSize' group='config' maxLength=255 __title='Enter the max upload file size. Only digits are allowed.'} {gt text="kB"}
                 </div>
                 <div class="z-formrow">
-                    {gt text='Media thumbnail folder' assign='toolTip'}
-                    {formlabel for='mediaThumbDir' __text='Media thumb dir' class='simplemediaFormTooltips' title=$toolTip}
-                    {formtextinput id='mediaThumbDir' group='config' maxLength=255 __title='Enter this setting.'}
+                    {gt text='Minimum pixel width of an image to upload, to be able to generate thumbnails.' assign='toolTip'}
+                    {formlabel for='minWidthForUpload' __text='Minimum width for upload' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {formintinput id='minWidthForUpload' group='config' maxLength=255 __title='Enter the min width for upload. Only digits are allowed.'} {gt text='pixels'}
+                </div>
+                <div class="z-formrow">
+                    {gt text='The default Collection that is used for new Media.' assign='toolTip'}
+                    {formlabel for='defaultCollection' __text='Default collection' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {* formintinput id='defaultCollection' group='config' maxLength=255 __title='Enter the default collection. Only digits are allowed.' *}
+						{formdropdownlist id='defaultCollection' group='defaultCollections'}
+                </div>
+                <div class="z-formrow">
+                    {gt text='The folder location under userdata/SimpleMedia where the uploaded files are stored.' assign='toolTip'}
+                    {formlabel for='mediaDir' __text='Media dir' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {formtextinput id='mediaDir' group='config' maxLength=255 __title='Enter the media dir.'}
+                </div>
+                <div class="z-formrow">
+                    {gt text='Media thumbnail folder name' assign='toolTip'}
+                    {formlabel for='mediaThumbDir' __text='Media thumb dir' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {formtextinput id='mediaThumbDir' group='config' maxLength=255 __title='Enter the media thumb dir.'}
                 </div>
                 <div class="z-formrow">
                     {gt text='Media thumbnail suffix' assign='toolTip'}
-                    {formlabel for='mediaThumbExt' __text='Media thumb ext' class='simplemediaFormTooltips' title=$toolTip}
-                    {formtextinput id='mediaThumbExt' group='config' maxLength=255 __title='Enter this setting.'}
-                </div> *}
-
-				<div class="z-formrow">
-                    {gt text='The default Collection that is used for new Media.' assign='toolTip'}
-                    {formlabel for='defaultCollection' __text='Default collection for new media' class='simplemediaFormTooltips' title=$toolTip}
-                    {formdropdownlist id='defaultCollection' group='defaultCollections'}
-				</div>
-			</fieldset>
+                    {formlabel for='mediaThumbExt' __text='Media thumb ext' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {formtextinput id='mediaThumbExt' group='config' maxLength=255 __title='Enter the media thumb ext.'}
+                </div>
+                <div class="z-formrow">
+                    {gt text='Count the number of medium views ' assign='toolTip'}
+                    {formlabel for='countMediumViews' __text='Count medium views' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {formcheckbox id='countMediumViews' group='config'}
+                </div>
+                <div class="z-formrow">
+                    {gt text='Count the number of collection views' assign='toolTip'}
+                    {formlabel for='countCollectionViews' __text='Count collection views' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {formcheckbox id='countCollectionViews' group='config'}
+                </div>
+            </fieldset>
 
             <div class="z-buttons z-formbuttons">
                 {formbutton commandName='save' __text='Update configuration' class='z-bt-save'}
@@ -127,16 +146,15 @@
 <script type="text/javascript">
 /* <![CDATA[ */
     document.observe('dom:loaded', function() {
-        $('enableShrinking').observe('click', SiMeCheckShrinkEntry)
-                            .observe('keyup', SiMeCheckShrinkEntry);
-        $('useThumbCropper').observe('click', SiMeCheckCropSizeEntry)
-                            .observe('keyup', SiMeCheckCropSizeEntry);
-        SiMeCheckShrinkEntry();
-        SiMeCheckCropSizeEntry();
-        Zikula.UI.Tooltips($$('.simplemediaFormTooltips'));
+        Zikula.UI.Tooltips($$('.simplemedia-form-tooltips'));
+        $('enableShrinking').observe('click', simmedCheckShrinkEntry)
+                            .observe('keyup', simmedCheckShrinkEntry);
+        $('useThumbCropper').observe('click', simmedCheckCropSizeEntry)
+                            .observe('keyup', simmedCheckCropSizeEntry);
+        simmedCheckShrinkEntry();
+        simmedCheckCropSizeEntry();
     });
-
-    function SiMeCheckShrinkEntry()
+    function simmedCheckShrinkEntry()
     {
         if ($('enableShrinking').checked == true) {
             $('shrinkDimensionsRow').show();
@@ -144,8 +162,7 @@
             $('shrinkDimensionsRow').hide();
         }
     }
-
-    function SiMeCheckCropSizeEntry()
+    function simmedCheckCropSizeEntry()
     {
         if ($('useThumbCropper').checked == true) {
             $('cropSizeModeRow').show();
@@ -155,4 +172,3 @@
     }
 /* ]]> */
 </script>
-

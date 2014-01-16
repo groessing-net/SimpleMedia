@@ -30,8 +30,9 @@ class SimpleMedia_Form_Handler_Admin_Config extends SimpleMedia_Form_Handler_Adm
 			// prefix the title with level
 			$prefix = '';
 			for ($i=0; $i<$collection['lvl']; $i++) {
-				$prefix .= '- - ';
+				$prefix .= '--';
 			}
+			$prefix .= ' ';
 			$defaultCollectionItems[] = array(
 				'value' => $collection['id'],
 				'text' => $prefix . $collection['title']
