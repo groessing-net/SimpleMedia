@@ -54,10 +54,11 @@ class SimpleMedia_UploadHandler extends SimpleMedia_Base_UploadHandler
             array('pdf', 'doc', 'xls', 'ppt', 'docx', 'xlsx', 'pptx', 'odt', 'ods', 'odp', 'pages', 'numbers', 'key', 'keynote', 'txt', 'rtf', 'csv', 'tex'), 
             $otherimageFileTypes, $ebookFileTypes, $camerarawFileTypes, $geoFileTypes, $dtpFileTypes
         );
-        
         // zip and other package files will go into other
+		
+		// use modvar in kB for file size
+        $this->allowedFileSizes = array('medium' => array('theFile' => (int)(ModUtil::getVar('SimpleMedia', 'maxUploadFileSize')/1000)));
     }
-
 
     /**
      * Determines the allowed file extensions for a given object type.

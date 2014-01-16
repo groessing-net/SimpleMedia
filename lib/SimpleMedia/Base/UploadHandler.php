@@ -137,6 +137,7 @@ class SimpleMedia_Base_UploadHandler
             return LogUtil::registerError(__('Error! This file type is not allowed. Please choose another file format.', $dom));
         }
     
+        // validate file size
         $maxSize = $this->allowedFileSizes[$objectType][$fieldName];
         if ($maxSize > 0) {
             $fileSize = filesize($file['tmp_name']);

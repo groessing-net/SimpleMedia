@@ -27,9 +27,9 @@ class SimpleMedia_Util_Manual
         $dom = ZLanguage::getModuleDomain('SimpleMedia');
 
         $modes = array();
-        $modes[] = array('value' => SIMPLEMEDIA_CROPPINGMODE_ENFORCED_SIZE_ENFORCED_PROPORTIONS,     'text' => __('Enforced thumbnail size', $dom));
-        $modes[] = array('value' => SIMPLEMEDIA_CROPPINGMODE_VARIABLE_SIZE_ENFORCED_PROPORTIONS,     'text' => __('Variable size, but enforced image proportions', $dom));
-        $modes[] = array('value' => SIMPLEMEDIA_CROPPINGMODE_VARIABLE_SIZE_VARIABLE_PROPORTIONS,     'text' => __('Variable size and image proportions', $dom));
+        $modes[] = array('value' => SIMPLEMEDIA_CROPPINGMODE_ENFORCED_SIZE_ENFORCED_PROPORTIONS, 'text' => __('Enforced thumbnail size', $dom));
+        $modes[] = array('value' => SIMPLEMEDIA_CROPPINGMODE_VARIABLE_SIZE_ENFORCED_PROPORTIONS, 'text' => __('Variable size, but enforced image proportions', $dom));
+        $modes[] = array('value' => SIMPLEMEDIA_CROPPINGMODE_VARIABLE_SIZE_VARIABLE_PROPORTIONS, 'text' => __('Variable size and image proportions', $dom));
 
         return $modes;
     }
