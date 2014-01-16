@@ -11,6 +11,19 @@ Used for cropping image thumbnails
 * Prototype/Scriptaculous based
 * Alternatives: see https://github.com/zikula-ev/SimpleMedia/issues/83
 
+flvplayer
+---------
+Used for playing flash files
+* Version unclear
+* http://www.jwplayer.com/
+* JWPlayer 5 & 6 have CC licenses and not for commercial use. 
+* Uses SWFObject 1.5: http://blog.deconcept.com/swfobject/ MIT license
+* Replace with a modern HTML5 player (with fallback) that can do this and is MIT licensed
+
+mp3
+---
+Used for playing mp3 files, details unclear, replace with a HTML5 player (with fallback).
+
 Bootstrap Image Gallery
 -----------------------
 Used in the frontend for media image display
