@@ -1,7 +1,7 @@
 SimpleMedia 2
 =============
 SimpleMedia is file and media management in Collections.
-This module is intended for being used with Zikula 1.3.5 and 1.3.6.
+This module is intended for being used with Zikula 1.3.5 and 1.3.6. Later on when Zikula Core 1.3.7 is stable enough the code will be re-generated with MOST and made ready for Zikula 1.3.7.
 
 ModuleStudio
 ------------
