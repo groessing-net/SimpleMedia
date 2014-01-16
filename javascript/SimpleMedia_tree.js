@@ -116,8 +116,8 @@ function simmedInitTreeNodes(objectType, controller, rootId, hasDisplay, hasEdit
                 }
             });
             contextMenu.addItem({
-                label: '<img src="' + Zikula.Config.baseURL + 'images/icons/extrasmall/edit_add.png" width="16" height="16" alt="' + Zikula.__('Create media', 'module_simplemedia_js') + '" /> '
-                     + Zikula.__('Create media', 'module_simplemedia_js'),
+                label: '<img src="' + Zikula.Config.baseURL + 'images/icons/extrasmall/folder_image.png" width="16" height="16" alt="' + Zikula.__('Create medium', 'module_simplemedia_js') + '" /> '
+                     + Zikula.__('Create medium', 'module_simplemedia_js'),
                 callback: function () {
                     currentNodeId = liRef.id.replace('tree' + rootId + 'node_', '');
                     window.location = Zikula.Config.baseURL + 'index.php?module=SimpleMedia&type=' + controller + '&func=edit&ot=medium&collection=' + currentNodeId + '&returnTo=adminDisplayCollection';
@@ -125,7 +125,7 @@ function simmedInitTreeNodes(objectType, controller, rootId, hasDisplay, hasEdit
             });
         }
         contextMenu.addItem({
-            label: '<img src="' + Zikula.Config.baseURL + 'images/icons/extrasmall/insert_table_row.png" width="16" height="16" alt="' + Zikula.__('Add child node', 'module_simplemedia_js') + '" /> '
+            label: '<img src="' + Zikula.Config.baseURL + 'images/icons/extrasmall/folder_new.png" width="16" height="16" alt="' + Zikula.__('Add child node', 'module_simplemedia_js') + '" /> '
                  + Zikula.__('Add child node', 'module_simplemedia_js'),
             callback: function () {
                 currentNodeId = liRef.id.replace('tree' + rootId + 'node_', '');
