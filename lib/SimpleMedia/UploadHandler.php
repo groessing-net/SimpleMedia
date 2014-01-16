@@ -76,7 +76,6 @@ class SimpleMedia_UploadHandler extends SimpleMedia_Base_UploadHandler
         $allowedExtensions = array();
         switch ($objectType) {
             case 'medium':
-                //$allowedExtensions = array('gif', 'jpeg', 'jpg', 'png', 'pdf', 'doc', 'xls', 'ppt', 'docx', 'xlsx', 'pptx', 'odt', 'ods', 'odp', 'arj', 'zip', 'rar', 'tar', 'tgz', 'gz', 'bz2', 'txt', 'rtf', 'swf', 'flv', 'mp3', 'mp4', 'avi', 'mpg', 'mpeg', 'mov');
                 $allowedExtensions = explode(',', str_replace(' ', '', ModUtil::getVar('SimpleMedia', 'allowedExtensions')));
                     break;
         }
