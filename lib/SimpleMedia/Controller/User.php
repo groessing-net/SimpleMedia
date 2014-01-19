@@ -29,4 +29,108 @@ class SimpleMedia_Controller_User extends SimpleMedia_Controller_Base_User
     {
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_OVERVIEW), LogUtil::getErrorMsgPermission());
         return $this->redirect(ModUtil::url($this->name, 'user', 'view', array('ot' => 'collection')));
-    }}
+    }
+
+    /**
+     * This method provides a generic item detail view.
+     * OVERRIDE: added counting views when entity is being displayed
+     *
+     * @param string  $ot           Treated object type.
+     * @param string  $tpl          Name of alternative template (for alternative display options, feeds and xml output)
+     * @param boolean $raw          Optional way to display a template instead of fetching it (needed for standalone output)
+     *
+     * @return mixed Output.
+     */
+    public function display()
+    {
+        $controllerHelper = new SimpleMedia_Util_Controller($this->serviceManager);
+
+        // parameter specifying which type of objects we are treating
+        $objectType = $this->request->query->filter('ot', 'medium', FILTER_SANITIZE_STRING);
+        $utilArgs = array('controller' => 'user', 'action' => 'display');
+        if (!in_array($objectType, $controllerHelper->getObjectTypes('controllerAction', $utilArgs))) {
+            $objectType = $controllerHelper->getDefaultObjectType('controllerAction', $utilArgs);
+        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', ACCESS_READ), LogUtil::getErrorMsgPermission());
+        $entityClass = $this->name . '_Entity_' . ucwords($objectType);
+        $repository = $this->entityManager->getRepository($entityClass);
+        $repository->setControllerArguments(array());
+
+        $idFields = ModUtil::apiFunc($this->name, 'selection', 'getIdFields', array('ot' => $objectType));
+
+        // retrieve identifier of the object we wish to view
+        $idValues = $controllerHelper->retrieveIdentifier($this->request, array(), $objectType, $idFields);
+        $hasIdentifier = $controllerHelper->isValidIdentifier($idValues);
+
+        // check for unique permalinks (without id)
+        $hasSlug = false;
+        $slug = '';
+        if ($hasIdentifier === false) {
+            $entityClass = $this->name . '_Entity_' . ucwords($objectType);
+            $meta = $this->entityManager->getClassMetadata($entityClass);
+            $hasSlug = $meta->hasField('slug') && $meta->isUniqueField('slug');
+            if ($hasSlug) {
+                $slug = $this->request->query->filter('slug', '', FILTER_SANITIZE_STRING);
+                $hasSlug = (!empty($slug));
+            }
+        }
+        $hasIdentifier |= $hasSlug;
+        $this->throwNotFoundUnless($hasIdentifier, $this->__('Error! Invalid identifier received.'));
+
+        $entity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', array('ot' => $objectType, 'id' => $idValues, 'slug' => $slug));
+        $this->throwNotFoundUnless($entity != null, $this->__('No such item.'));
+        unset($idValues);
+
+        $entity->initWorkflow();
+
+        // build ModUrl instance for display hooks; also create identifier for permission check
+        $currentUrlArgs = array('ot' => $objectType);
+        $instanceId = '';
+        foreach ($idFields as $idField) {
+            $currentUrlArgs[$idField] = $entity[$idField];
+            if (!empty($instanceId)) {
+                $instanceId .= '_';
+            }
+            $instanceId .= $entity[$idField];
+        }
+        $currentUrlArgs['id'] = $instanceId;
+        if (isset($entity['slug'])) {
+            $currentUrlArgs['slug'] = $entity['slug'];
+        }
+        $currentUrlObject = new Zikula_ModUrl($this->name, 'user', 'display', ZLanguage::getLanguageCode(), $currentUrlArgs);
+
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', $instanceId . '::', ACCESS_READ), LogUtil::getErrorMsgPermission());
+
+        $viewHelper = new SimpleMedia_Util_View($this->serviceManager);
+        $templateFile = $viewHelper->getViewTemplate($this->view, 'user', $objectType, 'display', array());
+
+        // set cache id
+        $component = $this->name . ':' . ucwords($objectType) . ':';
+        $instance = $instanceId . '::';
+        $accessLevel = ACCESS_READ;
+        if (SecurityUtil::checkPermission($component, $instance, ACCESS_COMMENT)) {
+            $accessLevel = ACCESS_COMMENT;
+        }
+        if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
+            $accessLevel = ACCESS_EDIT;
+        }
+        $this->view->setCacheId($objectType . '|' . $instanceId . '|a' . $accessLevel);
+
+        // ADDED Increate the viewscount of the displayed entity if configured and not being the creator
+        if ((($objectType == 'medium' && $this->getVar('countMediumViews', true)) || ($objectType == 'collection' && $this->getVar('countCollectionViews', true))) && ($entity->getCreatedUserId() != UserUtil::getVar('uid') || UserUtil::isLoggedIn() == false)) {
+            $entity->setViewsCount($entity->getViewsCount() + 1);
+            $entityManager = ServiceUtil::getService('doctrine.entitymanager');
+            $entityManager->persist($entity);
+            $entityManager->flush();
+        }
+
+        // assign output data to view object.
+        $this->view->assign($objectType, $entity)
+            ->assign('currentUrlObject', $currentUrlObject)
+            ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
+
+        // fetch and return the appropriate template
+        return $viewHelper->processTemplate($this->view, 'user', $objectType, 'display', array(), $templateFile);
+    }
+
+}

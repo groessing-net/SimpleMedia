@@ -73,8 +73,8 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
         $this->setVar('mediaDir', 'media/thefile');
         $this->setVar('mediaThumbDir', 'tmb');
         $this->setVar('mediaThumbExt', '_tmb_');
-        $this->setVar('countMediumViews', false);
-        $this->setVar('countCollectionViews', false);
+        $this->setVar('countMediumViews', true);
+        $this->setVar('countCollectionViews', true);
 
         $categoryRegistryIdsPerEntity = array();
 
@@ -117,7 +117,7 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
 			// make collection approved from start
 			$collection->setWorkflowState('approved');
 			// categories not set (yet)
-			
+
             $this->entityManager->persist($collection);
             $this->entityManager->flush();
 			// set this as default collection id for new media
