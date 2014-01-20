@@ -32,7 +32,7 @@ class SimpleMedia_Entity_Medium extends SimpleMedia_Entity_Base_Medium
 {
     // feel free to add your own methods here
 
-    
+
     /**
      * Post-Process the data after the entity has been constructed by the entity manager.
      *

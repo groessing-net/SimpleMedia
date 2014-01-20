@@ -102,7 +102,10 @@ class SimpleMedia_Entity_Collection extends SimpleMedia_Entity_Base_Collection
                 );
             }
         }
+
         if ($currentType == 'user') {
+            // OVERRIDE: disabled. Display via title and previewimage
+            /*
             if (in_array($currentFunc, array('main', 'view'))) {
                 $this->_actions[] = array(
                     'url' => array('type' => 'user', 'func' => 'display', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
@@ -111,6 +114,7 @@ class SimpleMedia_Entity_Collection extends SimpleMedia_Entity_Base_Collection
                     'linkText' => __('Details', $dom)
                 );
             }
+            */
             if (in_array($currentFunc, array('main', 'view', 'display'))) {
 				// direct admin function from the frontend when permission allow
                 if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
