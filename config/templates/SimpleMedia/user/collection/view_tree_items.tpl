@@ -4,13 +4,11 @@
     {assign var='hasNodes' value=true}
 {/if}
 
-{checkpermission component='SimpleMedia:Medium:' instance='.*' level='ACCESS_ADD' assign='hasEdit'}
-
 {* initialise additional gettext domain for translations within javascript *}
 {pageaddvar name='jsgettext' value='module_simplemedia_js:SimpleMedia'}
 
-<div id="collection_tree{$rootId}" class="z-treecontainer">
-    <div id="treeitems{$rootId}" class="z-treeitems">
+<div id="collectionTree{$rootId}" class="z-tree-container">
+    <div id="collectionTreeItems{$rootId}" class="z-tree-items">
     {if $hasNodes}
         {simplemediaTreeJS objectType='collection' tree=$items controller='user' root=$rootId sortable=true}
     {/if}
@@ -22,7 +20,7 @@
 /* <![CDATA[ */
     document.observe('dom:loaded', function() {
     {{if $hasNodes}}
-        simmedInitTreeNodes('collection', 'user', '{{$rootId}}', true, {{$hasEdit}});
+        simmedInitTreeNodes('collection', 'user', '{{$rootId}}', true, false);
         Zikula.TreeSortable.trees.itemtree{{$rootId}}.config.onSave = simmedTreeSave;
     {{/if}}
     });
