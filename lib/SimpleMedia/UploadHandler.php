@@ -19,14 +19,29 @@ class SimpleMedia_UploadHandler extends SimpleMedia_Base_UploadHandler
     // feel free to add your upload handler enhancements here
 
     /**
-     * @var array List of file types to be considered as movies.
-     */
-    protected $movieFileTypes;
-
-    /**
      * @var array List of file types to be considered as audio.
      */
     protected $audioFileTypes;
+
+    /**
+     * @var array List of file types to be considered as video.
+     */
+    protected $videoFileTypes;
+
+    /**
+     * @var array List of file types to be considered as video.
+     */
+    protected $ebookFileTypes;
+
+    /**
+     * @var array List of file types to be considered as video.
+     */
+    protected $rawImageFileTypes;
+
+    /**
+     * @var array List of file types to be considered as video.
+     */
+    protected $geoFileTypes;
 
     /**
      * @var array List of file types to be considered as documents.
@@ -43,16 +58,16 @@ class SimpleMedia_UploadHandler extends SimpleMedia_Base_UploadHandler
         // see for instance http://en.wikipedia.org/wiki/List_of_file_formats
         $this->imageFileTypes = array('gif', 'jpeg', 'jpg', 'png', 'tif', 'tiff', 'bmp'); // raster images
         $this->audioFileTypes = array('aac', 'mp3', 'wav', 'aif', 'mid');
-        $this->movieFileTypes = array('mpg', 'mpeg', 'mp4', 'mov', 'wmv', 'avi', 'swf', 'flv', 'rm', 'f4v', 'h264');
+        $this->videoFileTypes = array('mpg', 'mpeg', 'mp4', 'mov', 'wmv', 'avi', 'swf', 'flv', 'rm', 'f4v', 'h264');
+        $this->ebookFileTypes = array('epub', 'mobi');
+        $this->rawImageFileTypes = array('dng', 'cr2', 'nef');
+        $this->geoFileTypes = array('kml', 'gpx');
 
-        $otherimageFileTypes = array('psd', 'eps', 'ps', 'ai', 'svg', 'odg', 'emf', 'dwg', 'dxf');
-        $ebookFileTypes = array('epub', 'mobi');
-        $camerarawFileTypes = array('dng', 'cr2', 'nef');
-        $geoFileTypes = array('kml', 'gpx');
         $dtpFileTypes = array('qxd', 'fm', 'indd');
+        $otherimageFileTypes = array('psd', 'eps', 'ps', 'ai', 'svg', 'odg', 'emf', 'dwg', 'dxf');
         $this->documentFileTypes = array_merge(
             array('pdf', 'doc', 'xls', 'ppt', 'docx', 'xlsx', 'pptx', 'odt', 'ods', 'odp', 'pages', 'numbers', 'key', 'keynote', 'txt', 'rtf', 'csv', 'tex'), 
-            $otherimageFileTypes, $ebookFileTypes, $camerarawFileTypes, $geoFileTypes, $dtpFileTypes
+            $otherimageFileTypes, $dtpFileTypes
         );
         // zip and other package files will go into other
 		
@@ -106,6 +121,13 @@ class SimpleMedia_UploadHandler extends SimpleMedia_Base_UploadHandler
     {
         // call parent class
         $meta = parent::readMetaDataForFile($fileName, $filePath);
+
+        // isImage is already in parent
+        $meta['isAudio'] = (in_array($meta['extension'], $this->audioFileTypes) ? true : false);
+        $meta['isVideo'] = (in_array($meta['extension'], $this->videoFileTypes) ? true : false);
+        $meta['isEbook'] = (in_array($meta['extension'], $this->ebookFileTypes) ? true : false);
+        $meta['isRawImage'] = (in_array($meta['extension'], $this->rawImageFileTypes) ? true : false);
+        $meta['isGeo'] = (in_array($meta['extension'], $this->geoFileTypes) ? true : false);
 
 //        $iptc = new SimpleMedia_Util_Iptc($filePath);
 //        print_r($iptc->fetchAll(SimpleMedia_Util_Iptc::KEYWORDS));
