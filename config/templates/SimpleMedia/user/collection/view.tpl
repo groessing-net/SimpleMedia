@@ -22,8 +22,12 @@
         {gt text='Show all entries' assign='linkTitle'}
         <a href="{modurl modname='SimpleMedia' type='user' func='view' ot='collection' all=1}" title="{$linkTitle}" class="z-icon-es-view">{$linkTitle}</a>
     {/if}
+    {*
     {gt text='Switch to hierarchy view' assign='linkTitle'}
     <a href="{modurl modname='SimpleMedia' type='user' func='view' ot='collection' tpl='tree'}" title="{$linkTitle}" class="z-icon-es-view">{$linkTitle}</a>
+    *}
+    {gt text='Switch to grid view' assign='linkTitle'}
+    <a href="{modurl modname='SimpleMedia' type='user' func='view' ot='collection' tpl='grid'}" title="{$linkTitle}" class="z-icon-es-view">{$linkTitle}</a>
 
     {include file='user/collection/view_quickNav.tpl' all=$all own=$own workflowStateFilter=false}{* see template file for available options *}
 

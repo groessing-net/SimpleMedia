@@ -165,10 +165,8 @@ div.simplemedia-view form.simplemedia-quicknav fieldset #num {
     float:left;
     margin:10px;
     text-align:center;
-    width:150px;
     position:relative;
-    border: 1px solid #ccc;
-    padding: 8px 16px 25px;
+    border: 1px solid #ddd;
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     border-radius: 20px;
@@ -180,35 +178,53 @@ div.simplemedia-view form.simplemedia-quicknav fieldset #num {
     bottom:2px;
 }
 .simplemedia-collection div.simplemedia-collection-preview {
-    position:relative;
+    margin:0 15px 15px;
 }
 .simplemedia-collection div.simplemedia-collection-preview img {
-    opacity:0.70;
-    filter:alpha(opacity=70); /* For IE8 and earlier */
+    /*opacity:0.70;
+    filter:alpha(opacity=70);*/
 }
 .simplemedia-collection div.simplemedia-collection-preview img:hover {
-    opacity:1.0;
-    filter:alpha(opacity=100); /* For IE8 and earlier */
+    /*opacity:1.0;
+    filter:alpha(opacity=100);*/
 }
-.simplemedia-collection div.simplemedia-collection-preview img.simplemedia-img-rounded {
+.simplemedia-collection div.simplemedia-collection-preview img.simplemedia-img-rounded,
+.medium img.simplemedia-img-rounded {
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
     border-radius: 15px;
-    /* border:3px solid #999;
-    -webkit-box-shadow: #B3B3B3 5px 5px 5px;
+    border:2px solid #ffe;
+    /*-webkit-box-shadow: #B3B3B3 5px 5px 5px;
     -moz-box-shadow: #B3B3B3 5px 5px 5px;
     box-shadow: #B3B3B3 5px 5px 5px;*/
 }
+.simplemedia-collection div.simplemedia-collection-preview img.simplemedia-img-rounded:hover {
+    border:2px solid #996;
+}
 .simplemedia-collection div.simplemedia-collection-preview img.simplemedia-img-plain {
-    margin-top:10px;
+    margin-top:15px;
+}
+.simplemedia-collection div.simplemedia-collection-preview img.simplemedia-img-plain:hover {
 }
 .simplemedia-collection div.simplemedia-collection-title {
-    margin-bottom: 5px;
+    margin: 5px 0;
 }
-/*.simplemedia-collection div.simplemedia-collection-meta {
+.simplemedia-collection div.simplemedia-collection-meta {
     position:absolute;
-    display:block;
-    overflow: visible;
-    background:#fff;
-    text-align:center;
-}*/
+    background:#ffc;
+    text-align:left;
+    top:30px;
+    border:1px #999 solid;
+    border-width:1px 0;
+    width:100%;
+    z-index:1000;
+    /*
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    */
+}
+.simplemedia-collection div.simplemedia-collection-meta dl {
+    padding:5px;
+}
+
