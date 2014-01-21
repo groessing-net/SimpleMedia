@@ -25,7 +25,7 @@
                 <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$collection.id}" title="{if !empty($collection.description)}{$collection.description}{else}{gt text="View detail page"}{/if}">
                     {$collection.title|notifyfilters:'simplemedia.filterhook.collections'}
                 </a>
-                &nbsp;&nbsp;<img src="images/icons/extrasmall/info.png" width=16 height=16 id='simplemedia-collection-metaimg-{$collection.id}' />
+                &nbsp;<img src="images/icons/extrasmall/info.png" width=16 height=16 id='simplemedia-collection-metaimg-{$collection.id}' />
             </div>
             <div class="simplemedia-collection-preview">
                 {if $collection.previewImage != 0}
