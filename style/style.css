@@ -209,6 +209,10 @@ div.simplemedia-view form.simplemedia-quicknav fieldset #num {
 .simplemedia-collection div.simplemedia-collection-title {
     margin: 5px 0;
 }
+.simplemedia-collection-title a {
+    text-decoration:none;
+    font-weight:bold;
+}
 .simplemedia-collection div.simplemedia-collection-meta {
     position:absolute;
     background:#ffc;
