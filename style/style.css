@@ -229,6 +229,11 @@ div.simplemedia-view form.simplemedia-quicknav fieldset #num {
     */
 }
 .simplemedia-collection div.simplemedia-collection-meta dl {
-    padding:5px;
+    /*padding:5px;*/
+	margin:1em 0.5em;
+}
+.simplemedia-collection div.simplemedia-collection-meta dl dd{
+    /*padding:5px;*/
+	margin:0;
 }
 

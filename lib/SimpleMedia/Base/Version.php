@@ -58,7 +58,6 @@ class SimpleMedia_Base_Version extends Zikula_AbstractVersion
         );
         // DEBUG: permission schema aspect ends
 
-
         return $meta;
     }
 
@@ -67,7 +66,6 @@ class SimpleMedia_Base_Version extends Zikula_AbstractVersion
      */
     protected function setupHookBundles()
     {
-        
         $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.simplemedia.ui_hooks.media', 'ui_hooks', __('simplemedia Media Display Hooks'));
         
         // Display hook for view/display templates.
@@ -113,7 +111,5 @@ class SimpleMedia_Base_Version extends Zikula_AbstractVersion
         // A filter applied to the given area.
         $bundle->addEvent('filter', 'simplemedia.filter_hooks.collections.filter');
         $this->registerHookSubscriberBundle($bundle);
-
-        
     }
 }

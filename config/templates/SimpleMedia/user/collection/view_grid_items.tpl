@@ -25,7 +25,6 @@
                 <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$collection.id}" title="{if !empty($collection.description)}{$collection.description}{else}{gt text="View detail page"}{/if}">
                     {$collection.title|notifyfilters:'simplemedia.filterhook.collections'}
                 </a>
-                &nbsp;<img src="images/icons/extrasmall/info.png" width=16 height=16 id='simplemedia-collection-metaimg-{$collection.id}' />
             </div>
             <div class="simplemedia-collection-preview">
                 {if $collection.previewImage != 0}
@@ -46,6 +45,7 @@
                 </a>
             </div>
             <div class="simplemedia-collection-actions" id="simplemedia-collection-actions-{$collection.id}">
+                <img src="images/icons/extrasmall/info.png" width=16 height=16 id='simplemedia-collection-metaimg-{$collection.id}' title="{gt text='More information'}" />
                 {if count($collection._actions) gt 0}
                     {foreach item='option' from=$collection._actions}
                         <a href="{$option.url.type|simplemediaActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}"{if $option.icon eq 'preview'} target="_blank"{/if}>{icon type=$option.icon size='extrasmall' alt=$option.linkText|safetext}</a>
