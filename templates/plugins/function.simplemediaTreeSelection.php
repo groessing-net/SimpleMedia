@@ -69,7 +69,8 @@ function smarty_function_simplemediaTreeSelection($params, $view)
             }
             if (count($path) > 0) {
                 // remove root level
-                array_shift($path);
+                //OVERRIDE, espaan, root node displayed
+                //array_shift($path);
             }
             if ($params['target'] == 'allParents') {
                 $result = $path;

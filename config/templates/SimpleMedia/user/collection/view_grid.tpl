@@ -34,10 +34,13 @@
     {if !isset($showAllEntries) || $showAllEntries ne 1}
         {pager rowcount=$pager.numitems limit=$pager.itemsperpage display='page' modname='SimpleMedia' type='user' func='view' ot='collection'}
     {/if}
-    
-    {notifydisplayhooks eventname='simplemedia.ui_hooks.collections.display_view' urlobject=$currentUrlObject assign='hooks'}
-    {foreach key='providerArea' item='hook' from=$hooks}
-        {$hook}
-    {/foreach}
+
+    {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
+    {* include display hooks *}
+        {notifydisplayhooks eventname='simplemedia.ui_hooks.collections.display_view' urlobject=$currentUrlObject assign='hooks'}
+        {foreach key='providerArea' item='hook' from=$hooks}
+            {$hook}
+        {/foreach}
+    {/if}
 </div>
 {include file='user/footer.tpl'}

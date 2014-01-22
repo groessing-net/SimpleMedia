@@ -20,7 +20,7 @@
     {* Start grid collections *}
     {foreach item='collection' from=$collections}
         {if $collection.lvl eq $gridLevel} {* display only items requested here *}
-        <div class="simplemedia-collection-wrap" style="width:{$wrapWidth}px;min-height:{$wrapHeight}px">
+        <div class="simplemedia-collection-wrap" style="width:{$wrapWidth}px;height:{$wrapHeight}px">
             <div class="simplemedia-collection-title">
                 <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$collection.id}" title="{if !empty($collection.description)}{$collection.description}{else}{gt text="View detail page"}{/if}">
                     {$collection.title|notifyfilters:'simplemedia.filterhook.collections'}
@@ -63,7 +63,7 @@
                     {/if}
                 {/if}
                 <dl>
-                    <dd>{*<img src="images/icons/extrasmall/info.png" width=16 height=16 alt="" /> *}{if !empty($collection.description)}{$collection.description|safehtml}{else}TEST{/if}</dd>
+                    <dd>{*<img src="images/icons/extrasmall/info.png" width=16 height=16 alt="" /> *}{if !empty($collection.description)}{$collection.description|safehtml}{else}{gt text='No description'}{/if}</dd>
                     <dd><img src="images/icons/extrasmall/cal.png" width=16 height=16 alt="" /> {gt text='%1$s by %2$s' tag1=$collection.createdDate|dateformat tag2=$cr_uname}</dd>
                     <dd><img src="modules/SimpleMedia/images/sm2_16x16.png" width=16 height=16 alt="" /> {gt text='Media: %s' tag1=$collection.media|@count}</dd>
                     <dd><img src="images/icons/extrasmall/folder.png" width=16 height=16 alt="" /> {gt text='Collections: %s' tag1=$directChildren|@count}</dd>
@@ -73,6 +73,7 @@
         </div>
         {/if}
     {/foreach}
+    <div class="z-clearfix">&nbsp;</div>
     <script type="text/javascript">
         // <![CDATA[
         document.observe('dom:loaded', function() {
@@ -89,6 +90,4 @@
         });
         // ]]>
     </script>
-
-    <div class="z-clearfix">&nbsp;</div>
     {* End grid collections *}
