@@ -16,6 +16,7 @@ There are some small patches to make sure the latest generated MOST modules also
 are incorporated into Zikula Core 1.3.7. See also http://modulestudio.de/documentation/c/95-Troubleshooting#TroubleshootingGeneration
 * Patch for category selector. Due to a bug in the category selector in Zikula 1.3.5 and 1.3.6 you will run into problems when trying to save an entity with categories. To solve this just merge the fix shown in https://github.com/zikula/core/pull/1561/files and you are done.
 * Unable to find workflow file. If you get this error you have generated an application for Zikula 1.3.5/1.3.6 which contains a small bug that is fixed in 1.3.7. Please apply the fix shown in https://github.com/zikula/core/commit/f7e3379e7060859aab334be6707fe6e0ab61baf8 in order to fix the error.
+* duplicate key issue with categories https://github.com/zikula/core/pull/1566
 
 Template development & overrides
 --------------------------------
