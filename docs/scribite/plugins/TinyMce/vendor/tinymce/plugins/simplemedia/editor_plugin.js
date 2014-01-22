@@ -41,7 +41,7 @@
             ed.addButton('simplemedia', {
                 title : 'simplemedia.desc',
                 cmd : 'mceSimpleMedia',
-				image : url + '/img/ed_simplemedia.gif'
+				image : url + '/img/ed_simplemedia.png'
             });
 
             // Add a node change handler, selects the button in the UI when a image is selected
@@ -57,7 +57,7 @@
          * method can be used to create those.
          *
          * @param {String} n Name of the control to create.
-         * @param {tinymce.ControlManager} cm Control manager to use inorder to create new control.
+         * @param {tinymce.ControlManager} cm Control manager to use in order to create new control.
          * @return {tinymce.ui.Control} New control instance or null if no control was created.
          */
         createControl : function (n, cm) {
@@ -72,10 +72,10 @@
          */
         getInfo : function () {
             return {
-                longname : 'SimpleMedia for tinymce',
-                author : 'Axel Guckelsberger',
-                authorurl : 'http://zikula.de',
-                infourl : 'http://zikula.de',
+                longname : 'SimpleMedia for TinyMCE',
+                author : 'Erik Spaan & Axel Guckelsberger',
+                authorurl : 'https://github.com/zikula-ev/SimpleMedia',
+                infourl : 'https://github.com/zikula-ev/SimpleMedia',
                 version : '2.0.0'
             };
         }

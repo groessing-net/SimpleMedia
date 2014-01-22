@@ -61,6 +61,8 @@ simplemedia.finder.onLoad = function (baseId, selectedId)
     $('simpleMediaSearchGo').observe('keypress', simplemedia.finder.onParamChanged);
     $('simpleMediaSubmit').addClassName('z-hide');
     $('simpleMediaCancel').observe('click', simplemedia.finder.handleCancel);
+	
+	// TODO add catching of list/thumbs and showmeta checks here
 };
 
 simplemedia.finder.onParamChanged = function ()
@@ -150,12 +152,10 @@ simplemedia.finder.selectItem = function (itemId)
             }
         }
     } else if (editor === 'tinymce') {
+        // get the html to insert and place it in the editor
         html = getPasteSnippet('html', itemId);
         window.opener.tinyMCE.activeEditor.execCommand('mceInsertContent', false, html);
         // other tinymce commands: mceImage, mceInsertLink, mceReplaceContent, see http://www.tinymce.com/wiki.php/Command_identifiers
-//        tinyMCEPopup.editor.execCommand('mceInsertContent', false, html);
-//        tinyMCEPopup.close();
-//        return;
     } else if (editor === 'ckeditor') {
         // get the html to insert and place it in the editor
         html = getPasteSnippet('html', itemId);
@@ -176,12 +176,9 @@ function simmedClosePopup()
 }
 
 
-
-
 //=============================================================================
 // SimpleMedia item selector for Forms
 //=============================================================================
-
 simplemedia.itemSelector = {};
 simplemedia.itemSelector.items = {};
 simplemedia.itemSelector.baseId = 0;
@@ -208,7 +205,8 @@ simplemedia.itemSelector.onLoad = function (baseId, selectedId)
 
     simplemedia.itemSelector.getItemList();
     
-    // Add show images as thumbnails / list
+    // TODO
+	// Add show images as thumbnails / list
     // Add show name/size/date
 };
 
@@ -234,6 +232,8 @@ simplemedia.itemSelector.getItemList = function ()
     pars += 'sort=' + $F(baseId + 'Sort') + '&' +
             'sortdir=' + $F(baseId + 'SortDir') + '&' +
             'searchterm=' + $F(baseId + 'SearchTerm');
+			
+	// TODO add show images as and showmeta data here
 
     request = new Zikula.Ajax.Request('ajax.php?module=SimpleMedia&func=getItemListFinder', {
         method: 'post',
