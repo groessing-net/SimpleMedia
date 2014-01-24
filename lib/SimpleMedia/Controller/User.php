@@ -280,9 +280,10 @@ class SimpleMedia_Controller_User extends SimpleMedia_Controller_Base_User
         }
         $this->view->setCacheId($objectType . '|' . $instanceId . '|a' . $accessLevel);
 
-        // ADDED Increate the viewscount of the displayed entity if configured and not being the creator
+        // ADDED Increase the viewscount of the displayed entity if configured and not being the creator
         if ((($objectType == 'medium' && $this->getVar('countMediumViews', true)) || ($objectType == 'collection' && $this->getVar('countCollectionViews', true))) && ($entity->getCreatedUserId() != UserUtil::getVar('uid') || UserUtil::isLoggedIn() == false)) {
             $entity->setViewsCount($entity->getViewsCount() + 1);
+            // Doctrine flushing needed here
             $entityManager = ServiceUtil::getService('doctrine.entitymanager');
             $entityManager->persist($entity);
             $entityManager->flush();
