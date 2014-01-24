@@ -125,6 +125,7 @@ class SimpleMedia_UploadHandler extends SimpleMedia_Base_UploadHandler
         // isImage is already in parent
         $meta['isAudio'] = (in_array($meta['extension'], $this->audioFileTypes) ? true : false);
         $meta['isVideo'] = (in_array($meta['extension'], $this->videoFileTypes) ? true : false);
+        $meta['isDoc'] = (in_array($meta['extension'], $this->documentFileTypes) ? true : false);
         $meta['isEbook'] = (in_array($meta['extension'], $this->ebookFileTypes) ? true : false);
         $meta['isRawImage'] = (in_array($meta['extension'], $this->rawImageFileTypes) ? true : false);
         $meta['isGeo'] = (in_array($meta['extension'], $this->geoFileTypes) ? true : false);
