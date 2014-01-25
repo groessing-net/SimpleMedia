@@ -125,10 +125,12 @@ class SimpleMedia_UploadHandler extends SimpleMedia_Base_UploadHandler
         // isImage is already in parent
         $meta['isAudio'] = (in_array($meta['extension'], $this->audioFileTypes) ? true : false);
         $meta['isVideo'] = (in_array($meta['extension'], $this->videoFileTypes) ? true : false);
-        $meta['isDoc'] = (in_array($meta['extension'], $this->documentFileTypes) ? true : false);
         $meta['isEbook'] = (in_array($meta['extension'], $this->ebookFileTypes) ? true : false);
         $meta['isRawImage'] = (in_array($meta['extension'], $this->rawImageFileTypes) ? true : false);
         $meta['isGeo'] = (in_array($meta['extension'], $this->geoFileTypes) ? true : false);
+        $meta['isDoc'] = (in_array($meta['extension'], $this->documentFileTypes) ? true : false);
+        // Add extra identification for pdf files, they are doc as well as pdf.
+        $meta['isPdf'] = ($meta['extension'] == 'pdf') ? true : false;
 
 //        $iptc = new SimpleMedia_Util_Iptc($filePath);
 //        print_r($iptc->fetchAll(SimpleMedia_Util_Iptc::KEYWORDS));
