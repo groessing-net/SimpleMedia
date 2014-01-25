@@ -8,7 +8,7 @@
         <h3>{$templateTitle}</h3>
     </div>
 
-    <p class="z-informationmsg">Collections are nested trees that can contain media items and sub-collections.</p>
+    <p class="z-informationmsg">{gt text='Collections are nested trees that can contain media items and sub-collections.'}</p>
 
     {if $canBeCreated}
         {checkpermissionblock component='SimpleMedia:Collection:' instance='::' level='ACCESS_EDIT'}
