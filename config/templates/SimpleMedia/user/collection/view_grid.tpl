@@ -5,7 +5,7 @@
     {pagesetvar name='title' value=$templateTitle}
     <h2>{$templateTitle}</h2>
 
-    {*
+    {* always display paginated view, disabled showallentries
     {assign var='own' value=0}
     {if isset($showOwnEntries) && $showOwnEntries eq 1}
         {assign var='own' value=1}
@@ -27,10 +27,13 @@
     <a href="{modurl modname='SimpleMedia' type='user' func='view' ot='collection' tpl='tree'}" title="{$linkTitle}" class="z-icon-es-view">{$linkTitle}</a>
     *}
 
+    {* filtering and sorting menu *}
     {include file='user/collection/view_quickNav.tpl' all=$all own=$own workflowStateFilter=false}{* see template file for available options *}
 
-    {include file='user/collection/view_grid_items.tpl' collections=$items gridLevel=0 thumbWidth=170 thumbHeight=150 wrapWidth=200 wrapHeight=220 thumbIcon='large'}
+    {* display the collections in a grid *}
+    {include file='user/collection/view_grid_items.tpl' collections=$items gridLevel=0 thumbWidth=220 thumbHeight=220}
 
+    {* pager *}
     {if !isset($showAllEntries) || $showAllEntries ne 1}
         {pager rowcount=$pager.numitems limit=$pager.itemsperpage display='page' modname='SimpleMedia' type='user' func='view' ot='collection'}
     {/if}
