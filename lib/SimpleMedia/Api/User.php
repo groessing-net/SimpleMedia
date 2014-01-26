@@ -54,6 +54,10 @@ class SimpleMedia_Api_User extends SimpleMedia_Api_Base_User
                              'title' => $this->__('Medium list'));
         }
 
+        $links[] = array('url' => ModUtil::url($this->name, 'user', 'view', array('ot' => 'collection', 'tpl' => 'tree')),
+            'text' => $this->__('ADDMORELINKS'),
+            'title' => $this->__('TODO'));
+
         return $links;
     }
 }
