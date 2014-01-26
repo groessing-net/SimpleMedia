@@ -4,6 +4,8 @@ CUSTOMISATIONS 2.0
 
 SimpleMedia - Manual additions and amendments
 
+NEEDS to be updated for the MOST 061 version.
+
 CORE HACKS
 ----------
 none
