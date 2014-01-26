@@ -6,6 +6,21 @@
     {pagesetvar name='title' value=$templateTitle|@html_entity_decode}
     <h2>{$templateTitle|notifyfilters:'simplemedia.filter_hooks.collections.filter'}{icon id='itemActionsTrigger' type='options' size='extrasmall' __alt='Actions' class='z-pointer z-hide'}</h2>
 
+    {* show parent collections in a breadcrumb view, only for non-root collections *}
+    {* TODO check this functionlaity *}
+    {if !isset($allParents) || $allParents eq true}
+    {simplemediaTreeSelection objectType='collection' node=$collection target='allParents' assign='allParents'}
+    <div class=""simplemedia_collection_breadcrums">
+        <a href="{modurl modname='SimpleMedia' type='user' func='view' ot='collection'}" title="{gt text='SimpleMedia Root'}">{gt text='Root'}</a>
+        {if $allParents ne null && count($allParents) gt 0}
+        {foreach item='node' from=$allParents}
+        > <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$node.id}" title="{$node->getTitleFromDisplayPattern()|replace:'"':''}">{$node->getTitleFromDisplayPattern()}</a>
+        {/foreach}
+        {/if}
+        > {$collection.title}
+    </div>
+    {/if}
+
     <div>{gt text='Description'} {$collection.description}</div>
     <div>Viewed: {$collection.viewsCount}</div>
     {include file='user/include_categories_display.tpl' obj=$collection}
@@ -15,10 +30,13 @@
         {if !isset($allParents) || $allParents eq true}
             {simplemediaTreeSelection objectType='collection' node=$collection target='allParents' assign='allParents'}
             {if $allParents ne null && count($allParents) gt 0}
-                {gt text='Parents'}
-                {foreach item='node' from=$allParents}
-                    :: <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$node.id}" title="{$node->getTitleFromDisplayPattern()|replace:'"':''}">{$node->getTitleFromDisplayPattern()}</a>
-                {/foreach}
+                <div class=""simplemedia_collection_breadcrums">
+                    <a href="{modurl modname='SimpleMedia' type='user' func='view' ot='collection'}" title="{gt text='SimpleMedia Root'}">{gt text='Root'}</a>
+                    {foreach item='node' from=$allParents}
+                        > <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$node.id}" title="{$node->getTitleFromDisplayPattern()|replace:'"':''}">{$node->getTitleFromDisplayPattern()}</a>
+                    {/foreach}
+                    > {$collection->getTitle()}
+                </div>
             {/if}
         {/if}
     {/if}

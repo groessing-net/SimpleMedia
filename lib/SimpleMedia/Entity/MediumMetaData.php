@@ -23,4 +23,21 @@ use Doctrine\ORM\Mapping as ORM;
 class SimpleMedia_Entity_MediumMetaData extends SimpleMedia_Entity_Base_MediumMetaData
 {
     // feel free to add your own methods here
+
+    /**
+     * @ORM\Column(type="string", length=80, nullable=true)
+     * @var string
+     */
+    private $rights;
+
+    public function getRights()
+    {
+        return $this->rights;
+    }
+
+    public function setRights($rights)
+    {
+        $this->rights = $rights;
+    }
+
 }
