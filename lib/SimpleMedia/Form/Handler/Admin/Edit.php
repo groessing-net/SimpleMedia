@@ -18,4 +18,15 @@
 class SimpleMedia_Form_Handler_Admin_Edit extends SimpleMedia_Form_Handler_Admin_Base_Edit
 {
     // feel free to extend the base handler class here
+
+    /**
+     * Return list of attribute field names.
+     * OVERRIDE: removed standard fields and added new ones
+     *
+     * @return array list of attribute names.
+     */
+    protected function getAttributeFieldNames()
+    {
+        return array('field1');
+    }
 }
