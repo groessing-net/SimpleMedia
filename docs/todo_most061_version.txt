@@ -11,3 +11,4 @@ DONE - categories https://github.com/drummer3333/core/commit/e44b73ac39650e13ac2
 - scribite plugins update, tabs, direct upload, image thumbnail display
 - update attributes usage and store copyright and exif/iptc there or in metadata. 
 - multi upload via jQ multi upload handler.
+- Add create-root-node and delete admin-controller methods
