@@ -15,10 +15,11 @@
  * The simplemediaTreeSelection plugin retrieves tree entities based on a given one.
  *
  * Available parameters:
- *   - objectType: Name of treated object type.
- *   - node:       Given entity as tree entry point.
- *   - target:     One of 'allParents', 'directParent', 'allChildren', 'directChildren', 'predecessors', 'successors', 'preandsuccessors'
- *   - assign:     Variable where the results are assigned to.
+ *   - objectType:   Name of treated object type.
+ *   - node:         Given entity as tree entry point.
+ *   - target:       One of 'allParents', 'directParent', 'allChildren', 'directChildren', 'predecessors', 'successors', 'preandsuccessors'
+ *   - skipRootNode: Whether root nodes are skipped or not (defaults to true). Useful for when working with many trees at once.
+ *   - assign:       Variable where the results are assigned to.
  *
  * @param  array       $params All attributes passed to this function from the template.
  * @param  Zikula_View $view   Reference to the view object.
@@ -44,6 +45,8 @@ function smarty_function_simplemediaTreeSelection($params, $view)
         return false;
     }
 
+    $skipRootNode = (isset($params['skipRootNode']) ? (bool) $params['skipRootNode'] : true);
+
     if (!isset($params['assign']) || empty($params['assign'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('simplemediaTreeSelection', 'assign')));
 
@@ -67,10 +70,10 @@ function smarty_function_simplemediaTreeSelection($params, $view)
                 // remove $node
                 unset($path[count($path)-1]);
             }
-            if (count($path) > 0) {
+            // Updated see, https://github.com/Guite/MostGenerator/issues/478
+            if ($skipRootNode && count($path) > 0) {
                 // remove root level
-                //OVERRIDE, espaan, root node displayed
-                //array_shift($path);
+                array_shift($path);
             }
             if ($params['target'] == 'allParents') {
                 $result = $path;
