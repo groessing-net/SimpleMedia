@@ -9,10 +9,10 @@
     {* show parent collections in a breadcrumb view, only for non-root collections *}
     {* TODO check this functionlaity *}
     {if !isset($allParents) || $allParents eq true}
-    {simplemediaTreeSelection objectType='collection' node=$collection target='allParents' assign='allParents'}
+    {simplemediaTreeSelection objectType='collection' node=$collection target='allParents' assign='allParents' skipRootNode=false}
     <div class=""simplemedia_collection_breadcrums">
         <a href="{modurl modname='SimpleMedia' type='user' func='view' ot='collection'}" title="{gt text='SimpleMedia Root'}">{gt text='Root'}</a>
-        {if $allParents ne null && count($allParents) gt 0}
+        {if $allParents ne null && count($allParents) > 0}
         {foreach item='node' from=$allParents}
         > <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$node.id}" title="{$node->getTitleFromDisplayPattern()|replace:'"':''}">{$node->getTitleFromDisplayPattern()}</a>
         {/foreach}
@@ -45,14 +45,14 @@
     {if !isset($directChildren) || $directChildren eq true}
         {simplemediaTreeSelection objectType='collection' node=$collection target='directChildren' assign='directChildren'}
         {if $directChildren ne null && count($directChildren) gt 0}
-            {include file='user/collection/view_grid_items.tpl' collections=$directChildren gridLevel=$collection.lvl+1 thumbWidth=200 thumbHeight=200}
+            {include file='user/collection/view_grid_items.tpl' collections=$directChildren gridLevel=$collection.lvl+1 thumbWidth=150 thumbHeight=150 clearFix=false}
         {/if}
     {/if}
 
     {* include all the media here *}
     {if isset($collection.media) && $collection.media ne null}
         {include file='user/medium/include_displayItemGrid.tpl' items=$collection.media thumbWidth=150 thumbHeight=150}
-    {/if}
+    {/if}    
 
     {include file='user/include_standardfields_display.tpl' obj=$collection}
 

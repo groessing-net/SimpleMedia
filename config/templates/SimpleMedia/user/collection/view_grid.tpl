@@ -31,7 +31,7 @@
     {include file='user/collection/view_quickNav.tpl' all=$all own=$own workflowStateFilter=false}{* see template file for available options *}
 
     {* display the collections in a grid *}
-    {include file='user/collection/view_grid_items.tpl' collections=$items gridLevel=0 thumbWidth=220 thumbHeight=220}
+    {include file='user/collection/view_grid_items.tpl' collections=$items gridLevel=0 thumbWidth=170 thumbHeight=170}
 
     {* pager *}
     {if !isset($showAllEntries) || $showAllEntries ne 1}
