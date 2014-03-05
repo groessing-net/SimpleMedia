@@ -34,7 +34,8 @@ class SimpleMedia_Controller_User extends SimpleMedia_Controller_Base_User
     /**
      * This method provides a generic item list overview.
      * OVERRIDE, added where for collections to only list level 0 collections in
-     * regular view .
+     * regular view.
+     * CHECK
      *
      * @param string  $ot           Treated object type.
      * @param string  $sort         Sorting field.
@@ -198,6 +199,7 @@ class SimpleMedia_Controller_User extends SimpleMedia_Controller_Base_User
     /**
      * This method provides a generic item detail view.
      * OVERRIDE: added counting views when entity is being displayed
+     * CHECK
      *
      * @param string  $ot           Treated object type.
      * @param string  $tpl          Name of alternative template (for alternative display options, feeds and xml output)
@@ -301,7 +303,7 @@ class SimpleMedia_Controller_User extends SimpleMedia_Controller_Base_User
     /**
      * This method provides the ability to upload several media at once in an
 	 * existing collection or a new one.
-     * NEW method, not existing in the base classs
+     * NEW method, not existing in the base class UPDATE
      *
      * @param string  $ot           Treated object type.
      * @param string  $tpl          Name of alternative template (for alternative display options, feeds and xml output)
