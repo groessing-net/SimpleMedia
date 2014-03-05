@@ -41,18 +41,19 @@
         {/if}
     {/if}
 
+    {* include all the media here *}
+    {if isset($collection.media) && $collection.media ne null}
+        {include file='user/medium/include_displayItemGrid.tpl' items=$collection.media thumbWidth=150 thumbHeight=150}
+    {/if}
+
     {* include the direct child collections here *}
     {if !isset($directChildren) || $directChildren eq true}
         {simplemediaTreeSelection objectType='collection' node=$collection target='directChildren' assign='directChildren'}
         {if $directChildren ne null && count($directChildren) gt 0}
-            {include file='user/collection/view_grid_items.tpl' collections=$directChildren gridLevel=$collection.lvl+1 thumbWidth=150 thumbHeight=150 clearFix=false}
+            {include file='user/collection/view_grid_items.tpl' collections=$directChildren gridLevel=$collection.lvl+1 thumbWidth=150 thumbHeight=150}
         {/if}
     {/if}
 
-    {* include all the media here *}
-    {if isset($collection.media) && $collection.media ne null}
-        {include file='user/medium/include_displayItemGrid.tpl' items=$collection.media thumbWidth=150 thumbHeight=150}
-    {/if}    
 
     {include file='user/include_standardfields_display.tpl' obj=$collection}
 

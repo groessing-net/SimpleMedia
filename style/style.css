@@ -167,9 +167,9 @@ div.simplemedia-view form.simplemedia-quicknav fieldset #num {
     text-align:center;
     position:relative;
     border: 1px solid #dde;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    border-radius: 20px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
 }
 .simplemedia-collection div.simplemedia-collection-wrap:hover {
     border-color:#669;
@@ -191,9 +191,9 @@ div.simplemedia-view form.simplemedia-quicknav fieldset #num {
 .simplemedia-medium div.simplemedia-medium-preview {
     margin:0;
     padding:0;
-    -webkit-border-radius:0 0 20px 20px;
-    -moz-border-radius:0 0 20px 20px;
-    border-radius:0 0 20px 20px;
+    -webkit-border-radius:10px 10px 0 0;
+    -moz-border-radius:10px 10px 0 0;
+    border-radius:10px 10px 0 0;
     text-decoration:none;
     /* opacity gives also opacity to divs stacked above this div
     filter: alpha(opacity=30);
@@ -207,9 +207,9 @@ div.simplemedia-view form.simplemedia-quicknav fieldset #num {
 }
 .simplemedia-collection div.simplemedia-collection-preview img.simplemedia-img-rounded,
 .simplemedia-medium div.simplemedia-medium-preview img.simplemedia-img-rounded {
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    border-radius: 20px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
     border:2px solid #fff;
     /*-webkit-box-shadow: #B3B3B3 5px 5px 5px;
     -moz-box-shadow: #B3B3B3 5px 5px 5px;
@@ -235,17 +235,17 @@ div.simplemedia-view form.simplemedia-quicknav fieldset #num {
 }
 .simplemedia-collection div.simplemedia-collection-meta {
     position:absolute;
-    bottom:0;
-    background:#ffc;
+    top:0;
+    background:#ffe;
     text-align:left;
     border:1px #999 solid;
-    border-width:1px 0 0;
+    border-width:0 0 1px;
     width:100%;
     z-index:1000;
     font-size:0.95em;
-    -webkit-border-radius:0 0 20px 20px;
-    -moz-border-radius:0 0 20px 20px;
-    border-radius:0 0 20px 20px;
+    -webkit-border-radius:10px 10px 0 0;
+    -moz-border-radius:10px 10px 0 0;
+    border-radius:10px 10px 0 0;
 
 }
 .simplemedia-collection div.simplemedia-collection-meta dl {

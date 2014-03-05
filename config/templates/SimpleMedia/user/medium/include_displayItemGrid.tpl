@@ -10,13 +10,6 @@
 <div class="simplemedia-medium medium">
 {foreach name='relLoop' item='medium' from=$items}
     <div class="simplemedia-medium-wrap" style="width:{$thumbWidth}px;">
-        <div class="simplemedia-medium-title">
-            <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='medium' id=$medium.id}" title="{if !empty($medium.description)}{$medium.description}{else}{gt text="View detail page"}{/if}">
-                {$medium.title|notifyfilters:'simplemedia.filterhook.media'}
-            </a>
-            {* &nbsp;<img src="images/icons/extrasmall/info.png" width=16 height=16 id='simplemedia-medium-metaimg-{$collection.id}' /> *}
-        </div>
-
         {* prepare thumbnail choice and how to display/download *}
         {assign var='previewImageUsed' value=false}
         {if $medium.theFileMeta.isImage}
@@ -88,10 +81,16 @@
                 &nbsp;
             {/if}
         </div>
+        <div class="simplemedia-medium-title">
+            <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='medium' id=$medium.id}" title="{if !empty($medium.description)}{$medium.description}{else}{gt text="View detail page"}{/if}">
+                {$medium.title|notifyfilters:'simplemedia.filterhook.media'}
+            </a>
+            {* &nbsp;<img src="images/icons/extrasmall/info.png" width=16 height=16 id='simplemedia-medium-metaimg-{$collection.id}' /> *}
+        </div>
     </div>
 {/foreach}
+</div> {* simplemedia-medium medium *}
+{/if}
 {if $clearFix}
 <div class="z-clearfix">&nbsp;</div>
-{/if}
-</div> {* simplemedia-medium medium *}
 {/if}

@@ -8,6 +8,50 @@
     {* display only collections on the level requested *}
     {if empty($gridLevel) || $collection.lvl eq $gridLevel}
         <div class="simplemedia-collection-wrap" style="width:{$thumbWidth}px;">
+            {* Collect the data for the preview image *}
+            {if $collection.previewImage != 0}
+                {modapifunc modname='SimpleMedia' type='selection' func='getEntity' objectType='medium' id=$collection.previewImage assign='previewImageMedium'}
+                {if !empty($previewImageMedium) && $previewImageMedium.theFileMeta.isImage}
+                    {thumb image=$previewImageMedium.theFileFullPath width=$thumbWidth height=$thumbHeight assign="thumbnail"}
+                    {assign var="imgClass" value="simplemedia-img-rounded"}
+                {else}
+                    {* thumb image='modules/SimpleMedia/images/sm2_collection_240x240.png' assign="thumbnail" *}
+                    {assign_concat name='thumbnail' 1=$baseurl 2 ="modules/SimpleMedia/images/sm2_collection_96x96.png"}
+                    {assign var="imgClass" value="simplemedia-img-plain"}
+                {/if}
+            {else}
+                {assign var=tw value=$thumbWidth-50}
+                {assign var=th value=$thumbHeight-50}
+                {* assign var=tw value=0.7*$thumbWidth}
+                {assign var=th value=0.7*$thumbHeight *}
+                {* thumb image='modules/SimpleMedia/images/sm2_collection_240x240.png' mode=outbound width=$tw height=$th assign="thumbnail" *}
+                {assign_concat name='thumbnail' 1=$baseurl 2 ="modules/SimpleMedia/images/sm2_collection_96x96.png"}
+                {assign var="imgClass" value="simplemedia-img-plain"}
+            {/if}
+            <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$collection.id}" title="{if !empty($collection.description)}{$collection.description}{else}{gt text="View detail page"}{/if}">
+            <div class="simplemedia-collection-preview"  id='simplemedia-collection-meta-{$collection.id}-trigger' style="background:url({$thumbnail}) no-repeat center center;width:{$thumbWidth}px;height:{$thumbHeight}px;">
+                <div class="simplemedia-collection-meta" style="display:none;" id="simplemedia-collection-meta-{$collection.id}">
+                    {nocache} {* don't use caching for this info block *}
+                    {usergetvar name='uname' uid=$collection.createdUserId assign='cr_uname'}
+                    {usergetvar name='uname' uid=$collection.updatedUserId assign='lu_uname'}
+                    {if !isset($directChildren) || $directChildren eq true}
+                        {simplemediaTreeSelection objectType='collection' node=$collection target='directChildren' assign='directChildren'}
+                        {if $directChildren ne null && count($directChildren) gt 0}
+                            {simplemediaTreeSelection objectType='collection' node=$collection target='directChildren' assign='directChildren'}
+                        {/if}
+                    {/if}
+                    <dl>
+                        <dd>{if !empty($collection.description)}{$collection.description|safehtml}{else}{gt text='No description'}{/if}</dd>
+                        <dd><img src="modules/SimpleMedia/images/sm2_16x16.png" width=16 height=16 alt="" /> {gt text='Media: %s' tag1=$collection.media|@count}</dd>
+                        <dd><img src="images/icons/extrasmall/folder.png" width=16 height=16 alt="" /> {gt text='Collections: %s' tag1=$directChildren|@count}</dd>
+                        <dd><img src="images/icons/extrasmall/14_layer_visible.png" width=16 height=16 alt="" /> {gt text='Views: %s' tag1=$collection.viewsCount}</dd>
+                        <dd><img src="images/icons/extrasmall/cal.png" width=16 height=16 alt="" /> {gt text='%1$s by %2$s' tag1=$collection.createdDate|dateformat tag2=$cr_uname}</dd>
+                        {* <dd>{assignedcategorieslist categories=$collection.categories doctrine2=true}</dd> *}
+                    </dl>
+                    {/nocache}
+                </div>
+            </div>
+            </a>
             <div class="simplemedia-collection-title">
                 <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$collection.id}" title="{if !empty($collection.description)}{$collection.description}{else}{gt text="View detail page"}{/if}">
                     {$collection.title|notifyfilters:'simplemedia.filterhook.collections'}
@@ -25,48 +69,6 @@
                 </span>
                 {/if}
             </div>
-            {* Collect the data for the preview image *}
-            {if $collection.previewImage != 0}
-                {modapifunc modname='SimpleMedia' type='selection' func='getEntity' objectType='medium' id=$collection.previewImage assign='previewImageMedium'}
-                {if !empty($previewImageMedium) && $previewImageMedium.theFileMeta.isImage}
-                    {thumb image=$previewImageMedium.theFileFullPath width=$thumbWidth height=$thumbHeight assign="thumbnail"}
-                    {assign var="imgClass" value="simplemedia-img-rounded"}
-                {else}
-                    {thumb image='modules/SimpleMedia/images/sm2_collection_240x240.png' assign="thumbnail"}
-                    {* assign_concat name='thumbnail' 1=$baseurl 2 ="modules/SimpleMedia/images/sm2_collection_$thumbIcon.png" *}
-                    {assign var="imgClass" value="simplemedia-img-plain"}
-                {/if}
-            {else}
-                {assign var=tw value=$thumbWidth-50}
-                {assign var=th value=$thumbHeight-50}
-                {thumb image='modules/SimpleMedia/images/sm2_collection_240x240.png' mode=outbound width=$tw height=$th assign="thumbnail"}
-                {* assign_concat name='thumbnail' 1=$baseurl 2 ="modules/SimpleMedia/images/sm2_collection_$thumbIcon.png" *}
-                {assign var="imgClass" value="simplemedia-img-plain"}
-            {/if}
-            <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$collection.id}" title="{if !empty($collection.description)}{$collection.description}{else}{gt text="View detail page"}{/if}">
-            <div class="simplemedia-collection-preview"  id='simplemedia-collection-meta-{$collection.id}-trigger' style="background:url({$thumbnail}) no-repeat center center;width:{$thumbWidth}px;height:{$thumbHeight}px;">
-                <div class="simplemedia-collection-meta" style="display:none;" id="simplemedia-collection-meta-{$collection.id}">
-                    {nocache} {* don't use caching for this info block *}
-                    {usergetvar name='uname' uid=$collection.createdUserId assign='cr_uname'}
-                    {usergetvar name='uname' uid=$collection.updatedUserId assign='lu_uname'}
-                    {if !isset($directChildren) || $directChildren eq true}
-                        {simplemediaTreeSelection objectType='collection' node=$collection target='directChildren' assign='directChildren'}
-                        {if $directChildren ne null && count($directChildren) gt 0}
-                            {simplemediaTreeSelection objectType='collection' node=$collection target='directChildren' assign='directChildren'}
-                        {/if}
-                    {/if}
-                    <dl>
-                        <dd>{if !empty($collection.description)}{$collection.description|safehtml}{else}{gt text='No description'}{/if}</dd>
-                        <dd><img src="images/icons/extrasmall/cal.png" width=16 height=16 alt="" /> {gt text='%1$s by %2$s' tag1=$collection.createdDate|dateformat tag2=$cr_uname}</dd>
-                        <dd><img src="modules/SimpleMedia/images/sm2_16x16.png" width=16 height=16 alt="" /> {gt text='Media: %s' tag1=$collection.media|@count}</dd>
-                        <dd><img src="images/icons/extrasmall/folder.png" width=16 height=16 alt="" /> {gt text='Collections: %s' tag1=$directChildren|@count}</dd>
-                        <dd><img src="images/icons/extrasmall/14_layer_visible.png" width=16 height=16 alt="" /> {gt text='Views: %s' tag1=$collection.viewsCount}</dd>
-                        {* <dd>{assignedcategorieslist categories=$collection.categories doctrine2=true}</dd> *}
-                    </dl>
-                    {/nocache}
-                </div>
-            </div>
-            </a>
         </div>
     {/if}
 {/foreach}
