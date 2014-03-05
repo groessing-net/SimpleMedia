@@ -4,8 +4,8 @@
     <title><![CDATA[{$item.title}]]></title>
     <description><![CDATA[{$item.description}]]></description>
     <previewImage>{$item.previewImage}</previewImage>
-    <sortValue>{$item.sortValue}</sortValue>
     <viewsCount>{$item.viewsCount}</viewsCount>
+    <sortValue>{$item.sortValue}</sortValue>
     <workflowState>{$item.workflowState|simplemediaObjectState:false|lower}</workflowState>
     <media>
     {if isset($item.Media) && $item.Media ne null}

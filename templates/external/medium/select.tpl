@@ -54,11 +54,11 @@
         <option value="title"{if $sort eq 'title'} selected="selected"{/if}>{gt text='Title'}</option>
         <option value="theFile"{if $sort eq 'theFile'} selected="selected"{/if}>{gt text='The file'}</option>
         <option value="description"{if $sort eq 'description'} selected="selected"{/if}>{gt text='Description'}</option>
+        <option value="mediaType"{if $sort eq 'mediaType'} selected="selected"{/if}>{gt text='Media type'}</option>
         <option value="zipcode"{if $sort eq 'zipcode'} selected="selected"{/if}>{gt text='Zipcode'}</option>
         <option value="previewImage"{if $sort eq 'previewImage'} selected="selected"{/if}>{gt text='Preview image'}</option>
-        <option value="sortValue"{if $sort eq 'sortValue'} selected="selected"{/if}>{gt text='Sort value'}</option>
-        <option value="mediaType"{if $sort eq 'mediaType'} selected="selected"{/if}>{gt text='Media type'}</option>
         <option value="viewsCount"{if $sort eq 'viewsCount'} selected="selected"{/if}>{gt text='Views count'}</option>
+        <option value="sortValue"{if $sort eq 'sortValue'} selected="selected"{/if}>{gt text='Sort value'}</option>
         <option value="createdDate"{if $sort eq 'createdDate'} selected="selected"{/if}>{gt text='Creation date'}</option>
         <option value="createdUserId"{if $sort eq 'createdUserId'} selected="selected"{/if}>{gt text='Creator'}</option>
         <option value="updatedDate"{if $sort eq 'updatedDate'} selected="selected"{/if}>{gt text='Update date'}</option>

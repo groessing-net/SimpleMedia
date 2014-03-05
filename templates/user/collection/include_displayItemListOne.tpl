@@ -1,4 +1,6 @@
 {* purpose of this template: inclusion template for display of related collections in user area *}
+{checkpermission component='SimpleMedia:Collection:' instance='::' level='ACCESS_EDIT' assign='hasAdminPermission'}
+{checkpermission component='SimpleMedia:Collection:' instance='::' level='ACCESS_EDIT' assign='hasEditPermission'}
 {if !isset($nolink)}
     {assign var='nolink' value=false}
 {/if}

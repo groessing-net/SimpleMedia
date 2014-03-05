@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -51,20 +51,20 @@ class SimpleMedia_Entity_Validator_Base_Collection extends SimpleMedia_Validator
             $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('preview image', 11), $dom);
             return $errorInfo;
         }
-        if (!$this->isValidInteger('sortValue')) {
-            $errorInfo['message'] = __f('Error! Field value may only contain digits (%s).', array('sort value'), $dom);
-            return $errorInfo;
-        }
-        if (!$this->isNumberNotLongerThan('sortValue', 11)) {
-            $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('sort value', 11), $dom);
-            return $errorInfo;
-        }
         if (!$this->isValidInteger('viewsCount')) {
             $errorInfo['message'] = __f('Error! Field value may only contain digits (%s).', array('views count'), $dom);
             return $errorInfo;
         }
         if (!$this->isNumberNotLongerThan('viewsCount', 11)) {
             $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('views count', 11), $dom);
+            return $errorInfo;
+        }
+        if (!$this->isValidInteger('sortValue')) {
+            $errorInfo['message'] = __f('Error! Field value may only contain digits (%s).', array('sort value'), $dom);
+            return $errorInfo;
+        }
+        if (!$this->isNumberNotLongerThan('sortValue', 11)) {
+            $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('sort value', 11), $dom);
             return $errorInfo;
         }
     
@@ -81,7 +81,7 @@ class SimpleMedia_Entity_Validator_Base_Collection extends SimpleMedia_Validator
      */
     public function isUniqueValue($fieldName)
     {
-        if ($this->entity[$fieldName] == '') {
+        if ($this->entity[$fieldName] === '') {
             return false;
         }
     

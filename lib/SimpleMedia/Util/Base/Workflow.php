@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -168,23 +168,32 @@ class SimpleMedia_Util_Base_Workflow extends Zikula_AbstractBase
      * Executes a certain workflow action for a given entity object.
      *
      * @param \Zikula_EntityAccess $entity   The given entity instance.
-     * @param string               $actionId Name of action to be executed. 
+     * @param string               $actionId Name of action to be executed.
+     * @param bool                 $recursive true if the function called itself.  
      *
      * @return bool False on error or true if everything worked well.
      */
-    public function executeAction($entity, $actionId = '')
+    public function executeAction($entity, $actionId = '', $recursive = false)
     {
         $objectType = $entity['_objectType'];
         $schemaName = $this->getWorkflowName($objectType);
     
-        $entity->initWorkflow();
+        $entity->initWorkflow(true);
         $idcolumn = $entity['__WORKFLOW__']['obj_idcolumn'];
     
         $result = Zikula_Workflow_Util::executeAction($schemaName, $entity, $actionId, $objectType, $this->name, $idcolumn);
     
+        if ($result !== false && !$recursive) {
+            $entities = $entity->getRelatedObjectsToPersist();
+            foreach ($entities as $rel) {
+                if ($rel->getWorkflowState() == 'initial') {
+                    $this->executeAction($rel, $actionId, true);
+                }
+            }
+        }
+    
         return ($result !== false);
     }
-    
     /**
      * Collects amount of moderation items foreach object type.
      *
@@ -217,8 +226,9 @@ class SimpleMedia_Util_Base_Workflow extends Zikula_AbstractBase
         $repository = $entityManager->getRepository($entityClass);
     
         $where = 'tbl.workflowState = \'' . $state . '\'';
+        $parameters = array('workflowState' => $state);
         $useJoins = false;
-        $amount = $repository->selectCount($where, $useJoins);
+        $amount = $repository->selectCount($where, $useJoins, $parameters);
     
         return $amount;
     }

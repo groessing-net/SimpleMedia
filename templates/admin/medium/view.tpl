@@ -8,7 +8,7 @@
         <h3>{$templateTitle}</h3>
     </div>
 
-    <p class="z-informationmsg">Media of all sorts</p>
+    <p class="z-informationmsg">{gt text='Media of all sorts'}</p>
 
     {if $canBeCreated}
         {checkpermissionblock component='SimpleMedia:Medium:' instance='::' level='ACCESS_EDIT'}
@@ -44,11 +44,11 @@
                     <col id="cTitle" />
                     <col id="cTheFile" />
                     <col id="cDescription" />
+                    <col id="cMediaType" />
                     <col id="cZipcode" />
                     <col id="cPreviewImage" />
-                    <col id="cSortValue" />
-                    <col id="cMediaType" />
                     <col id="cViewsCount" />
+                    <col id="cSortValue" />
                     <col id="cCollection" />
                     <col id="cItemActions" />
                 </colgroup>
@@ -67,20 +67,20 @@
                     <th id="hDescription" scope="col" class="z-left">
                         {sortlink __linktext='Description' currentsort=$sort modname='SimpleMedia' type='admin' func='view' ot='medium' sort='description' sortdir=$sdir all=$all own=$own catidMain=$catIdListMainString collection=$collection workflowState=$workflowState mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize}
                     </th>
+                    <th id="hMediaType" scope="col" class="z-left">
+                        {sortlink __linktext='Media type' currentsort=$sort modname='SimpleMedia' type='admin' func='view' ot='medium' sort='mediaType' sortdir=$sdir all=$all own=$own catidMain=$catIdListMainString collection=$collection workflowState=$workflowState mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize}
+                    </th>
                     <th id="hZipcode" scope="col" class="z-left">
                         {sortlink __linktext='Zipcode' currentsort=$sort modname='SimpleMedia' type='admin' func='view' ot='medium' sort='zipcode' sortdir=$sdir all=$all own=$own catidMain=$catIdListMainString collection=$collection workflowState=$workflowState mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize}
                     </th>
                     <th id="hPreviewImage" scope="col" class="z-right">
                         {sortlink __linktext='Preview image' currentsort=$sort modname='SimpleMedia' type='admin' func='view' ot='medium' sort='previewImage' sortdir=$sdir all=$all own=$own catidMain=$catIdListMainString collection=$collection workflowState=$workflowState mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize}
                     </th>
-                    <th id="hSortValue" scope="col" class="z-right">
-                        {sortlink __linktext='Sort value' currentsort=$sort modname='SimpleMedia' type='admin' func='view' ot='medium' sort='sortValue' sortdir=$sdir all=$all own=$own catidMain=$catIdListMainString collection=$collection workflowState=$workflowState mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize}
-                    </th>
-                    <th id="hMediaType" scope="col" class="z-left">
-                        {sortlink __linktext='Media type' currentsort=$sort modname='SimpleMedia' type='admin' func='view' ot='medium' sort='mediaType' sortdir=$sdir all=$all own=$own catidMain=$catIdListMainString collection=$collection workflowState=$workflowState mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize}
-                    </th>
                     <th id="hViewsCount" scope="col" class="z-right">
                         {sortlink __linktext='Views count' currentsort=$sort modname='SimpleMedia' type='admin' func='view' ot='medium' sort='viewsCount' sortdir=$sdir all=$all own=$own catidMain=$catIdListMainString collection=$collection workflowState=$workflowState mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize}
+                    </th>
+                    <th id="hSortValue" scope="col" class="z-right">
+                        {sortlink __linktext='Sort value' currentsort=$sort modname='SimpleMedia' type='admin' func='view' ot='medium' sort='sortValue' sortdir=$sdir all=$all own=$own catidMain=$catIdListMainString collection=$collection workflowState=$workflowState mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize}
                     </th>
                     <th id="hCollection" scope="col" class="z-left">
                         {sortlink __linktext='Collection' currentsort=$sort modname='SimpleMedia' type='admin' func='view' ot='medium' sort='collection' sortdir=$sdir all=$all own=$own catidMain=$catIdListMainString collection=$collection workflowState=$workflowState mediaType=$mediaType searchterm=$searchterm pageSize=$pageSize}
@@ -110,20 +110,20 @@
                     <td headers="hDescription" class="z-left">
                         {$medium.description}
                     </td>
+                    <td headers="hMediaType" class="z-left">
+                        {$medium.mediaType|simplemediaGetListEntry:'medium':'mediaType'|safetext}
+                    </td>
                     <td headers="hZipcode" class="z-left">
                         {$medium.zipcode}
                     </td>
                     <td headers="hPreviewImage" class="z-right">
                         {$medium.previewImage}
                     </td>
-                    <td headers="hSortValue" class="z-right">
-                        {$medium.sortValue}
-                    </td>
-                    <td headers="hMediaType" class="z-left">
-                        {$medium.mediaType|simplemediaGetListEntry:'medium':'mediaType'|safetext}
-                    </td>
                     <td headers="hViewsCount" class="z-right">
                         {$medium.viewsCount}
+                    </td>
+                    <td headers="hSortValue" class="z-right">
+                        {$medium.sortValue}
                     </td>
                     <td headers="hCollection" class="z-left">
                         {if isset($medium.Collection) && $medium.Collection ne null}

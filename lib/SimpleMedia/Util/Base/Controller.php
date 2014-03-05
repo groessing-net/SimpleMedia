@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -61,7 +61,7 @@ class SimpleMedia_Util_Base_Controller extends Zikula_AbstractBase
      *
      * @param string $objectType The object type to retrieve.
      *
-     * @boolean Whether composite keys are used or not.
+     * @return boolean Whether composite keys are used or not.
      */
     public function hasCompositeKeys($objectType)
     {
@@ -168,7 +168,7 @@ class SimpleMedia_Util_Base_Controller extends Zikula_AbstractBase
     
         switch ($objectType) {
             case 'medium':
-                $basePath .= 'media/thefile/';
+                $basePath .= 'media/files/';
             break;
         }
     

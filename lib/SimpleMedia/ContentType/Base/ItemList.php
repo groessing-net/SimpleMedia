@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -268,7 +268,7 @@ class SimpleMedia_ContentType_Base_ItemList extends Content_AbstractContentType
         $currentPage = 1;
         $resultsPerPage = (isset($this->amount) ? $this->amount : 1);
         list($query, $count) = $repository->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
-        $entities = $query->getResult();
+        $entities = $repository->retrieveCollectionResult($query, $orderBy, true);
     
         $data = array('objectType' => $this->objectType,
                       'catids' => $this->catIds,
@@ -342,7 +342,7 @@ class SimpleMedia_ContentType_Base_ItemList extends Content_AbstractContentType
                     if (!empty($sortParam)) {
                         $sortParam .= ', ';
                     }
-                    $sortParam .= $idField . ' ASC';
+                    $sortParam .= $idField . ' DESC';
                 }
             }
         } elseif ($this->sorting == 'default') {

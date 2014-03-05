@@ -5,8 +5,14 @@
     {pagesetvar name='title' value=$templateTitle}
     <h2>{$templateTitle}</h2>
 
-    <p class="z-informationmsg">Collections are nested trees that can contain media items and sub-collections.</p>
+    <p class="z-informationmsg">{gt text='Collections are nested trees that can contain media items and sub-collections.'}</p>
 
+    {if $canBeCreated}
+        {checkpermissionblock component='SimpleMedia:Collection:' instance='::' level='ACCESS_EDIT'}
+            {gt text='Create collection' assign='createTitle'}
+            <a href="{modurl modname='SimpleMedia' type='user' func='edit' ot='collection'}" title="{$createTitle}" class="z-icon-es-add">{$createTitle}</a>
+        {/checkpermissionblock}
+    {/if}
     {assign var='own' value=0}
     {if isset($showOwnEntries) && $showOwnEntries eq 1}
         {assign var='own' value=1}
@@ -32,8 +38,8 @@
             <col id="cTitle" />
             <col id="cDescription" />
             <col id="cPreviewImage" />
-            <col id="cSortValue" />
             <col id="cViewsCount" />
+            <col id="cSortValue" />
             <col id="cItemActions" />
         </colgroup>
         <thead>
@@ -48,11 +54,11 @@
             <th id="hPreviewImage" scope="col" class="z-right">
                 {sortlink __linktext='Preview image' currentsort=$sort modname='SimpleMedia' type='user' func='view' ot='collection' sort='previewImage' sortdir=$sdir all=$all own=$own catidMain=$catIdListMainString workflowState=$workflowState searchterm=$searchterm pageSize=$pageSize}
             </th>
-            <th id="hSortValue" scope="col" class="z-right">
-                {sortlink __linktext='Sort value' currentsort=$sort modname='SimpleMedia' type='user' func='view' ot='collection' sort='sortValue' sortdir=$sdir all=$all own=$own catidMain=$catIdListMainString workflowState=$workflowState searchterm=$searchterm pageSize=$pageSize}
-            </th>
             <th id="hViewsCount" scope="col" class="z-right">
                 {sortlink __linktext='Views count' currentsort=$sort modname='SimpleMedia' type='user' func='view' ot='collection' sort='viewsCount' sortdir=$sdir all=$all own=$own catidMain=$catIdListMainString workflowState=$workflowState searchterm=$searchterm pageSize=$pageSize}
+            </th>
+            <th id="hSortValue" scope="col" class="z-right">
+                {sortlink __linktext='Sort value' currentsort=$sort modname='SimpleMedia' type='user' func='view' ot='collection' sort='sortValue' sortdir=$sdir all=$all own=$own catidMain=$catIdListMainString workflowState=$workflowState searchterm=$searchterm pageSize=$pageSize}
             </th>
             <th id="hItemActions" scope="col" class="z-right z-order-unsorted">{gt text='Actions'}</th>
         </tr>
@@ -70,11 +76,11 @@
             <td headers="hPreviewImage" class="z-right">
                 {$collection.previewImage}
             </td>
-            <td headers="hSortValue" class="z-right">
-                {$collection.sortValue}
-            </td>
             <td headers="hViewsCount" class="z-right">
                 {$collection.viewsCount}
+            </td>
+            <td headers="hSortValue" class="z-right">
+                {$collection.sortValue}
             </td>
             <td id="itemActions{$collection.id}" headers="hItemActions" class="z-right z-nowrap z-w02">
                 {if count($collection._actions) gt 0}

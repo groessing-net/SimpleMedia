@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -278,7 +278,7 @@ class SimpleMedia_Base_UploadHandler
                 $fileNameCharCount = strlen($fileName);
                 for ($y = 0; $y < $fileNameCharCount; $y++) {
                     if (preg_match('/[^0-9A-Za-z_\.]/', $fileName[$y])) {
-                    $fileName[$y] = '_';
+                        $fileName[$y] = '_';
                     }
                 }
                 // append incremented number

@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -43,7 +43,7 @@ class SimpleMedia_Api_Base_Selection extends Zikula_AbstractApi
      *
      * @param string $objectType The object type to retrieve.
      *
-     * @boolean Whether composite keys are used or not.
+     * @return boolean Whether composite keys are used or not.
      */
     protected function hasCompositeKeys($objectType)
     {
@@ -90,6 +90,7 @@ class SimpleMedia_Api_Base_Selection extends Zikula_AbstractApi
      * Selects a list of entities by different criteria.
      *
      * @param string  $args['ot']       The object type to retrieve (optional).
+     * @param string  $args['idList']   A list of ids to select (optional) (default=array()).
      * @param string  $args['where']    The where clause to use when retrieving the collection (optional) (default='').
      * @param string  $args['orderBy']  The order-by clause to use when retrieving the collection (optional) (default='').
      * @param boolean $args['useJoins'] Whether to include joining related objects (optional) (default=true).
@@ -102,10 +103,15 @@ class SimpleMedia_Api_Base_Selection extends Zikula_AbstractApi
         $objectType = $this->determineObjectType($args, 'getEntities');
         $repository = $this->getRepository($objectType);
     
+        $idList = isset($args['idList']) && is_array($args['idList']) ? $args['idList'] : array();
         $where = isset($args['where']) ? $args['where'] : '';
         $orderBy = isset($args['orderBy']) ? $args['orderBy'] : '';
         $useJoins = isset($args['useJoins']) ? ((bool) $args['useJoins']) : true;
         $slimMode = isset($args['slimMode']) ? ((bool) $args['slimMode']) : false;
+    
+        if (!empty($idList)) {
+           return $repository->selectByIdList($idList, $useJoins, $slimMode);
+        }
     
         return $repository->selectWhere($where, $orderBy, $useJoins, $slimMode);
     }

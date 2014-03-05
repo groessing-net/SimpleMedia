@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -21,6 +21,7 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
     /**
      * Install the SimpleMedia application. 
 	 * OVERRIDE:
+     * CHECK
 	 * - some modvars are set specifically here
 	 * - more extensive category creation via separate method
 	 * - createDefaultData also creates a default collection

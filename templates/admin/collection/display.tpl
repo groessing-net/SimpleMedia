@@ -17,8 +17,8 @@
                 {include file='admin/medium/include_displayItemListMany.tpl' items=$collection.media}
             {/if}
             
-            {checkpermission component='SimpleMedia:Collection:' instance="`$collection.id`::" level='ACCESS_ADMIN' assign='authAdmin'}
-            {if $authAdmin || (isset($uid) && isset($collection.createdUserId) && $collection.createdUserId eq $uid)}
+            {checkpermission component='SimpleMedia:Collection:' instance="`$collection.id`::" level='ACCESS_ADMIN' assign='mayManage'}
+            {if $mayManage || (isset($uid) && isset($collection.createdUserId) && $collection.createdUserId eq $uid)}
             <p class="managelink">
                 {gt text='Create medium' assign='createTitle'}
                 <a href="{modurl modname='SimpleMedia' type='admin' func='edit' ot='medium' collection="`$collection.id`" returnTo='adminDisplayCollection'}" title="{$createTitle}" class="z-icon-es-add">{$createTitle}</a>
@@ -34,10 +34,10 @@
         <dd>{$collection.description}</dd>
         <dt>{gt text='Preview image'}</dt>
         <dd>{$collection.previewImage}</dd>
-        <dt>{gt text='Sort value'}</dt>
-        <dd>{$collection.sortValue}</dd>
         <dt>{gt text='Views count'}</dt>
         <dd>{$collection.viewsCount}</dd>
+        <dt>{gt text='Sort value'}</dt>
+        <dd>{$collection.sortValue}</dd>
         
     </dl>
     {include file='admin/include_categories_display.tpl' obj=$collection}

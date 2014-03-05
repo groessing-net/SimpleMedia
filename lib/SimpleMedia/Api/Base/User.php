@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -209,7 +209,7 @@ class SimpleMedia_Api_Base_User extends Zikula_AbstractApi
         }
     
         // define the available user functions
-        $funcs = array('main', 'view', 'display');
+        $funcs = array('main', 'view', 'display', 'edit', 'delete', 'multiUpload', 'editList');
     
         // return if function url scheme is not being customised
         $customFuncs = array('view', 'display');

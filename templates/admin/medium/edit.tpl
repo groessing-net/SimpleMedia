@@ -54,9 +54,9 @@
                 {if $medium.theFile ne ''}
                     <span class="z-formnote">
                         {gt text='Current file'}:
-                        <a href="{$medium.theFileFullPathUrl}" title="{$mediumObj->getTitleFromDisplayPattern()|replace:"\"":""}"{if $medium.theFileMeta.isImage} rel="imageviewer[medium]"{/if}>
+                        <a href="{$medium.theFileFullPathUrl}" title="{$formattedEntityTitle|replace:"\"":""}"{if $medium.theFileMeta.isImage} rel="imageviewer[medium]"{/if}>
                         {if $medium.theFileMeta.isImage}
-                            {thumb image=$medium.theFileFullPath objectid="medium-`$medium.id`" preset=$mediumThumbPresetTheFile tag=true img_alt=$mediumObj->getTitleFromDisplayPattern()}
+                            {thumb image=$medium.theFileFullPath objectid="medium-`$medium.id`" preset=$mediumThumbPresetTheFile tag=true img_alt=$formattedEntityTitle}
                         {else}
                             {gt text='Download'} ({$medium.theFileMeta.size|simplemediaGetFileSize:$medium.theFileFullPath:false:false})
                         {/if}
@@ -75,6 +75,11 @@
         </div>
         
         <div class="z-formrow">
+            {formlabel for='mediaType' __text='Media type' cssClass=''}
+            {formdropdownlist group='medium' id='mediaType' mandatory=false __title='Choose the media type' selectionMode='single'}
+        </div>
+        
+        <div class="z-formrow">
             {gt text='Zip code for the geographical location of this medium' assign='toolTip'}
             {formlabel for='zipcode' __text='Zipcode' cssClass='simplemedia-form-tooltips' title=$toolTip}
             {formtextinput group='medium' id='zipcode' mandatory=false readOnly=false __title='Enter the zipcode of the medium' textMode='singleline' maxLength=15 cssClass='' }
@@ -88,22 +93,17 @@
         </div>
         
         <div class="z-formrow">
-            {gt text='Used for sorting media within a collection.' assign='toolTip'}
-            {formlabel for='sortValue' __text='Sort value' cssClass='simplemedia-form-tooltips' title=$toolTip}
-            {formintinput group='medium' id='sortValue' mandatory=false __title='Enter the sort value of the medium' maxLength=11 cssClass=' validate-digits' }
-            {simplemediaValidationError id='sortValue' class='validate-digits'}
-        </div>
-        
-        <div class="z-formrow">
-            {formlabel for='mediaType' __text='Media type' cssClass=''}
-            {formdropdownlist group='medium' id='mediaType' mandatory=false __title='Choose the media type' selectionMode='single'}
-        </div>
-        
-        <div class="z-formrow">
             {gt text='The number of views for this medium' assign='toolTip'}
             {formlabel for='viewsCount' __text='Views count' cssClass='simplemedia-form-tooltips' title=$toolTip}
             {formintinput group='medium' id='viewsCount' mandatory=false __title='Enter the views count of the medium' maxLength=11 cssClass=' validate-digits' }
             {simplemediaValidationError id='viewsCount' class='validate-digits'}
+        </div>
+        
+        <div class="z-formrow">
+            {gt text='Used for sorting media within a collection.' assign='toolTip'}
+            {formlabel for='sortValue' __text='Sort value' cssClass='simplemedia-form-tooltips' title=$toolTip}
+            {formintinput group='medium' id='sortValue' mandatory=false __title='Enter the sort value of the medium' maxLength=11 cssClass=' validate-digits' }
+            {simplemediaValidationError id='sortValue' class='validate-digits'}
         </div>
         <div class="z-formrow">
             {formlabel for='latitude' __text='Latitude'}
@@ -245,7 +245,7 @@
             }
 
             function handlePositionError(evt) {
-                Zikula.UI.Alert(evt.message, Zikula.__('Error during geolocation', 'module_simplemedia'));
+                Zikula.UI.Alert(evt.message, Zikula.__('Error during geolocation', 'module_simplemedia_js'));
             }
             {{*
                 Initialise geocoding functionality.

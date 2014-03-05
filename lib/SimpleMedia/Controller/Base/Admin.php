@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -38,6 +38,7 @@ class SimpleMedia_Controller_Base_Admin extends Zikula_AbstractController
     public function main()
     {
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
+        
         return $this->redirect(ModUtil::url($this->name, 'admin', 'view'));
     }
     
@@ -312,7 +313,132 @@ class SimpleMedia_Controller_Base_Admin extends Zikula_AbstractController
     }
     
     /**
+     * This method provides a generic handling of simple delete requests.
+     *
+     * @param string  $ot           Treated object type.
+     * @param int     $id           Identifier of entity to be deleted.
+     * @param boolean $confirmation Confirm the deletion, else a confirmation page is displayed.
+     * @param string  $tpl          Name of alternative template (for alternative display options, feeds and xml output)
+     * @param boolean $raw          Optional way to display a template instead of fetching it (needed for standalone output)
+     *
+     * @return mixed Output.
+     */
+    public function delete()
+    {
+        $controllerHelper = new SimpleMedia_Util_Controller($this->serviceManager);
+        
+        // parameter specifying which type of objects we are treating
+        $objectType = $this->request->query->filter('ot', 'medium', FILTER_SANITIZE_STRING);
+        $utilArgs = array('controller' => 'admin', 'action' => 'delete');
+        if (!in_array($objectType, $controllerHelper->getObjectTypes('controllerAction', $utilArgs))) {
+            $objectType = $controllerHelper->getDefaultObjectType('controllerAction', $utilArgs);
+        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
+        $idFields = ModUtil::apiFunc($this->name, 'selection', 'getIdFields', array('ot' => $objectType));
+        
+        // retrieve identifier of the object we wish to delete
+        $idValues = $controllerHelper->retrieveIdentifier($this->request, array(), $objectType, $idFields);
+        $hasIdentifier = $controllerHelper->isValidIdentifier($idValues);
+        
+        $this->throwNotFoundUnless($hasIdentifier, $this->__('Error! Invalid identifier received.'));
+        
+        $entity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', array('ot' => $objectType, 'id' => $idValues));
+        $this->throwNotFoundUnless($entity != null, $this->__('No such item.'));
+        
+        $entity->initWorkflow();
+        
+        $workflowHelper = new SimpleMedia_Util_Workflow($this->serviceManager);
+        $deleteActionId = 'delete';
+        $deleteAllowed = false;
+        $actions = $workflowHelper->getActionsForObject($entity);
+        if ($actions === false || !is_array($actions)) {
+            return LogUtil::registerError($this->__('Error! Could not determine workflow actions.'));
+        }
+        foreach ($actions as $actionId => $action) {
+            if ($actionId != $deleteActionId) {
+                continue;
+            }
+            $deleteAllowed = true;
+            break;
+        }
+        if (!$deleteAllowed) {
+            return LogUtil::registerError($this->__('Error! It is not allowed to delete this entity.'));
+        }
+        
+        $confirmation = (bool) $this->request->request->filter('confirmation', false, FILTER_VALIDATE_BOOLEAN);
+        if ($confirmation) {
+            $this->checkCsrfToken();
+        
+            $hookAreaPrefix = $entity->getHookAreaPrefix();
+            $hookType = 'validate_delete';
+            // Let any hooks perform additional validation actions
+            $hook = new Zikula_ValidationHook($hookAreaPrefix . '.' . $hookType, new Zikula_Hook_ValidationProviders());
+            $validators = $this->notifyHooks($hook)->getValidators();
+            if (!$validators->hasErrors()) {
+                // execute the workflow action
+                $success = $workflowHelper->executeAction($entity, $deleteActionId);
+                if ($success) {
+                    $this->registerStatus($this->__('Done! Item deleted.'));
+                }
+        
+                // Let any hooks know that we have created, updated or deleted an item
+                $hookType = 'process_delete';
+                $hook = new Zikula_ProcessHook($hookAreaPrefix . '.' . $hookType, $entity->createCompositeIdentifier());
+                $this->notifyHooks($hook);
+        
+                // An item was deleted, so we clear all cached pages this item.
+                $cacheArgs = array('ot' => $objectType, 'item' => $entity);
+                ModUtil::apiFunc($this->name, 'cache', 'clearItemCache', $cacheArgs);
+        
+                // redirect to the list of the current object type
+                return $this->redirect(ModUtil::url($this->name, 'admin', 'view',
+                                                                                            array('ot' => $objectType)));
+            }
+        }
+        
+        $entityClass = $this->name . '_Entity_' . ucwords($objectType);
+        $repository = $this->entityManager->getRepository($entityClass);
+        
+        // set caching id
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+        
+        // assign the object we loaded above
+        $this->view->assign($objectType, $entity)
+                   ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
+        
+        // fetch and return the appropriate template
+        $viewHelper = new SimpleMedia_Util_View($this->serviceManager);
+        
+        return $viewHelper->processTemplate($this->view, 'admin', $objectType, 'delete', array());
+    }
+    
+    /**
      * This is a custom method. Documentation for this will be improved in later versions.
+     * Upload multiple media in one go from the backend.
+     *
+     *
+     * @return mixed Output.
+     */
+    public function multiUpload()
+    {
+        $controllerHelper = new SimpleMedia_Util_Controller($this->serviceManager);
+        
+        // parameter specifying which type of objects we are treating
+        $objectType = $this->request->query->filter('ot', 'medium', FILTER_SANITIZE_STRING);
+        $utilArgs = array('controller' => 'admin', 'action' => 'multiUpload');
+        if (!in_array($objectType, $controllerHelper->getObjectTypes('controllerAction', $utilArgs))) {
+            $objectType = $controllerHelper->getDefaultObjectType('controllerAction', $utilArgs);
+        }
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
+        /** TODO: custom logic */
+        
+        // return template
+        return $this->view->fetch('admin/multiUpload.tpl');
+    }
+    
+    /**
+     * This is a custom method. Documentation for this will be improved in later versions.
+     * Import media / collections from other modules
      *
      *
      * @return mixed Output.

@@ -13,7 +13,7 @@
     <p class="z-informationmsg">Collections are nested trees that can contain media items and sub-collections.</p>
 
     <p>
-    {checkpermissionblock component='SimpleMedia:Collection:' instance='::' level='ACCESS_ADD'}
+    {checkpermissionblock component='SimpleMedia:Collection:' instance='::' level='ACCESS_EDIT'}
         {gt text='Add root node' assign='addRootTitle'}
         <a id="treeAddRoot" href="javascript:void(0)" title="{$addRootTitle}" class="z-icon-es-add z-hide">{$addRootTitle}</a>
 

@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -20,6 +20,7 @@ class SimpleMedia_Form_Handler_Admin_Config extends SimpleMedia_Form_Handler_Adm
 
     /**
      * Method stub for own additions in subclasses. OVERRIDE
+     * CHECK
      */
     protected function initializeAdditions()
     {
@@ -52,8 +53,9 @@ class SimpleMedia_Form_Handler_Admin_Config extends SimpleMedia_Form_Handler_Adm
     }
 	
     /**
-     * Command event handler. OVERRIDE
+     * Command event handler.
 	 * OVERRIDE: Added methods for handling thumbdimensions, cropsize and defaultcollection
+     * CHECK
      *
      * This event handler is called when a command is issued by the user. Commands are typically something
      * that originates from a {@link Zikula_Form_Plugin_Button} plugin. The passed args contains different properties

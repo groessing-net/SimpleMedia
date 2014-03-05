@@ -20,16 +20,16 @@
         </dd>
         <dt>{gt text='Description'}</dt>
         <dd>{$medium.description}</dd>
+        <dt>{gt text='Media type'}</dt>
+        <dd>{$medium.mediaType|simplemediaGetListEntry:'medium':'mediaType'|safetext}</dd>
         <dt>{gt text='Zipcode'}</dt>
         <dd>{$medium.zipcode}</dd>
         <dt>{gt text='Preview image'}</dt>
         <dd>{$medium.previewImage}</dd>
-        <dt>{gt text='Sort value'}</dt>
-        <dd>{$medium.sortValue}</dd>
-        <dt>{gt text='Media type'}</dt>
-        <dd>{$medium.mediaType|simplemediaGetListEntry:'medium':'mediaType'|safetext}</dd>
         <dt>{gt text='Views count'}</dt>
         <dd>{$medium.viewsCount}</dd>
+        <dt>{gt text='Sort value'}</dt>
+        <dd>{$medium.sortValue}</dd>
         <dt>{gt text='Latitude'}</dt>
         <dd>{$medium.latitude|simplemediaFormatGeoData}</dd>
         <dt>{gt text='Longitude'}</dt>

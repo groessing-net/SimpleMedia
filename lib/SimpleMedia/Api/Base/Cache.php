@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -63,6 +63,8 @@ class SimpleMedia_Api_Base_Cache extends Zikula_AbstractApi
         $cacheIds[] = $instanceId;
         
         
+        $cacheIds[] = 'multiUpload';
+        $cacheIds[] = 'editList';
     
         $view = Zikula_View::getInstance('SimpleMedia');
         foreach ($cacheIds as $cacheId) {
@@ -78,6 +80,8 @@ class SimpleMedia_Api_Base_Cache extends Zikula_AbstractApi
         $cacheIds[] = 'SimpleMedia/user/display/' . $objectType . '|' . $instanceId; // display function (detail views)
         
         
+        $cacheIds[] = 'SimpleMedia/user/multiUpload'; // multi upload function
+        $cacheIds[] = 'SimpleMedia/user/editList'; // edit list function
         $theme = Zikula_View_Theme::getInstance();
         $theme->clear_cacheid_allthemes($cacheIds);
     }

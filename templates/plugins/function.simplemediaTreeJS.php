@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -53,6 +53,7 @@ function smarty_function_simplemediaTreeJS($params, $view)
     $controllerHasEditAction = false;
     switch ($params['controller']) {
         case 'admin': $controllerHasEditAction = true; break;
+        case 'user': $controllerHasEditAction = true; break;
     }
 
     $entityClass = 'SimpleMedia_Entity_' . ucwords($params['objectType']);

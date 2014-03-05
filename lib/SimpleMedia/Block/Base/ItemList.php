@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -169,7 +169,7 @@ class SimpleMedia_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
         $currentPage = 1;
         $resultsPerPage = $vars['amount'];
         list($query, $count) = $repository->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
-        $entities = $query->getResult();
+        $entities = $repository->retrieveCollectionResult($query, $orderBy, true);
     
         // assign block vars and fetched data
         $this->view->assign('vars', $vars)
@@ -247,7 +247,7 @@ class SimpleMedia_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
                     if (!empty($sortParam)) {
                         $sortParam .= ', ';
                     }
-                    $sortParam .= $idField . ' ASC';
+                    $sortParam .= $idField . ' DESC';
                 }
             }
         } elseif ($vars['sorting'] == 'default') {

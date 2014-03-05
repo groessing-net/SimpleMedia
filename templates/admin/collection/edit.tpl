@@ -48,17 +48,17 @@
         </div>
         
         <div class="z-formrow">
-            {gt text='Used for sorting collections within a parent collection.' assign='toolTip'}
-            {formlabel for='sortValue' __text='Sort value' cssClass='simplemedia-form-tooltips' title=$toolTip}
-            {formintinput group='collection' id='sortValue' mandatory=false __title='Enter the sort value of the collection' maxLength=11 cssClass=' validate-digits' }
-            {simplemediaValidationError id='sortValue' class='validate-digits'}
-        </div>
-        
-        <div class="z-formrow">
             {gt text='The number of views for this collection' assign='toolTip'}
             {formlabel for='viewsCount' __text='Views count' cssClass='simplemedia-form-tooltips' title=$toolTip}
             {formintinput group='collection' id='viewsCount' mandatory=false __title='Enter the views count of the collection' maxLength=11 cssClass=' validate-digits' }
             {simplemediaValidationError id='viewsCount' class='validate-digits'}
+        </div>
+        
+        <div class="z-formrow">
+            {gt text='Used for sorting collections within a parent collection.' assign='toolTip'}
+            {formlabel for='sortValue' __text='Sort value' cssClass='simplemedia-form-tooltips' title=$toolTip}
+            {formintinput group='collection' id='sortValue' mandatory=false __title='Enter the sort value of the collection' maxLength=11 cssClass=' validate-digits' }
+            {simplemediaValidationError id='sortValue' class='validate-digits'}
         </div>
     </fieldset>
     

@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -25,6 +25,7 @@
  */
 function SimpleMedia_workflow_none_permissioncheck($obj, $permLevel, $currentUser, $actionId)
 {
+
     // calculate the permission component
     $objectType = $obj['_objectType'];
     $component = 'SimpleMedia:' . ucwords($objectType) . ':';

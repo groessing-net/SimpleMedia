@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -46,23 +46,24 @@ class SimpleMedia_Base_Installer extends Zikula_AbstractInstaller
     
         // set up all our vars with initial values
         $this->setVar('pageSize', 20);
-        $this->setVar('mediaPageSize', 15);
-        $this->setVar('collectionsPageSize', 6);
+        $this->setVar('mediaPageSize', 25);
+        $this->setVar('collectionsPageSize', 15);
+        $this->setVar('defaultImaginePreset', 'default');
         $this->setVar('thumbDimensions', '');
         $this->setVar('defaultThumbNumber', 1);
         $this->setVar('enableShrinking', false);
         $this->setVar('shrinkDimensions', '');
         $this->setVar('useThumbCropper', false);
         $this->setVar('cropSizeMode', 0);
-        $this->setVar('allowedExtensions', 'gif, jpeg, jpg, png, pdf, txt, mp3, mp4, avi, mpg, mpeg, mov');
+        $this->setVar('allowedExtensions', 'gif, jpeg, jpg, png, pdf, txt, mp3, mp4, avi, mpg, mpeg, mov, zip');
         $this->setVar('maxUploadFileSize', 5000);
         $this->setVar('minWidthForUpload', 100);
         $this->setVar('defaultCollection', 1);
-        $this->setVar('mediaDir', 'media/thefile');
+        $this->setVar('mediaDir', 'media/files');
         $this->setVar('mediaThumbDir', 'tmb');
         $this->setVar('mediaThumbExt', '_tmb_');
-        $this->setVar('countMediumViews', false);
-        $this->setVar('countCollectionViews', false);
+        $this->setVar('countMediumViews', true);
+        $this->setVar('countCollectionViews', true);
     
         $categoryRegistryIdsPerEntity = array();
     

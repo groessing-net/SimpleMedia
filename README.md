@@ -1,7 +1,7 @@
 SimpleMedia 2
 =============
 SimpleMedia is file and media management in Collections.
-This module is intended for being used with Zikula 1.3.5 and 1.3.6. Later on when Zikula Core 1.3.7 is stable enough the code will be re-generated with MOST and made ready for Zikula 1.3.7.
+This module is intended for being used with Zikula 1.3.x. Later on when Zikula Core 1.4.0 is stable enough the code will be re-generated with MOST and made ready for Zikula 1.4.0.
 
 ModuleStudio
 ------------
@@ -12,6 +12,7 @@ See for more information the wiki page: https://github.com/zikula-ev/SimpleMedia
 
 Zikula Core 1.3.5/6 Patches
 ---------------------------
+FIXED in 1.3.7
 There are some small patches to make sure the latest generated MOST modules also work well in Zikula core 1.3.5 and 1.3.6. These patches
 are incorporated into Zikula Core 1.3.7. See also http://modulestudio.de/documentation/c/95-Troubleshooting#TroubleshootingGeneration
 * Patch for category selector. Due to a bug in the category selector in Zikula 1.3.5 and 1.3.6 you will run into problems when trying to save an entity with categories. To solve this just merge the fix shown in https://github.com/zikula/core/pull/1561/files and you are done.

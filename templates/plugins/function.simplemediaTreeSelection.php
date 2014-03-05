@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -70,7 +70,6 @@ function smarty_function_simplemediaTreeSelection($params, $view)
                 // remove $node
                 unset($path[count($path)-1]);
             }
-            // Updated see, https://github.com/Guite/MostGenerator/issues/478
             if ($skipRootNode && count($path) > 0) {
                 // remove root level
                 array_shift($path);

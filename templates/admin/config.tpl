@@ -34,6 +34,11 @@
                         {formintinput id='collectionsPageSize' group='config' maxLength=255 __title='Enter the collections page size. Only digits are allowed.'}
                 </div>
                 <div class="z-formrow">
+                    {gt text='Use this Imagine system plugin preset for image display in the frontend.' assign='toolTip'}
+                    {formlabel for='defaultImaginePreset' __text='Default imagine preset' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {formtextinput id='defaultImaginePreset' group='config' maxLength=255 __title='Enter the default imagine preset.'}
+                </div>
+                <div class="z-formrow">
                     {gt text='Contains an array of thumbnail widthxheight dimensions array ( array ( width => 200, height => 150 ) )' assign='toolTip'}
                     {formlabel for='thumbDimensions' __text='Thumb dimensions' cssClass='simplemedia-form-tooltips ' title=$toolTip}
                         {formtextinput id='thumbDimensions' group='config' maxLength=255 __title='Enter the thumb dimensions.'}

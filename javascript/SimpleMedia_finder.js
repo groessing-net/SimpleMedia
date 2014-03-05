@@ -13,6 +13,7 @@ function getPopupAttributes()
 
     pWidth = screen.width * 0.75;
     pHeight = screen.height * 0.66;
+
     return 'width=' + pWidth + ',height=' + pHeight + ',scrollbars,resizable';
 }
 
@@ -176,9 +177,12 @@ function simmedClosePopup()
 }
 
 
+
+
 //=============================================================================
 // SimpleMedia item selector for Forms
 //=============================================================================
+
 simplemedia.itemSelector = {};
 simplemedia.itemSelector.items = {};
 simplemedia.itemSelector.baseId = 0;
@@ -235,21 +239,24 @@ simplemedia.itemSelector.getItemList = function ()
 			
 	// TODO add show images as and showmeta data here
 
-    request = new Zikula.Ajax.Request('ajax.php?module=SimpleMedia&func=getItemListFinder', {
-        method: 'post',
-        parameters: pars,
-        onFailure: function(req) {
-            Zikula.showajaxerror(req.getMessage());
-        },
-        onSuccess: function(req) {
-            var baseId;
-            baseId = simplemedia.itemSelector.baseId;
-            simplemedia.itemSelector.items[baseId] = req.getData();
-            $('ajax_indicator').addClassName('z-hide');
-            simplemedia.itemSelector.updateItemDropdownEntries();
-            simplemedia.itemSelector.updatePreview();
+    request = new Zikula.Ajax.Request(
+        Zikula.Config.baseURL + 'ajax.php?module=SimpleMedia&func=getItemListFinder',
+        {
+            method: 'post',
+            parameters: pars,
+            onFailure: function(req) {
+                Zikula.showajaxerror(req.getMessage());
+            },
+            onSuccess: function(req) {
+                var baseId;
+                baseId = simplemedia.itemSelector.baseId;
+                simplemedia.itemSelector.items[baseId] = req.getData();
+                $('ajax_indicator').addClassName('z-hide');
+                simplemedia.itemSelector.updateItemDropdownEntries();
+                simplemedia.itemSelector.updatePreview();
+            }
         }
-    });
+    );
 };
 
 simplemedia.itemSelector.updateItemDropdownEntries = function ()

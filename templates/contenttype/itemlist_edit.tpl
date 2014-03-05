@@ -1,5 +1,4 @@
 {* Purpose of this template: edit view of generic item list content type *}
-
 <div class="z-formrow">
     {gt text='Object type' domain='module_simplemedia' assign='objectTypeSelectorLabel'}
     {formlabel for='simpleMediaObjectType' text=$objectTypeSelectorLabel}
@@ -68,7 +67,7 @@
     {gt text='Custom template' domain='module_simplemedia' assign='customTemplateLabel'}
     {formlabel for='simpleMediaCustomTemplate' text=$customTemplateLabel}
         {formtextinput id='simpleMediaCustomTemplate' dataField='customTemplate' group='data' mandatory=false maxLength=80}
-        <span class="z-sub z-formnote">{gt text='Example' domain='module_simplemedia'}: <em>itemlist_[objecttype]_display.tpl</em></span>
+        <span class="z-sub z-formnote">{gt text='Example' domain='module_simplemedia'}: <em>itemlist_[objectType]_display.tpl</em></span>
 </div>
 
 <div class="z-formrow z-hide">

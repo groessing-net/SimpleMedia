@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -265,18 +265,18 @@ class SimpleMedia_Form_Handler_Admin_Base_Edit extends Zikula_Form_AbstractHandl
     
         $this->view->assign('mode', $this->mode)
                    ->assign('inlineUsage', $this->inlineUsage);
-    
-        if ($this->hasAttributes === true) {
-            $this->initAttributesForEdit($entity);
-        }
-    
-        if ($this->hasCategories === true) {
-            $this->initCategoriesForEdit($entity);
-        }
-    
-        if ($this->hasMetaData === true) {
-            $this->initMetaDataForEdit($entity);
-        }
+       
+       if ($this->hasAttributes === true) {
+           $this->initAttributesForEdit($entity);
+       }
+       
+       if ($this->hasCategories === true) {
+           $this->initCategoriesForEdit($entity);
+       }
+       
+       if ($this->hasMetaData === true) {
+           $this->initMetaDataForEdit($entity);
+       }
     
         // save entity reference for later reuse
         $this->entityRef = $entity;
@@ -371,7 +371,6 @@ class SimpleMedia_Form_Handler_Admin_Base_Edit extends Zikula_Form_AbstractHandl
                 return LogUtil::registerError($this->__('No such item.'));
             }
             $entity = clone $entityT;
-            $entity->resetWorkflow();
         } else {
             $entityClass = $this->name . '_Entity_' . ucfirst($this->objectType);
             $entity = new $entityClass();
@@ -438,7 +437,7 @@ class SimpleMedia_Form_Handler_Admin_Base_Edit extends Zikula_Form_AbstractHandl
      */
     protected function initMetaDataForEdit($entity)
     {
-        $metaData = $entity->getMetadata() != null? $entity->getMetadata()->toArray() : array();
+        $metaData = $entity->getMetadata() != null ? $entity->getMetadata()->toArray() : array();
         $this->view->assign('meta', $metaData);
     }
 

@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -219,21 +219,21 @@ class SimpleMedia_Controller_Base_Ajax extends Zikula_Controller_AbstractAjax
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::Ajax', '::', ACCESS_EDIT));
     
         $postData = $this->request->request;
-    
+        
         $objectType = $postData->filter('ot', 'medium', FILTER_SANITIZE_STRING);
         $controllerHelper = new SimpleMedia_Util_Controller($this->serviceManager);
         $utilArgs = array('controller' => 'ajax', 'action' => 'checkForDuplicate');
         if (!in_array($objectType, $controllerHelper->getObjectTypes('controllerAction', $utilArgs))) {
             $objectType = $controllerHelper->getDefaultObjectType('controllerAction', $utilArgs);
         }
-    
+        
         $fieldName = $postData->filter('fn', '', FILTER_SANITIZE_STRING);
         $value = $postData->get('v', '');
-    
+        
         if (empty($fieldName) || empty($value)) {
             return new Zikula_Response_Ajax_BadData($this->__('Error: invalid input.'));
         }
-    
+        
         // check if the given field is existing and unique
         $uniqueFields = array();
         switch ($objectType) {
@@ -244,7 +244,7 @@ class SimpleMedia_Controller_Base_Ajax extends Zikula_Controller_AbstractAjax
         if (!count($uniqueFields) || !in_array($fieldName, $uniqueFields)) {
             return new Zikula_Response_Ajax_BadData($this->__('Error: invalid input.'));
         }
-    
+        
         $exclude = $postData->get('ex', '');
     
         $entityClass = 'SimpleMedia_Entity_' . ucfirst($objectType);
@@ -296,16 +296,11 @@ class SimpleMedia_Controller_Base_Ajax extends Zikula_Controller_AbstractAjax
                 $objectType = 'collection';
             }
         
-            $returnValue = array(
-                'data'    => array(),
-                'message' => ''
-            );
-        
             $op = DataUtil::convertFromUTF8($postData->filter('op', '', FILTER_SANITIZE_STRING));
             if (!in_array($op, array('addRootNode', 'addChildNode', 'deleteNode', 'moveNode', 'moveNodeTo'))) {
                 throw new Zikula_Exception_Ajax_Fatal($this->__('Error: invalid operation.'));
             }
-        
+            
             // Get id of treated node
             $id = 0;
             if (!in_array($op, array('addRootNode', 'addChildNode'))) {
@@ -314,6 +309,11 @@ class SimpleMedia_Controller_Base_Ajax extends Zikula_Controller_AbstractAjax
                     throw new Zikula_Exception_Ajax_Fatal($this->__('Error: invalid node.'));
                 }
             }
+        
+            $returnValue = array(
+                'data'    => array(),
+                'message' => ''
+            );
         
             $entityClass = 'SimpleMedia_Entity_' . ucfirst($objectType);
             $repository = $this->entityManager->getRepository($entityClass);
@@ -343,7 +343,7 @@ class SimpleMedia_Controller_Base_Ajax extends Zikula_Controller_AbstractAjax
             $this->entityManager->clear(); // clear cached nodes
         
             $titleFieldName = $descriptionFieldName = '';
-        
+            
             switch ($objectType) {
                 case 'collection':
                         $titleFieldName = 'title';
@@ -364,7 +364,7 @@ class SimpleMedia_Controller_Base_Ajax extends Zikula_Controller_AbstractAjax
                                     }
                                     $entity->merge($entityData);
                                     
-        
+                                
                                     // save new object to set the root id
                                     $action = 'submit';
                                     try {
@@ -375,13 +375,14 @@ class SimpleMedia_Controller_Base_Ajax extends Zikula_Controller_AbstractAjax
                                         LogUtil::registerError($this->__f('Sorry, but an unknown error occured during the %s action. Please apply the changes again!', array($action)));
                                     }
                                 //});
+            
                                 break;
                 case 'addChildNode':
                                 $parentId = (int) $postData->filter('pid', 0, FILTER_VALIDATE_INT);
                                 if (!$parentId) {
                                     throw new Zikula_Exception_Ajax_Fatal($this->__('Error: invalid parent node.'));
                                 }
-        
+                                
                                 //$this->entityManager->transactional(function($entityManager) {
                                     $childEntity = new $entityClass();
                                     $entityData = array();
@@ -390,7 +391,7 @@ class SimpleMedia_Controller_Base_Ajax extends Zikula_Controller_AbstractAjax
                                         $entityData[$descriptionFieldName] = $this->__('This is a new child node');
                                     }
                                     $childEntity->merge($entityData);
-        
+                                
                                     // save new object
                                     $action = 'submit';
                                     try {
@@ -400,7 +401,7 @@ class SimpleMedia_Controller_Base_Ajax extends Zikula_Controller_AbstractAjax
                                     } catch(\Exception $e) {
                                         LogUtil::registerError($this->__f('Sorry, but an unknown error occured during the %s action. Please apply the changes again!', array($action)));
                                     }
-        
+                                
                                     //$childEntity->setParent($parentEntity);
                                     $parentEntity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', array('ot' => $objectType, 'id' => $parentId, 'useJoins' => false));
                                     if ($parentEntity == null) {
@@ -416,9 +417,9 @@ class SimpleMedia_Controller_Base_Ajax extends Zikula_Controller_AbstractAjax
                                 if ($entity == null) {
                                     return new Zikula_Response_Ajax_NotFound($this->__('No such item.'));
                                 }
-        
+                                
                                 $entity->initWorkflow();
-        
+                                
                                 // delete the object
                                 $action = 'delete';
                                 try {
@@ -428,47 +429,48 @@ class SimpleMedia_Controller_Base_Ajax extends Zikula_Controller_AbstractAjax
                                 } catch(\Exception $e) {
                                     LogUtil::registerError($this->__f('Sorry, but an unknown error occured during the %s action. Please apply the changes again!', array($action)));
                                 }
-        
+                                
                                 $repository->removeFromTree($entity);
                                 $this->entityManager->clear(); // clear cached nodes
+            
                                 break;
                 case 'moveNode':
                                 $moveDirection = $postData->filter('direction', '', FILTER_SANITIZE_STRING);
                                 if (!in_array($moveDirection, array('up', 'down'))) {
                                     throw new Zikula_Exception_Ajax_Fatal($this->__('Error: invalid direction.'));
                                 }
-        
+                                
                                 $entity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', array('ot' => $objectType, 'id' => $id, 'useJoins' => false));
                                 if ($entity == null) {
                                     return new Zikula_Response_Ajax_NotFound($this->__('No such item.'));
                                 }
-        
+                                
                                 if ($moveDirection == 'up') {
                                     $repository->moveUp($entity, 1);
                                 } else if ($moveDirection == 'down') {
                                     $repository->moveDown($entity, 1);
                                 }
                                 $this->entityManager->flush();
-        
+            
                                 break;
                 case 'moveNodeTo':
                                 $moveDirection = $postData->filter('direction', '', FILTER_SANITIZE_STRING);
                                 if (!in_array($moveDirection, array('after', 'before', 'bottom'))) {
                                     throw new Zikula_Exception_Ajax_Fatal($this->__('Error: invalid direction.'));
                                 }
-        
+                                
                                 $destId = (int) $postData->filter('destid', 0, FILTER_VALIDATE_INT);
                                 if (!$destId) {
                                     throw new Zikula_Exception_Ajax_Fatal($this->__('Error: invalid destination node.'));
                                 }
-        
+                                
                                 //$this->entityManager->transactional(function($entityManager) {
                                     $entity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', array('ot' => $objectType, 'id' => $id, 'useJoins' => false));
                                     $destEntity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', array('ot' => $objectType, 'id' => $destId, 'useJoins' => false));
                                     if ($entity == null || $destEntity == null) {
                                         return new Zikula_Response_Ajax_NotFound($this->__('No such item.'));
                                     }
-        
+                                
                                     if ($moveDirection == 'after') {
                                         $repository->persistAsNextSiblingOf($entity, $destEntity);
                                     } elseif ($moveDirection == 'before') {
@@ -478,6 +480,7 @@ class SimpleMedia_Controller_Base_Ajax extends Zikula_Controller_AbstractAjax
                                     }
                                     $this->entityManager->flush();
                                 //});
+            
                                 break;
             }
         

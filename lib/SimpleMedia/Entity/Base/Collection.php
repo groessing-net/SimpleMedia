@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -84,15 +84,15 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
     
     /**
      * @ORM\Column(type="bigint")
-     * @var integer $sortValue.
-     */
-    protected $sortValue = 0;
-    
-    /**
-     * @ORM\Column(type="bigint")
      * @var integer $viewsCount.
      */
     protected $viewsCount = 0;
+    
+    /**
+     * @ORM\Column(type="bigint")
+     * @var integer $sortValue.
+     */
+    protected $sortValue = 0;
     
     
     /**
@@ -150,42 +150,42 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
      */
     protected $categories = null;
     
-    /**
-     * @ORM\Column(type="integer")
-     * @ZK\StandardFields(type="userid", on="create")
-     * @var integer $createdUserId.
-     */
-    protected $createdUserId;
+            /**
+             * @ORM\Column(type="integer")
+             * @ZK\StandardFields(type="userid", on="create")
+             * @var integer $createdUserId.
+             */
+            protected $createdUserId;
     
-    /**
-     * @ORM\Column(type="integer")
-     * @ZK\StandardFields(type="userid", on="update")
-     * @var integer $updatedUserId.
-     */
-    protected $updatedUserId;
+            /**
+             * @ORM\Column(type="integer")
+             * @ZK\StandardFields(type="userid", on="update")
+             * @var integer $updatedUserId.
+             */
+            protected $updatedUserId;
     
-    /**
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="create")
-     * @var datetime $createdDate.
-     */
-    protected $createdDate;
+            /**
+             * @ORM\Column(type="datetime")
+             * @Gedmo\Timestampable(on="create")
+             * @var datetime $createdDate.
+             */
+            protected $createdDate;
     
-    /**
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="update")
-     * @var datetime $updatedDate.
-     */
-    protected $updatedDate;
+            /**
+             * @ORM\Column(type="datetime")
+             * @Gedmo\Timestampable(on="update")
+             * @var datetime $updatedDate.
+             */
+            protected $updatedDate;
     
     /**
      * Bidirectional - One collection [collection] has many media [media] (INVERSE SIDE).
      *
      * @ORM\OneToMany(targetEntity="SimpleMedia_Entity_Medium", mappedBy="collection", cascade={"persist"})
      * @ORM\JoinTable(name="simmed_collectionmedia",
-             *      joinColumns={@ORM\JoinColumn(name="id", referencedColumnName="id" , unique=true, nullable=false)
+             *      joinColumns={@ORM\JoinColumn(name="collection_id", referencedColumnName="id" , unique=true, nullable=false)
              },
-             *      inverseJoinColumns={@ORM\JoinColumn(name="id", referencedColumnName="id" , unique=true, nullable=false)
+             *      inverseJoinColumns={@ORM\JoinColumn(name="medium_id", referencedColumnName="id" , unique=true, nullable=false)
             }
              * )
      * @var SimpleMedia_Entity_Medium[] $media.
@@ -442,30 +442,6 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Get sort value.
-     *
-     * @return bigint
-     */
-    public function getSortValue()
-    {
-        return $this->sortValue;
-    }
-    
-    /**
-     * Set sort value.
-     *
-     * @param bigint $sortValue.
-     *
-     * @return void
-     */
-    public function setSortValue($sortValue)
-    {
-        if ($sortValue != $this->sortValue) {
-            $this->sortValue = $sortValue;
-        }
-    }
-    
-    /**
      * Get views count.
      *
      * @return bigint
@@ -486,6 +462,30 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
     {
         if ($viewsCount != $this->viewsCount) {
             $this->viewsCount = $viewsCount;
+        }
+    }
+    
+    /**
+     * Get sort value.
+     *
+     * @return bigint
+     */
+    public function getSortValue()
+    {
+        return $this->sortValue;
+    }
+    
+    /**
+     * Set sort value.
+     *
+     * @param bigint $sortValue.
+     *
+     * @return void
+     */
+    public function setSortValue($sortValue)
+    {
+        if ($sortValue != $this->sortValue) {
+            $this->sortValue = $sortValue;
         }
     }
     
@@ -784,7 +784,7 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
     
     
     /**
-     * Initialise validator and return it's instance.
+     * Initialises the validator and return it's instance.
      *
      * @return SimpleMedia_Entity_Validator_Collection The validator for this entity.
      */
@@ -800,8 +800,10 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
     
     /**
      * Sets/retrieves the workflow details.
+     *
+     * @param boolean $forceLoading load the workflow record.
      */
-    public function initWorkflow()
+    public function initWorkflow($forceLoading = false)
     {
         $currentFunc = FormUtil::getPassedValue('func', 'main', 'GETPOST', FILTER_SANITIZE_STRING);
         $isReuse = FormUtil::getPassedValue('astemplate', '', 'GETPOST', FILTER_SANITIZE_STRING);
@@ -811,6 +813,7 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
         $workflowHelper = new SimpleMedia_Util_Workflow(ServiceUtil::getManager());
         $schemaName = $workflowHelper->getWorkflowName($this['_objectType']);
         $this['__WORKFLOW__'] = array(
+            'module' => 'SimpleMedia',
             'state' => $this['workflowState'],
             'obj_table' => $this['_objectType'],
             'obj_idcolumn' => $idColumn,
@@ -818,7 +821,7 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
             'schemaname' => $schemaName);
         
         // load the real workflow only when required (e. g. when func is edit or delete)
-        if (!in_array($currentFunc, array('main', 'view', 'display')) && empty($isReuse)) {
+        if ((!in_array($currentFunc, array('main', 'view', 'display')) && empty($isReuse)) || $forceLoading) {
             $result = Zikula_Workflow_Util::getWorkflowForObject($this, $this['_objectType'], $idColumn, 'SimpleMedia');
             if (!$result) {
                 $dom = ZLanguage::getModuleDomain('SimpleMedia');
@@ -843,6 +846,7 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
         $workflowHelper = new SimpleMedia_Util_Workflow(ServiceUtil::getManager());
         $schemaName = $workflowHelper->getWorkflowName($this['_objectType']);
         $this['__WORKFLOW__'] = array(
+            'module' => 'SimpleMedia',
             'state' => $this['workflowState'],
             'obj_table' => $this['_objectType'],
             'obj_idcolumn' => 'id',
@@ -917,6 +921,14 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
                         'linkText' => __('Edit', $dom)
                     );
                 }
+                if (SecurityUtil::checkPermission($component, $instance, ACCESS_DELETE)) {
+                    $this->_actions[] = array(
+                        'url' => array('type' => 'admin', 'func' => 'delete', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
+                        'icon' => 'delete',
+                        'linkTitle' => __('Delete', $dom),
+                        'linkText' => __('Delete', $dom)
+                    );
+                }
             }
             if ($currentFunc == 'display') {
                 $this->_actions[] = array(
@@ -926,12 +938,13 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
                     'linkText' => __('Back to overview', $dom)
                 );
             }
-    
+            
             // more actions for adding new related items
             $authAdmin = SecurityUtil::checkPermission($component, $instance, ACCESS_ADMIN);
+            
             $uid = UserUtil::getVar('uid');
             if ($authAdmin || (isset($uid) && isset($this->createdUserId) && $this->createdUserId == $uid)) {
-    
+            
                 $urlArgs = array('ot' => 'medium',
                                  'collection' => $this->id);
                 if ($currentFunc == 'view') {
@@ -957,6 +970,24 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
                 );
             }
             if (in_array($currentFunc, array('main', 'view', 'display'))) {
+                $component = 'SimpleMedia:Collection:';
+                $instance = $this->id . '::';
+                if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
+                    $this->_actions[] = array(
+                        'url' => array('type' => 'user', 'func' => 'edit', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
+                        'icon' => 'edit',
+                        'linkTitle' => __('Edit', $dom),
+                        'linkText' => __('Edit', $dom)
+                    );
+                }
+                if (SecurityUtil::checkPermission($component, $instance, ACCESS_DELETE)) {
+                    $this->_actions[] = array(
+                        'url' => array('type' => 'user', 'func' => 'delete', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
+                        'icon' => 'delete',
+                        'linkTitle' => __('Delete', $dom),
+                        'linkText' => __('Delete', $dom)
+                    );
+                }
             }
             if ($currentFunc == 'display') {
                 $this->_actions[] = array(
@@ -966,13 +997,34 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
                     'linkText' => __('Back to overview', $dom)
                 );
             }
+            
+            // more actions for adding new related items
+            $authAdmin = SecurityUtil::checkPermission($component, $instance, ACCESS_ADMIN);
+            
+            $uid = UserUtil::getVar('uid');
+            if ($authAdmin || (isset($uid) && isset($this->createdUserId) && $this->createdUserId == $uid)) {
+            
+                $urlArgs = array('ot' => 'medium',
+                                 'collection' => $this->id);
+                if ($currentFunc == 'view') {
+                    $urlArgs['returnTo'] = 'userViewCollection';
+                } elseif ($currentFunc == 'display') {
+                    $urlArgs['returnTo'] = 'userDisplayCollection';
+                }
+                $this->_actions[] = array(
+                    'url' => array('type' => 'user', 'func' => 'edit', 'arguments' => $urlArgs),
+                    'icon' => 'add',
+                    'linkTitle' => __('Create medium', $dom),
+                    'linkText' => __('Create medium', $dom)
+                );
+            }
         }
     }
     
     /**
      * Creates url arguments array for easy creation of display urls.
      *
-     * @return Array The resulting arguments list. 
+     * @return Array The resulting arguments list.
      */
     public function createUrlArgs()
     {
@@ -1009,6 +1061,24 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
         return 'simplemedia.ui_hooks.collections';
     }
 
+    /**
+     * Returns an array of all related objects that need to be persited after clone.
+     * 
+     * @param array $objects The objects are added to this array. Default: array()
+     * 
+     * @return array of entity objects.
+     */
+    public function getRelatedObjectsToPersist(&$objects = array()) {
+        foreach ($this->media as $rel) {
+            if (!in_array($rel, $objects, true)) {
+                $objects[] = $rel;
+                $rel->getRelatedObjectsToPersist($objects);
+            }
+        }
+    
+        return $objects;
+     }
+
     
     /**
      * Post-Process the data after the entity has been constructed by the entity manager.
@@ -1032,8 +1102,8 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
         $this->formatTextualField('title', $currentFunc, $usesCsvOutput);
         $this->formatTextualField('description', $currentFunc, $usesCsvOutput);
         $this['previewImage'] = (int) ((isset($this['previewImage']) && !empty($this['previewImage'])) ? DataUtil::formatForDisplay($this['previewImage']) : 0);
-        $this['sortValue'] = (int) ((isset($this['sortValue']) && !empty($this['sortValue'])) ? DataUtil::formatForDisplay($this['sortValue']) : 0);
         $this['viewsCount'] = (int) ((isset($this['viewsCount']) && !empty($this['viewsCount'])) ? DataUtil::formatForDisplay($this['viewsCount']) : 0);
+        $this['sortValue'] = (int) ((isset($this['sortValue']) && !empty($this['sortValue'])) ? DataUtil::formatForDisplay($this['sortValue']) : 0);
     
         $this->prepareItemActions();
     
@@ -1267,11 +1337,11 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
     /**
      * Clone interceptor implementation.
      * This method is for example called by the reuse functionality.
-     * Performs a deep copy. 
+     * Performs a deep copy.
      *
      * See also:
      * (1) http://docs.doctrine-project.org/en/latest/cookbook/implementing-wakeup-or-clone.html
-     * (2) http://www.sunilb.com/php/php5-oops-tutorial-magic-methods-__clone-method
+     * (2) http://www.php.net/manual/en/language.oop5.cloning.php
      * (3) http://stackoverflow.com/questions/185934/how-do-i-create-a-copy-of-an-object-in-php
      * (4) http://www.pantovic.com/article/26/doctrine2-entity-cloning
      */
@@ -1279,28 +1349,38 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
     {
         // If the entity has an identity, proceed as normal.
         if ($this->id) {
-            // create new instance
-            
-            $entity = new \SimpleMedia_Entity_Collection();
             // unset identifiers
-            $entity->setId(null);
-            // copy simple fields
-            $entity->set_objectType($this->get_objectType());
-            $entity->set_actions($this->get_actions());
-            $entity->initValidator();
-            $entity->setTitle($this->getTitle());
-            $entity->setDescription($this->getDescription());
-            $entity->setPreviewImage($this->getPreviewImage());
-            $entity->setSortValue($this->getSortValue());
-            $entity->setViewsCount($this->getViewsCount());
+            $this->setId(0);
+    
+            // init validator
+            $this->initValidator();
+    
+            // reset Workflow
+            $this->resetWorkflow();
+    
+            $this->setCreatedDate(null);
+            $this->setCreatedUserId(null);
+            $this->setUpdatedDate(null);
+            $this->setUpdatedUserId(null);
     
             // handle related objects
             // prevent shared references by doing a deep copy - see (2) and (3) for more information
-            if ($this->getMedia() != null) {
-                $entity->setMedia($this->media);
+            // clone referenced objects only if a new record is necessary
+            $collection = $this->media;
+            $this->media = new ArrayCollection();
+            foreach ($collection as $rel) {
+                $this->addMedia( clone $rel);
             }
     
-            return $entity;
+            // clone categories
+            $categories = $this->categories;
+            $this->categories = new ArrayCollection();
+            foreach ($categories as $c) {
+                $newCat = clone $c;
+                $this->categories->add($newCat);
+                $newCat->setEntity($this);
+            }
+            
         }
         // otherwise do nothing, do NOT throw an exception!
     }

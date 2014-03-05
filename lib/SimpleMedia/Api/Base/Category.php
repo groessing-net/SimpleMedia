@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -154,8 +154,7 @@ class SimpleMedia_Api_Base_Category extends Zikula_AbstractApi
             if (count($filtersPerRegistry) == 1) {
                 $qb->andWhere($filtersPerRegistry[0]);
             } else {
-    
-                $qb->andWhere($qb->expr()->orX()->addMultiple($filtersPerRegistry));
+                $qb->andWhere('(' . implode(' OR ', $filtersPerRegistry) . ')');
             }
             foreach ($filterParameters['values'] as $propertyName => $filterValue) {
                 $qb->setParameter('propName' . $propertyName, $filterValue)

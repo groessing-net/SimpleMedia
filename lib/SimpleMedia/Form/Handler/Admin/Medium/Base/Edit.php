@@ -2,7 +2,7 @@
 /**
  * SimpleMedia.
  *
- * @copyright Erik Spaan & Axel Guckelsberger (ZKM)
+ * @copyright Erik Spaan & Axel Guckelsberger (ESP)
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @package SimpleMedia
  * @author Erik Spaan & Axel Guckelsberger <erik@zikula.nl>.
@@ -28,11 +28,11 @@ class SimpleMedia_Form_Handler_Admin_Medium_Base_Edit extends SimpleMedia_Form_H
     public function preInitialize()
     {
         parent::preInitialize();
-
+    
         $this->objectType = 'medium';
         $this->objectTypeCapital = 'Medium';
         $this->objectTypeLower = 'medium';
-
+    
         $this->hasPageLockSupport = true;
         $this->hasAttributes = true;
         $this->hasCategories = true;
@@ -95,6 +95,11 @@ class SimpleMedia_Form_Handler_Admin_Medium_Base_Edit extends SimpleMedia_Form_H
     
         // assign data to template as array (makes translatable support easier)
         $this->view->assign($this->objectTypeLower, $entityData);
+    
+        if ($this->mode == 'edit') {
+            // assign formatted title
+            $this->view->assign('formattedEntityTitle', $entity->getTitleFromDisplayPattern());
+        }
     
         // everything okay, no initialization errors occured
         return true;
@@ -266,10 +271,48 @@ class SimpleMedia_Form_Handler_Admin_Medium_Base_Edit extends SimpleMedia_Form_H
     
         // parse given redirect code and return corresponding url
         switch ($this->returnTo) {
-            case 'ajax':
-                        return ModUtil::url($this->name, 'ajax', 'main');
-                    default:
-                        return $this->getDefaultReturnUrl($args);
+            case 'admin':
+                return ModUtil::url($this->name, 'admin', 'main');
+            case 'adminView':
+                return ModUtil::url($this->name, 'admin', 'view',
+                                                array('ot' => $this->objectType));
+            case 'adminDisplay':
+                if ($args['commandName'] != 'delete' && !($this->mode == 'create' && $args['commandName'] == 'cancel')) {
+                    $urlArgs = $this->addIdentifiersToUrlArgs();
+                    $urlArgs['ot'] = $this->objectType;
+                    return ModUtil::url($this->name, 'admin', 'display', $urlArgs);
+                }
+                return $this->getDefaultReturnUrl($args);
+            case 'user':
+                return ModUtil::url($this->name, 'user', 'main');
+            case 'userView':
+                return ModUtil::url($this->name, 'user', 'view',
+                                                array('ot' => $this->objectType));
+            case 'userDisplay':
+                if ($args['commandName'] != 'delete' && !($this->mode == 'create' && $args['commandName'] == 'cancel')) {
+                    $urlArgs = $this->addIdentifiersToUrlArgs();
+                    $urlArgs['ot'] = $this->objectType;
+                    return ModUtil::url($this->name, 'user', 'display', $urlArgs);
+                }
+                return $this->getDefaultReturnUrl($args);
+            case 'adminViewCollection':
+                return ModUtil::url($this->name, 'admin', 'view',
+                                         array('ot' => 'collection'));
+            case 'adminDisplayCollection':
+                if (!empty($this->relationPresets['collection'])) {
+                    return ModUtil::url($this->name, 'admin', 'display', array('ot' => 'collection', 'id' => $this->relationPresets['collection']));
+                }
+                return $this->getDefaultReturnUrl($args);
+            case 'userViewCollection':
+                return ModUtil::url($this->name, 'user', 'view',
+                                         array('ot' => 'collection'));
+            case 'userDisplayCollection':
+                if (!empty($this->relationPresets['collection'])) {
+                    return ModUtil::url($this->name, 'user', 'display', array('ot' => 'collection', 'id' => $this->relationPresets['collection']));
+                }
+                return $this->getDefaultReturnUrl($args);
+            default:
+                return $this->getDefaultReturnUrl($args);
         }
     }
 }
