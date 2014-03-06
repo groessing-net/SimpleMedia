@@ -24,8 +24,8 @@ mp3
 ---
 Used for playing mp3 files, details unclear, replace with a HTML5 player (with fallback).
 
-Bootstrap Image Gallery
------------------------
+BlueImp Bootstrap Image Gallery
+-------------------------------
 Used in the frontend for media image display
 * Version 3.1.0
 * http://blueimp.github.io/Bootstrap-Image-Gallery/
@@ -36,8 +36,17 @@ Used in the frontend for media image display
 jQuery-File-Upload 
 ------------------
 Will be used for directly uploading a set of images and creating multiple medium entities.
-* Version 9.5.2
+* Version 9.5.6
 * http://blueimp.github.io/jQuery-File-Upload/
 * MIT license
 * jQuery / HTML5
+
+Masonry
+-------
+Cascading grid layout library for frontend gallery display of images.
+* Version v3.1.4
+* https://github.com/desandro/masonry
+* MIT license
+* jQuery is not required to use Masonry. But if you do enjoy jQuery, Masonry works with it as a jQuery plugin.
+
 

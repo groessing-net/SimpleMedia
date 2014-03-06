@@ -10,16 +10,18 @@
 <div class="simplemedia-medium medium">
 {foreach name='relLoop' item='medium' from=$items}
     <div class="simplemedia-medium-wrap" style="width:{$thumbWidth}px;">
-        {* prepare thumbnail choice and how to display/download *}
+        {*--- prepare thumbnail choice and how to display/download ---*}
         {assign var='previewImageUsed' value=false}
         {if $medium.theFileMeta.isImage}
             {* thumb image=$medium.theFileFullPath objectid="medium-`$medium.id`" preset=$mediumThumbPresetTheFile tag=true img_alt=$medium->getTitleFromDisplayPattern() *}
-            {thumb image=$medium.theFileFullPath width=$thumbWidth height=$thumbHeight assign="thumbnail"}
+            {*thumb image=$medium.theFileFullPath module='SimpleMedia' objectid="medium-`$medium.id`" preset=$modvars.SimpleMedia.defaultImaginePreset width=$thumbWidth height=$thumbHeight assign="thumbnail"*}
+            {thumb image=$medium.theFileFullPath module='SimpleMedia' objectid="medium-`$medium.id`" preset=$modvars.SimpleMedia.defaultImaginePreset assign="thumbnail"}
             {assign var="downloadLink" value=""}
         {else}
-            {* use download link as standard action for non-images *}
+            {*--- use download link as standard action for non-images ---*}
             {gt text='Download %1$s (%2$s)' tag1=$medium.theFileMeta.extension tag2=$medium.theFileMeta.size|simplemediaGetFileSize:$medium.theFileFullPath:false:false assign="downloadLink"}
             {if $medium.previewImage != 0}
+				{* show the configure preview image for this non-image as thumbnail *}
                 {modapifunc modname='SimpleMedia' type='selection' func='getEntity' objectType='medium' id=$medium.previewImage assign='previewImageMedium'}
                 {if !empty($previewImageMedium) && $previewImageMedium.theFileMeta.isImage}
                     {thumb image=$previewImageMedium.theFileFullPath width=$thumbWidth height=$thumbHeight assign="thumbnail"}
@@ -28,6 +30,7 @@
                     {thumb image=modules/SimpleMedia/images/sm2_medium_doc_240x240.png width=$thumbWidth height=$thumbHeight assign="thumbnail"}
                 {/if}
             {else}
+				{* --- Not an image and no preview image present, so display general thumbnail based on file extension --- *}
                 {if $medium.theFileMeta.isDoc}
                     {if $medium.theFileMeta.isPdf}
                         {thumb image=modules/SimpleMedia/images/sm2_medium_pdf_240x240.png width=$thumbWidth height=$thumbHeight assign="thumbnail"}
@@ -58,9 +61,11 @@
                     {* if not clasified above just display doc thumbnail *}
                     {thumb image=modules/SimpleMedia/images/sm2_medium_doc_240x240.png width=$thumbWidth height=$thumbHeight assign="thumbnail"}
                 {/if}
+				{*--- General override here ---*}
+                {thumb image="modules/SimpleMedia/images/freefileicons/512px/`$medium.theFileMeta.extension`.png" module='SimpleMedia' objectid="medium-`$medium.id`" preset=$modvars.SimpleMedia.defaultImaginePreset assign="thumbnail"}
             {/if}
         {/if}
-        {* displaying medium *}
+        {*--- displaying medium ---*}
         <div class="simplemedia-medium-preview" style="width:{$thumbWidth}px;height:{$thumbHeight}px;">
             {if $previewImageUsed}
                 <div class="simplemedia-medium-previewimagetext"
