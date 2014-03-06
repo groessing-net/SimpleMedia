@@ -79,10 +79,10 @@
         <dt>{gt text='Extra'}</dt>
         <dd>{$obj.metadata.extra|default:'-'|safetext}</dd>
     {/if}
-        {if $obj.metadata.rights ne ''}
-            <dt>{gt text='Rights'}</dt>
-            <dd>{$obj.metadata.rights|default:'-'|safetext}</dd>
-        {/if}
+	{if $obj.metadata.rights ne ''}
+		<dt>{gt text='Rights'}</dt>
+		<dd>{$obj.metadata.rights|default:'-'|safetext}</dd>
+	{/if}
     </dl>
     {if isset($panel) && $panel eq true}
         </div>

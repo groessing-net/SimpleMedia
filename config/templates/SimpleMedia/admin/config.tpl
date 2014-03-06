@@ -34,6 +34,15 @@
                         {formintinput id='collectionsPageSize' group='config' maxLength=255 __title='Enter the collections page size. Only digits are allowed.'}
                 </div>
                 <div class="z-formrow">
+                    {gt text='Use this Imagine system plugin preset for image display in the frontend.' assign='toolTip'}
+                    {formlabel for='defaultImaginePreset' __text='Default Imagine preset' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                    {formtextinput id='defaultImaginePreset' group='config' maxLength=255 __title='Enter the default imagine preset.'}
+					<em class="z-sub z-formnote">
+						{modurl modname='Extensions' type='adminplugin' func='dispatch' _plugin='Imagine' _action='configure' assign='imaginePluginEdit'}
+						{gt text='Within SimpleMedia the Imagine system plugin is used for thumbnail generation and display in the frontend. Imagine uses presets to determine the thumbnail size and way of scaling. A preset has to be chosen here and the presets can be configured <a href="%s">here</a>.' tag1=$imaginePluginEdit}
+					</em>
+                </div>
+                <div class="z-formrow">
                     {gt text='Contains an array of thumbnail widthxheight dimensions array ( array ( width => 200, height => 150 ) )' assign='toolTip'}
                     {formlabel for='thumbDimensions' __text='Thumbnail dimensions' cssClass='simplemedia-form-tooltips ' title=$toolTip}
 						{* formtextinput id='thumbDimensions' group='config' maxLength=255 __title='Enter the thumb dimensions.' *}
@@ -51,7 +60,7 @@
                         </li>
                     {/formvolatile}
                     </ol>
-                    <div class="z-sub z-formnote">{gt text='Thumbnails are generated with the Imagine plugin in the Zikula Core.<br />Turning legacy_prefilters off in config/config.php reduces memory consumption a lot.'}</div>
+                    <em class="z-sub z-formnote">{gt text='Thumbnails are generated with the Imagine plugin in the Zikula Core.<br />Turning legacy_prefilters off in config/config.php reduces memory consumption a lot.'}</em>
                 </div>
                 <div class="z-formrow">
                     {gt text='The default thumbnail that is used from the set of Thumbdimensions' assign='toolTip'}
