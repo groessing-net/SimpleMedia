@@ -176,7 +176,7 @@ div.simplemedia-view form.simplemedia-quicknav fieldset #num {
 }
 .simplemedia-medium div.simplemedia-medium-wrap {
     float:left;
-    margin:5px 10px;
+    margin:5px 15px;
     text-align:center;
     position:relative;
 }
@@ -226,7 +226,7 @@ div.simplemedia-view form.simplemedia-quicknav fieldset #num {
 }
 .simplemedia-collection div.simplemedia-collection-title,
 .simplemedia-medium div.simplemedia-medium-title {
-    margin: 5px 5px 2px;
+    margin: 10px 5px 2px;
 }
 .simplemedia-collection-title a,
 .simplemedia-medium-title a {
@@ -255,7 +255,7 @@ div.simplemedia-view form.simplemedia-quicknav fieldset #num {
 	margin:0;
 }
 .simplemedia-medium-download {
-    margin: 8px 4px 0;
+    margin: 0 4px;
 }
 }
 /* Media grid view */

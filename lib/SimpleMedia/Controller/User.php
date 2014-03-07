@@ -311,7 +311,7 @@ class SimpleMedia_Controller_User extends SimpleMedia_Controller_Base_User
      *
      * @return mixed Output.
      */
-	public function multiUpload()
+	public function multiUpload2()
 	{
         $controllerHelper = new SimpleMedia_Util_Controller($this->serviceManager);
         

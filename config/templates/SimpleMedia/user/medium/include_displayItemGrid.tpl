@@ -77,21 +77,20 @@
                 <img src="{$thumbnail}" alt="{$medium.description}" class="simplemedia-img-rounded" />
             </a>
         </div>
-        <div class="simplemedia-medium-download">
-            {if !empty($downloadLink)}
-                <a href="{$medium.theFileFullPathURL}" title="{$medium->getTitleFromDisplayPattern()|replace:"\"":""}"{if $medium.theFileMeta.isImage} rel="imageviewer[media]"{/if}>
-                    {$downloadLink}
-                </a>
-            {else}
-                &nbsp;
-            {/if}
-        </div>
         <div class="simplemedia-medium-title">
             <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='medium' id=$medium.id}" title="{if !empty($medium.description)}{$medium.description}{else}{gt text="View detail page"}{/if}">
                 {$medium.title|notifyfilters:'simplemedia.filterhook.media'}
             </a>
             {* &nbsp;<img src="images/icons/extrasmall/info.png" width=16 height=16 id='simplemedia-medium-metaimg-{$collection.id}' /> *}
         </div>
+        {if !empty($downloadLink)}
+            <div class="simplemedia-medium-download">
+                <a href="{$medium.theFileFullPathURL}" title="{$medium->getTitleFromDisplayPattern()|replace:"\"":""}"{if $medium.theFileMeta.isImage} rel="imageviewer[media]"{/if}>
+                    {$downloadLink}
+                </a>
+            </div>
+        {else}
+        {/if}
     </div>
 {/foreach}
 </div> {* simplemedia-medium medium *}
