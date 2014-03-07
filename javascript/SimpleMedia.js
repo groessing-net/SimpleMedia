@@ -45,9 +45,11 @@ function simmedInitItemActions(objectType, func, containerId)
         icon = '';
         if (func === 'display') {
             if (elem.hasClassName('z-icon-es-preview')) {
-                icon = 'xeyes.png';
+                icon = '14_layer_visible';
             } else if (elem.hasClassName('z-icon-es-display')) {
-                icon = 'kview.png';
+                icon = 'kview';
+            } else if (elem.hasClassName('z-icon-es-add')) {
+                icon = 'edit_add';
             } else if (elem.hasClassName('z-icon-es-edit')) {
                 icon = 'edit';
             } else if (elem.hasClassName('z-icon-es-saveas')) {
