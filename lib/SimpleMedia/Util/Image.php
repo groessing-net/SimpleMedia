@@ -17,38 +17,46 @@
 class SimpleMedia_Util_Image extends SimpleMedia_Util_Base_Image
 {
     // feel free to add your own convenience methods here
-    
+
+    // PHP lib for jpeg data information http://ozhiker.com/electronics/pjmt/
+
 	// IPTC constants, see IPTC standards
+    // http://www.iptc.org/std/photometadata/documentation/IPTC-CS5-FileInfo-UserGuide_6.pdf
+    // http://www.iptc.org/std/IIM/4.1/specification/IIMV4.1.pdf
     const OBJECT_NAME                     = '005';
     const EDIT_STATUS                     = '007';
-    const PRIORITY                        = '010';
+    const URGENCY                         = '010';
     const CATEGORY                        = '015';
-    const SUPPLEMENTAL_CATEGORY           = '020';
+    const SUPPLEMENTAL_CATEGORIES         = '020';
     const FIXTURE_IDENTIFIER              = '022';
     const KEYWORDS                        = '025';
+    const CONTENT_LOCATION_NAME           = '027';
     const RELEASE_DATE                    = '030';
     const RELEASE_TIME                    = '035';
     const SPECIAL_INSTRUCTIONS            = '040';
     const REFERENCE_SERVICE               = '045';
     const REFERENCE_DATE                  = '047';
     const REFERENCE_NUMBER                = '050';
-    const CREATED_DATE                    = '055';
+    const DATE_CREATED                    = '055';
     const CREATED_TIME                    = '060';
     const ORIGINATING_PROGRAM             = '065';
     const PROGRAM_VERSION                 = '070';
     const OBJECT_CYCLE                    = '075';
+    const BYLINE_AUTHOR                   = '080';
+    const BYLINE_TITLE                    = '085';
     const CITY                            = '090';
     const PROVINCE_STATE                  = '095';
     const COUNTRY_CODE                    = '100';
     const COUNTRY                         = '101';
-    const ORIGINAL_TRANSMISSION_REFERENCE = '103';
+    const ORIGINAL_TRANSMISSION           = '103';
     const HEADLINE                        = '105';
     const CREDIT                          = '110';
     const SOURCE                          = '115';
-    const COPYRIGHT_STRING                = '116';
+    const COPYRIGHT_NOTICE                = '116';
+    const CONTACT                         = '118';
     const CAPTION                         = '120';
     const LOCAL_CAPTION                   = '121';
-    const CAPTION_WRITER                  = '122';
+    const WRITER_EDITOR                   = '122';
 
 	// EXIF IMAGETYPE constants 
 	// see http://www.php.net/manual/en/function.exif-imagetype.php
@@ -72,6 +80,9 @@ class SimpleMedia_Util_Image extends SimpleMedia_Util_Base_Image
 
     // Integrate IPTC and EXIF methods here. See iptc.php
 	// EXIF tags: http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/EXIF.html
-    
+    // http://ozhiker.com/electronics/pjmt/jpeg_info/standards.html
+    // http://www.kodak.com/global/plugins/acrobat/en/service/digCam/exifStandard2.pdf
+
     // Add watermarking of images here. Override getPreset possibly.
+    // function watermark...
 }
