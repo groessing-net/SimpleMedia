@@ -83,6 +83,9 @@ class SimpleMedia_Util_Image extends SimpleMedia_Util_Base_Image
     // http://ozhiker.com/electronics/pjmt/jpeg_info/standards.html
     // http://www.kodak.com/global/plugins/acrobat/en/service/digCam/exifStandard2.pdf
 
+    // All Exif Tags:
+    //http://www.awaresystems.be/imaging/tiff/tifftags.html
+
     // Add watermarking of images here. Override getPreset possibly.
     // function watermark...
 }

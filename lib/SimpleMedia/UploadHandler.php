@@ -119,9 +119,11 @@ class SimpleMedia_UploadHandler extends SimpleMedia_Base_UploadHandler
      */
     public function readMetaDataForFile($fileName, $filePath)
     {
-
         // call parent class
         $meta = parent::readMetaDataForFile($fileName, $filePath);
+
+        // Meta information filled in base class
+        // extension, size, isImage, width, height, format
 
         // isImage is already in parent
         $meta['isAudio'] = (in_array($meta['extension'], $this->audioFileTypes) ? true : false);
@@ -134,10 +136,8 @@ class SimpleMedia_UploadHandler extends SimpleMedia_Base_UploadHandler
         $meta['isPdf'] = ($meta['extension'] == 'pdf') ? true : false;
 
         // Add EXIF/IPTC information extraction here.
-//        $iptc = new SimpleMedia_Util_Iptc($filePath);
-//        print_r($iptc->fetchAll(SimpleMedia_Util_Iptc::KEYWORDS));
-//        print_r($iptc->dump());
 
+        // exif_imagetype
         /*
         1	IMAGETYPE_GIF
         2	IMAGETYPE_JPEG
@@ -157,34 +157,45 @@ class SimpleMedia_UploadHandler extends SimpleMedia_Base_UploadHandler
         16	IMAGETYPE_XBM
         17	IMAGETYPE_ICO
         */
-        /*        $imagetype = exif_imagetype($filePath);
-                echo $imagetype . "\n<br>";
-                if ($imagetype == 2) {
 
-                    // EXIF
-                    $exif = exif_read_data($filePath, 0, true);
-                    if ($exif) {
-                        foreach ($exif as $key => $section) {
-                            foreach ($section as $name => $val) {
-                                echo "$key.$name: $val\n<br>";
-                            }
-                        }
+        if (!function_exists('exif_read_data') || !function_exists('exif_imagetype')) {
+            // do something
+        }
+
+        // extract imagetype
+        $meta['imagetype'] = exif_imagetype($filePath);
+        // extract mimetype
+        $meta['mimetype'] = image_type_to_mime_type ($meta['imagetype']);
+
+        // echo $imagetype . "\n<br>";
+        if ($meta['imagetype'] == SimpleMedia_Util_Image::IMAGETYPE_JPEG ||
+            $meta['imagetype'] == SimpleMedia_Util_Image::IMAGETYPE_TIFF_II ||
+            $meta['imagetype'] == SimpleMedia_Util_Image::IMAGETYPE_TIFF_MM) {
+
+            // Read EXIF data in array form, no minimum sections in exif required
+            $exifdata = exif_read_data($filePath, 0, true);
+            $meta['exif'] = array();
+            if ($exifdata) {
+                foreach ($exifdata as $key => $section) {
+                    foreach ($section as $name => $val) {
+                        echo "$key.$name: $val\n<br>";
                     }
-
-                    // IPTC
-                    $size = getimagesize($filePath, $info);
-                    if(is_array($info)) {
-                        $iptc = iptcparse($info["APP13"]);
-                        foreach (array_keys($iptc) as $s) {
-                            $c = count ($iptc[$s]);
-                            for ($i=0; $i <$c; $i++)
-                            {
-                                echo $s.' = '.$iptc[$s][$i].'<br>';
-                            }
-                        }
-                    }
-
                 }
+            }
+
+            // read IPTC data
+            $size = getimagesize($filePath, $info);
+            if (is_array($info)) {
+                $iptc = iptcparse($info["APP13"]);
+                foreach (array_keys($iptc) as $s) {
+                    $c = count ($iptc[$s]);
+                    for ($i=0; $i <$c; $i++) {
+                        echo $s.' = '.$iptc[$s][$i].'<br>';
+                    }
+                }
+            }
+
+        }
         */
 
         /*
