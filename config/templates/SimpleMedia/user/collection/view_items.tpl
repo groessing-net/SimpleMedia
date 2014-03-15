@@ -1,35 +1,25 @@
 {* Initialize options *}
-{if !isset($thumbWidth)}{assign var='thumbWidth' value=170}{/if}
-{if !isset($thumbHeight)}{assign var='thumbHeight' value=150}{/if}
 {if !isset($clearFix)}{assign var='clearFix' value=true}{/if}
 
 {* Start grid collections in a wrapping div *}
 {foreach item='collection' from=$collections}
     {* display only collections on the level requested *}
     {if empty($gridLevel) || $collection.lvl eq $gridLevel}
-        <div class="simplemedia-collection-wrap" style="width:{$thumbWidth}px;">
+        <div class="simplemedia-collection-wrap">
             {* Collect the data for the preview image *}
             {if $collection.previewImage != 0}
                 {modapifunc modname='SimpleMedia' type='selection' func='getEntity' objectType='medium' id=$collection.previewImage assign='previewImageMedium'}
                 {if !empty($previewImageMedium) && $previewImageMedium.theFileMeta.isImage}
-                    {thumb image=$previewImageMedium.theFileFullPath width=$thumbWidth height=$thumbHeight assign="thumbnail"}
-                    {assign var="imgClass" value="simplemedia-img-rounded"}
+                    {thumb image=$previewImageMedium.theFileFullPath module='SimpleMedia' objectid="collection-`$collection.id`" preset=$modvars.SimpleMedia.defaultImaginePreset assign="thumbnail"}
                 {else}
-                    {* thumb image='modules/SimpleMedia/images/sm2_collection_240x240.png' assign="thumbnail" *}
-                    {assign_concat name='thumbnail' 1=$baseurl 2 ="modules/SimpleMedia/images/sm2_collection_96x96.png"}
-                    {assign var="imgClass" value="simplemedia-img-plain"}
+                    {thumb image='modules/SimpleMedia/images/sm2_collection_512x512.png' module='SimpleMedia' objectid="collection-`$collection.id`" preset=$modvars.SimpleMedia.defaultImaginePreset assign="thumbnail"}
                 {/if}
             {else}
-                {assign var=tw value=$thumbWidth-50}
-                {assign var=th value=$thumbHeight-50}
-                {* assign var=tw value=0.7*$thumbWidth}
-                {assign var=th value=0.7*$thumbHeight *}
-                {* thumb image='modules/SimpleMedia/images/sm2_collection_240x240.png' mode=outbound width=$tw height=$th assign="thumbnail" *}
-                {assign_concat name='thumbnail' 1=$baseurl 2 ="modules/SimpleMedia/images/sm2_collection_96x96.png"}
-                {assign var="imgClass" value="simplemedia-img-plain"}
+                {thumb image='modules/SimpleMedia/images/sm2_collection_512x512.png' module='SimpleMedia' objectid="collection-`$collection.id`" preset=$modvars.SimpleMedia.defaultImaginePreset assign="thumbnail"}
             {/if}
             <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$collection.id}" title="{if !empty($collection.description)}{$collection.description}{else}{gt text="View detail page"}{/if}">
-            <div class="simplemedia-collection-preview"  id='simplemedia-collection-meta-{$collection.id}-trigger' style="background:url({$thumbnail}) no-repeat center center;width:{$thumbWidth}px;height:{$thumbHeight}px;">
+            <div class="simplemedia-collection-preview"  id='simplemedia-collection-meta-{$collection.id}-trigger'>
+                <img src="{$thumbnail}" alt="{$medium.description}" class="simplemedia-img-rounded" />
                 <div class="simplemedia-collection-meta" style="display:none;" id="simplemedia-collection-meta-{$collection.id}">
                     {nocache} {* don't use caching for this info block *}
                     {usergetvar name='uname' uid=$collection.createdUserId assign='cr_uname'}
