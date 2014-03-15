@@ -24,13 +24,21 @@ mp3
 ---
 Used for playing mp3 files, details unclear, replace with a HTML5 player (with fallback).
 
-jQuery-File-Upload 
-------------------
+jQuery-File-Upload by Blueimp 
+-----------------------------
 Will be used for directly uploading a set of images and creating multiple medium entities.
 * Version 9.5.6
 * http://blueimp.github.io/jQuery-File-Upload/
 * MIT license
 * jQuery / HTML5
+
+Twitter Bootstrap
+-----------------
+Is used in the jQuery-File-Upload templates
+* Version 3.1.1
+* http://getbootstrap.com/
+* MIT license and copyright 2014 Twitter
+* jQuery, Glyphicons
 
 Masonry
 -------
@@ -40,7 +48,15 @@ Cascading grid layout library for frontend gallery display of images.
 * MIT license
 * jQuery is not required to use Masonry. But if you do enjoy jQuery, Masonry works with it as a jQuery plugin.
 
-BlueImp Bootstrap Image Gallery
+getID3
+------
+getID3 is a PHP script that extracts useful information from MP3s & other multimedia file formats.
+EXIF/IPTC/XMP metadata is extracted from the medium
+* Version v1.10.x beta
+* http://www.getid3.org / https://github.com/JamesHeinrich/getID3
+* GPLv3 / LGPLv3
+
+Blueimp Bootstrap Image Gallery
 -------------------------------
 Used in the frontend for media image display
 * Version 3.1.0
@@ -49,3 +65,9 @@ Used in the frontend for media image display
 * Bootstrap 3 and jQuery based
 * Alternative: blueimp non-bootstrap gallery
 
+Blueimp Javascript libraries
+----------------------------
+Used in the jQuery-File-Upload frontend display. All MIT licensed
+* JS templating engine: https://github.com/blueimp/JavaScript-Templates
+* JS preview and resizing images: https://github.com/blueimp/JavaScript-Load-Image
+* JS image resizing: https://github.com/blueimp/JavaScript-Canvas-to-Blob

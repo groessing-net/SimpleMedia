@@ -18,8 +18,6 @@ class SimpleMedia_Util_Image extends SimpleMedia_Util_Base_Image
 {
     // feel free to add your own convenience methods here
 
-    // PHP lib for jpeg data information http://ozhiker.com/electronics/pjmt/
-
 	// IPTC constants, see IPTC standards
     // http://www.iptc.org/std/photometadata/documentation/IPTC-CS5-FileInfo-UserGuide_6.pdf
     // http://www.iptc.org/std/IIM/4.1/specification/IIMV4.1.pdf
@@ -80,11 +78,13 @@ class SimpleMedia_Util_Image extends SimpleMedia_Util_Base_Image
 
     // Integrate IPTC and EXIF methods here. See iptc.php
 	// EXIF tags: http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/EXIF.html
+    // PHP lib for jpeg data information http://ozhiker.com/electronics/pjmt/
     // http://ozhiker.com/electronics/pjmt/jpeg_info/standards.html
     // http://www.kodak.com/global/plugins/acrobat/en/service/digCam/exifStandard2.pdf
+	// http://www.exiv2.org/metadata.html
 
     // All Exif Tags:
-    //http://www.awaresystems.be/imaging/tiff/tifftags.html
+    // http://www.awaresystems.be/imaging/tiff/tifftags.html
 
     // Add watermarking of images here. Override getPreset possibly.
     // function watermark...

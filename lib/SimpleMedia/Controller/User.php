@@ -300,19 +300,16 @@ class SimpleMedia_Controller_User extends SimpleMedia_Controller_Base_User
         return $viewHelper->processTemplate($this->view, 'user', $objectType, 'display', array(), $templateFile);
     }
 
-    /**
-     * This method provides the ability to upload several media at once in an
-	 * existing collection or a new one.
-     * NEW method, not existing in the base class UPDATE
-     *
-     * @param string  $ot           Treated object type.
-     * @param string  $tpl          Name of alternative template (for alternative display options, feeds and xml output)
-     * @param boolean $raw          Optional way to display a template instead of fetching it (needed for standalone output)
+	/**
+     * This is a custom method. Documentation for this will be improved in later versions.
+     * Upload multiple media in one go from the frontend. Load the template and assign 
+	 * template vaiables
+     * OVERRIDE: NOTHING YET
      *
      * @return mixed Output.
      */
-	public function multiUpload2()
-	{
+    public function multiUpload()
+    {
         $controllerHelper = new SimpleMedia_Util_Controller($this->serviceManager);
         
         // parameter specifying which type of objects we are treating
@@ -321,114 +318,137 @@ class SimpleMedia_Controller_User extends SimpleMedia_Controller_Base_User
         if (!in_array($objectType, $controllerHelper->getObjectTypes('controllerAction', $utilArgs))) {
             $objectType = $controllerHelper->getDefaultObjectType('controllerAction', $utilArgs);
         }
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', ACCESS_ADD), LogUtil::getErrorMsgPermission());
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', ACCESS_OVERVIEW), LogUtil::getErrorMsgPermission());
+        /** TODO: custom logic */
+		
+		// Add template variables like the collection to store the media in
+		// default collection, but this sould also be callable from a collection as action, 
+		// so getting the collection as parameter 
+		
+
+		// Requested collection for store or choose from list with defaultCollection as default
+        $selectedCollection = $this->request->query->filter('collection', ModUtil::getVar('SimpleMedia', 'defaultCollection', 1), FILTER_SANITIZE_STRING);
+
+		// Obtain the list of available collection for storing the media
+		$allCollections = ModUtil::apiFunc('SimpleMedia', 'selection', 'getEntities', array('ot' => 'collection', 'orderBy' => 'lvl', 'useJoins' => false, 'slimMode' => false));
+		$collectionItems = array();
+		foreach ($allCollections as $collection) {
+			// prefix the title with level
+			$prefix = '';
+			for ($i=0; $i<$collection['lvl']; $i++) {
+				$prefix .= '--';
+			}
+			$prefix .= ' ';
+			$collectionItems[] = array(
+				'value' => $collection['id'],
+				'text' => $prefix . $collection['title']
+			);
+		}
+		$this->view->assign('collectionItems', $collectionItems);
+		$this->view->assign('selectedCollection', $selectedCollection);
+
+		// parameter for categories to store for the uploaded media
+        // $category = $this->request->query->filter('category', '', FILTER_SANITIZE_STRING);
         
-        // create new Form reference
-        $view = FormUtil::newForm($this->name, $this);
-        
-        // build form handler class name
-        $handlerClass = $this->name . '_Form_Handler_Admin_' . ucfirst($objectType) . '_MultiUpload';
-        
-        // determine the output template
-        $template = 'user/' . $objectType . '/multiUpload.tpl';
-        
-        // execute form using supplied template and page event handler
-        return $view->execute($template, new $handlerClass());
+        // return template
+        return $this->view->fetch('user/multiUpload.tpl');
+    }
 
+	/**
+     * This is a custom method. Documentation for this will be improved in later versions.
+     * Store the chosen media from the multiUpload template.
+     * NEW method
+     *
+     * @return mixed Output.
+     */
+    public function multiUploadSave()
+    {
+		// check form csrf token
+		//if (!SecurityUtil::validateCsrfToken($this->request->request->filter('csrftoken', '', FILTER_SANITIZE_STRING), $this->serviceManager)) {
+		//	return LogUtil::registerAuthidError();
+		//}
+		// check permission to be sure
+        //$this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':Medium:', '::', ACCESS_ADD), LogUtil::getErrorMsgPermission());
+		
+		// get the formdata
+        $upload = $this->request->files->get('files', array());
+        $titles = $this->request->request->get('title', array());
+        $descriptions = $this->request->request->get('description', array());
+        //$upload = isset($_FILES['files']) ? $_FILES['files'] : null;
+		
+        $this->throwNotFoundUnless($upload != null, $this->__('No "files" file parameter found.'));
+        // If it's not an array, passed value isn't correct
+        $this->throwNotFoundUnless(is_array($upload['tmp_name']), $this->__('Parameter value isn\'t an array'));
 
+		// submitted collection to store media
+        $collection = $this->request->request->filter('collection', ModUtil::getVar('SimpleMedia', 'defaultCollection', 1), FILTER_SANITIZE_STRING);
+		
+        // For each file, handle it
+        $files = array();
+        foreach ($upload['tmp_name'] as $index => $value) {
+            $file['files'] = array(
+                'tmp_name' => $upload['tmp_name'][$index],
+                'name' => $upload['name'][$index],
+                'size' => $upload['size'][$index],
+                'type' => $upload['type'][$index],
+                'error' => $upload['error'][$index],
+                'index' => $index
+            );
 
+            if ($file['files']['error'] != UPLOAD_ERR_OK) {
+                switch ((int) $file['files']['error']) {
+                    case UPLOAD_ERR_INI_SIZE:
+                        throw new UploadException("File size exceed 'upload_max_filesize' ini parameter");
+                    case UPLOAD_ERR_FORM_SIZE:
+                        throw new UploadException("File size exceed 'MAX_FILE_SIZE' form parameter");
+                    case UPLOAD_ERR_CANT_WRITE:
+                        throw new UploadException("Can write file");
+                    case UPLOAD_ERR_FORM_SIZE:
+                        throw new UploadException(sprintf("Unknown error (%d)", $file['files']['error']));
+                }
+            } else {
+                // First create medium
+				//$entityClass = $this->name . '_Entity_Medium';
+                $entityClass = 'SimpleMedia_Entity_Medium';
+                $medium = new $entityClass();
 
+                $medium->setTitle($titles[$index]);
+                $medium->setDescription($descriptions[$index]);
+				
+				$collectionEntity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', array('ot' => 'collection', 'id' => $collection));
+				$medium->setCollection($collectionEntity);
+				
+                // Perform the actual file upload and initialise the upload handler
+                //$uploadManager = new SimpleMedia_UploadHandler();
+                // do the actual upload (includes validation, physical file processing and reading meta data)
+                //$uploadResult = $uploadManager->performFileUpload('medium', $file, 'files');
+				// assign the upload file name
+                // $formData[$uploadField] = $uploadResult['fileName'];
+                // assign the meta data
+                // $formData[$uploadField . 'Meta'] = $uploadResult['metaData'];
 
+				// Integrate handleCommand, fetchInputData, handleUploads of SimpleMedia_Form_Handler_User_Base_Edit
+				
+				$controllerHelper = new SimpleMedia_Util_Controller($this->serviceManager);
+				$basePath = $controllerHelper->getFileBaseFolder('medium', 'files');
+				move_uploaded_file($file['files']['tmp_name'], $basePath . $titles[$index]. '_' . $descriptions[$index] . '.jpg');
+				
+				$medium->setTheFile($basePath . $titles[$index]. '_' . $descriptions[$index] . '.jpg');
+				$medium->setTheFileMeta(array());
 
-		$controllerHelper = new SimpleMedia_Util_Controller($this->serviceManager);
+				$medium->setWorkflowState('approved');
 
-        // parameter specifying which type of objects we are treating
-        $objectType = $this->request->query->filter('ot', 'medium', FILTER_SANITIZE_STRING);
-        $utilArgs = array('controller' => 'user', 'action' => 'multiUpload');
-        if (!in_array($objectType, $controllerHelper->getObjectTypes('controllerAction', $utilArgs))) {
-            $objectType = $controllerHelper->getDefaultObjectType('controllerAction', $utilArgs);
-        }
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', ACCESS_ADD), LogUtil::getErrorMsgPermission());
-        $entityClass = $this->name . '_Entity_' . ucwords($objectType);
-        $repository = $this->entityManager->getRepository($entityClass);
-        $repository->setControllerArguments(array());
+				$entityManager = $this->serviceManager->getService('doctrine.entitymanager');
+				$entityManager->persist($medium);
+				$entityManager->flush();
 
-        $idFields = ModUtil::apiFunc($this->name, 'selection', 'getIdFields', array('ot' => $objectType));
-
-        // retrieve identifier of the object we wish to view
-        $idValues = $controllerHelper->retrieveIdentifier($this->request, array(), $objectType, $idFields);
-        $hasIdentifier = $controllerHelper->isValidIdentifier($idValues);
-
-        // check for unique permalinks (without id)
-        $hasSlug = false;
-        $slug = '';
-        if ($hasIdentifier === false) {
-            $entityClass = $this->name . '_Entity_' . ucwords($objectType);
-            $meta = $this->entityManager->getClassMetadata($entityClass);
-            $hasSlug = $meta->hasField('slug') && $meta->isUniqueField('slug');
-            if ($hasSlug) {
-                $slug = $this->request->query->filter('slug', '', FILTER_SANITIZE_STRING);
-                $hasSlug = (!empty($slug));
+				// assign the upload file name
+                // $formData[$uploadField] = $uploadResult['fileName'];
+                // assign the meta data
+                // $formData[$uploadField . 'Meta'] = $uploadResult['metaData'];
             }
         }
-        $hasIdentifier |= $hasSlug;
-        $this->throwNotFoundUnless($hasIdentifier, $this->__('Error! Invalid identifier received.'));
 
-        $entity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', array('ot' => $objectType, 'id' => $idValues, 'slug' => $slug));
-        $this->throwNotFoundUnless($entity != null, $this->__('No such item.'));
-        unset($idValues);
-
-        $entity->initWorkflow();
-
-        // build ModUrl instance for display hooks; also create identifier for permission check
-        $currentUrlArgs = array('ot' => $objectType);
-        $instanceId = '';
-        foreach ($idFields as $idField) {
-            $currentUrlArgs[$idField] = $entity[$idField];
-            if (!empty($instanceId)) {
-                $instanceId .= '_';
-            }
-            $instanceId .= $entity[$idField];
-        }
-        $currentUrlArgs['id'] = $instanceId;
-        if (isset($entity['slug'])) {
-            $currentUrlArgs['slug'] = $entity['slug'];
-        }
-        $currentUrlObject = new Zikula_ModUrl($this->name, 'user', 'display', ZLanguage::getLanguageCode(), $currentUrlArgs);
-
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', $instanceId . '::', ACCESS_READ), LogUtil::getErrorMsgPermission());
-
-        $viewHelper = new SimpleMedia_Util_View($this->serviceManager);
-        $templateFile = $viewHelper->getViewTemplate($this->view, 'user', $objectType, 'display', array());
-
-        // set cache id
-        $component = $this->name . ':' . ucwords($objectType) . ':';
-        $instance = $instanceId . '::';
-        $accessLevel = ACCESS_READ;
-        if (SecurityUtil::checkPermission($component, $instance, ACCESS_COMMENT)) {
-            $accessLevel = ACCESS_COMMENT;
-        }
-        if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
-            $accessLevel = ACCESS_EDIT;
-        }
-        $this->view->setCacheId($objectType . '|' . $instanceId . '|a' . $accessLevel);
-
-        // ADDED Increase the viewscount of the displayed entity if configured and not being the creator
-        if ((($objectType == 'medium' && $this->getVar('countMediumViews', true)) || ($objectType == 'collection' && $this->getVar('countCollectionViews', true))) && ($entity->getCreatedUserId() != UserUtil::getVar('uid') || UserUtil::isLoggedIn() == false)) {
-            $entity->setViewsCount($entity->getViewsCount() + 1);
-            // Doctrine flushing needed here
-            $entityManager = ServiceUtil::getService('doctrine.entitymanager');
-            $entityManager->persist($entity);
-            $entityManager->flush();
-        }
-
-        // assign output data to view object.
-        $this->view->assign($objectType, $entity)
-            ->assign('currentUrlObject', $currentUrlObject)
-            ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
-
-        // fetch and return the appropriate template
-        return $viewHelper->processTemplate($this->view, 'user', $objectType, 'display', array(), $templateFile);
- 	}
-	
+        return $files;
+    }
 }

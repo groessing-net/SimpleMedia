@@ -22,7 +22,7 @@ class SimpleMedia_Api_User extends SimpleMedia_Api_Base_User
      * Returns available user panel links.
 	 * OVERRIDE:
      * CHECK
-	 * - first collection then media
+	 * - removed direct media viewing, always via collections
 	 * - Removed tree from the collection template, since that is not usefull in the frontend.
      *
      * @return array Array of user links.
@@ -48,16 +48,20 @@ class SimpleMedia_Api_User extends SimpleMedia_Api_Base_User
                              'text' => $this->__('Collections'),
                              'title' => $this->__('Collection list'));
         }
+        /*
         if (in_array('medium', $allowedObjectTypes)
             && SecurityUtil::checkPermission($this->name . ':Medium:', '::', ACCESS_READ)) {
             $links[] = array('url' => ModUtil::url($this->name, 'user', 'view', array('ot' => 'medium')),
                              'text' => $this->__('Media'),
                              'title' => $this->__('Medium list'));
         }
-
-        $links[] = array('url' => ModUtil::url($this->name, 'user', 'multiUpload'),
-            'text' => $this->__('MultiUpload'),
-            'title' => $this->__('Upload several Media at once'));
+        */
+        if (in_array('medium', $allowedObjectTypes)
+            && SecurityUtil::checkPermission($this->name . ':Medium:', '::', ACCESS_ADD)) {
+            $links[] = array('url' => ModUtil::url($this->name, 'user', 'multiUpload'),
+                'text' => $this->__('MultiUpload'),
+                'title' => $this->__('Upload several Media at once'));
+        }
 
         return $links;
     }
