@@ -4,7 +4,7 @@
     {gt text='Collection' assign='templateTitle'}
     {assign var='templateTitle' value=$collection->getTitleFromDisplayPattern()|default:$templateTitle}
     {pagesetvar name='title' value=$templateTitle|@html_entity_decode}
-    <h2>{$templateTitle|notifyfilters:'simplemedia.filter_hooks.collections.filter'}{icon id='itemActionsTrigger' type='options' size='extrasmall' __alt='Actions' class='z-pointer z-hide'}</h2>
+    <h2>{$templateTitle|notifyfilters:'simplemedia.filter_hooks.collections.filter'} {icon id='itemActionsTrigger' type='options' size='extrasmall' __alt='Actions' class='z-pointer z-hide'}</h2>
 
     {* show parent collections in a breadcrumb view, only for non-root collections *}
     {* TODO check this functionlaity *}
