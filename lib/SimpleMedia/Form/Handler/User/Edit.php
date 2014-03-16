@@ -18,4 +18,120 @@
 class SimpleMedia_Form_Handler_User_Edit extends SimpleMedia_Form_Handler_User_Base_Edit
 {
     // feel free to extend the base handler class here
+
+    /**
+     * Command event handler.
+     * OVERRIDE: added previewImage assigning for Collections from Media
+     *
+     * This event handler is called when a command is issued by the user. Commands are typically something
+     * that originates from a {@link Zikula_Form_Plugin_Button} plugin. The passed args contains different properties
+     * depending on the command source, but you should at least find a <var>$args['commandName']</var>
+     * value indicating the name of the command. The command name is normally specified by the plugin
+     * that initiated the command.
+     *
+     * @param Zikula_Form_View $view The form view instance.
+     * @param array            $args Additional arguments.
+     *
+     * @see Zikula_Form_Plugin_Button
+     * @see Zikula_Form_Plugin_ImageButton
+     *
+     * @return mixed Redirect or false on errors.
+     */
+    public function handleCommand(Zikula_Form_View $view, &$args)
+    {
+        $action = $args['commandName'];
+        $isRegularAction = !in_array($action, array('delete', 'cancel'));
+
+        if ($isRegularAction) {
+            // do forms validation including checking all validators on the page to validate their input
+            if (!$this->view->isValid()) {
+                return false;
+            }
+        }
+
+        if ($action != 'cancel') {
+            $otherFormData = $this->fetchInputData($view, $args);
+            if ($otherFormData === false) {
+                return false;
+            }
+        }
+
+        // get treated entity reference from persisted member var
+        $entity = $this->entityRef;
+
+        $hookAreaPrefix = $entity->getHookAreaPrefix();
+        if ($action != 'cancel') {
+            $hookType = $action == 'delete' ? 'validate_delete' : 'validate_edit';
+
+            // Let any hooks perform additional validation actions
+            $hook = new Zikula_ValidationHook($hookAreaPrefix . '.' . $hookType, new Zikula_Hook_ValidationProviders());
+            $validators = $this->notifyHooks($hook)->getValidators();
+            if ($validators->hasErrors()) {
+                return false;
+            }
+        }
+
+        if ($action != 'cancel') {
+            $success = $this->applyAction($args);
+            if (!$success) {
+                // the workflow operation failed
+                return false;
+            }
+
+            // Let any hooks know that we have created, updated or deleted an item
+            $hookType = $action == 'delete' ? 'process_delete' : 'process_edit';
+            $url = null;
+            if ($action != 'delete') {
+                $urlArgs = array('ot' => $this->objectType);
+                $urlArgs = $this->addIdentifiersToUrlArgs($urlArgs);
+                if (isset($this->entityRef['slug'])) {
+                    $urlArgs['slug'] = $this->entityRef['slug'];
+                }
+                $url = new Zikula_ModUrl($this->name, 'user', 'display', ZLanguage::getLanguageCode(), $urlArgs);
+            }
+            $hook = new Zikula_ProcessHook($hookAreaPrefix . '.' . $hookType, $this->createCompositeIdentifier(), $url);
+            $this->notifyHooks($hook);
+
+            // check and update previewimages if needed
+            $this->updatePreviewImage();
+
+            // An item was created, updated or deleted, so we clear all cached pages for this item.
+            $cacheArgs = array('ot' => $this->objectType, 'item' => $entity);
+            ModUtil::apiFunc($this->name, 'cache', 'clearItemCache', $cacheArgs);
+
+            // clear view cache to reflect our changes
+            $this->view->clear_cache();
+        }
+
+        if ($this->hasPageLockSupport === true && $this->mode == 'edit' && ModUtil::available('PageLock')) {
+            ModUtil::apiFunc('PageLock', 'user', 'releaseLock',
+                array('lockName' => $this->name . $this->objectTypeCapital . $this->createCompositeIdentifier()));
+        }
+
+        return $this->view->redirect($this->getRedirectUrl($args));
+    }
+
+    /*
+     * Small function to update the preview of the collections when a new image is uploaded.
+     * Do not update if a previewImage is already set
+     */
+    protected function updatePreviewImage() {
+        // Set the previewImage if a Medium is being created
+        if ($this->objectType == 'medium') {
+            // assign previewImage in collection if not assigned yet
+            if (isset($this->entityRef['collection']) && $this->entityRef['collection']->getPreviewImage() <= 0) {
+                if (isset($this->entityRef['theFileMeta']['isImage']) && $this->entityRef['theFileMeta']['isImage']) {
+                    // if medium is an image then assign the id
+                    $this->entityRef['collection']->setPreviewImage($this->entityRef['id']);
+                    // flush the update to the DB
+                    $this->entityManager->flush();
+                } elseif ($this->entityRef['previewImage'] > 0) {
+                    // if the medium is not an image, but has a previewImage then assign that one.
+                    $this->entityRef['collection']->setPreviewImage($this->entityRef['previewImage']);
+                    // flush the update to the DB
+                    $this->entityManager->flush();
+                }
+            }
+        }
+    }
 }
