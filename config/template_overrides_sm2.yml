@@ -16,6 +16,8 @@ modules/SimpleMedia/templates/user/include_metadata_display.tpl: /config/templat
 modules/SimpleMedia/templates/user/multiUpload.tpl: config/templates/SimpleMedia/user/multiUpload.tpl
 
 modules/SimpleMedia/templates/user/collection/view.tpl: config/templates/SimpleMedia/user/collection/view.tpl
+modules/SimpleMedia/templates/user/collection/edit.tpl: config/templates/SimpleMedia/user/collection/edit.tpl
 modules/SimpleMedia/templates/user/collection/display.tpl: config/templates/SimpleMedia/user/collection/display.tpl
 modules/SimpleMedia/templates/user/collection/view_items.tpl: config/templates/SimpleMedia/user/collection/view_items.tpl
 modules/SimpleMedia/templates/user/medium/include_displayItemListMany.tpl: /config/templates/SimpleMedia/user/medium/include_displayItemListMany.tpl
+modules/SimpleMedia/templates/user/medium/display.tpl: /config/templates/SimpleMedia/user/medium/display.tpl

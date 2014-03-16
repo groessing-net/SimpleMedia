@@ -75,14 +75,15 @@
             </a>
             {* &nbsp;<img src="images/icons/extrasmall/info.png" width=16 height=16 id='simplemedia-medium-metaimg-{$collection.id}' /> *}
         </div>
-        {if !empty($downloadLink)}
-            <div class="simplemedia-medium-download">
+        <div class="simplemedia-medium-download">
+            {if !empty($downloadLink)}
                 <a href="{$medium.theFileFullPathURL}" title="{$medium->getTitleFromDisplayPattern()|replace:"\"":""}"{if $medium.theFileMeta.isImage} rel="imageviewer[media]"{/if}>
                     {$downloadLink}
                 </a>
-            </div>
-        {else}
-        {/if}
+            {else}
+                &nbsp;
+            {/if}
+        </div>
     </div>
 {/foreach}
 </div> {* simplemedia-medium medium *}

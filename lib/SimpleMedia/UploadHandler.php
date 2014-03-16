@@ -109,8 +109,12 @@ class SimpleMedia_UploadHandler extends SimpleMedia_Base_UploadHandler
     }
     
     /**
-     * Read meta data from a certain file. 
-     * OVERRIDE adding exif/iptc vars
+     * Read meta data from a certain file.
+     * OVERRIDE 
+	 * - adding exif/iptc meta vars
+	 * - storing some exif parameters in the medium settings, like GPS coordinates, TBD
+	 * - store copyright in the MediumMetaData rights field, TBD
+	 * - ...
      *
      * @param string $fileName  Name of file to be processed.
      * @param string $filePath  Path to file to be processed.
@@ -119,13 +123,19 @@ class SimpleMedia_UploadHandler extends SimpleMedia_Base_UploadHandler
      */
     public function readMetaDataForFile($fileName, $filePath)
     {
-        // call parent class
-        $meta = parent::readMetaDataForFile($fileName, $filePath);
-
-        // Meta information filled in base class
-        // extension, size, isImage, width, height, format
-
-        // isImage is already in parent
+        $meta = array();
+        if (empty($fileName)) {
+            return $meta;
+        }
+    
+		// extract file information 
+        $extensionarr = explode('.', $fileName);
+        $meta = array();
+        $meta['extension'] = strtolower($extensionarr[count($extensionarr) - 1]);
+        $meta['size'] = filesize($filePath);
+		
+		// check for extensions and store media type
+        $meta['isImage'] = (in_array($meta['extension'], $this->imageFileTypes) ? true : false);
         $meta['isAudio'] = (in_array($meta['extension'], $this->audioFileTypes) ? true : false);
         $meta['isVideo'] = (in_array($meta['extension'], $this->videoFileTypes) ? true : false);
         $meta['isEbook'] = (in_array($meta['extension'], $this->ebookFileTypes) ? true : false);
@@ -134,109 +144,122 @@ class SimpleMedia_UploadHandler extends SimpleMedia_Base_UploadHandler
         $meta['isDoc'] = (in_array($meta['extension'], $this->documentFileTypes) ? true : false);
         // Add extra identification for pdf files, they are doc as well as pdf.
         $meta['isPdf'] = ($meta['extension'] == 'pdf') ? true : false;
-
-        // Add EXIF/IPTC information extraction here.
-
-        // exif_imagetype
-        /*
-        1	IMAGETYPE_GIF
-        2	IMAGETYPE_JPEG
-        3	IMAGETYPE_PNG
-        4	IMAGETYPE_SWF
-        5	IMAGETYPE_PSD
-        6	IMAGETYPE_BMP
-        7	IMAGETYPE_TIFF_II (intel byte order)
-        8	IMAGETYPE_TIFF_MM (motorola byte order)
-        9	IMAGETYPE_JPC
-        10	IMAGETYPE_JP2
-        11	IMAGETYPE_JPX
-        12	IMAGETYPE_JB2
-        13	IMAGETYPE_SWC
-        14	IMAGETYPE_IFF
-        15	IMAGETYPE_WBMP
-        16	IMAGETYPE_XBM
-        17	IMAGETYPE_ICO
-        */
-
-        if (!function_exists('exif_read_data') || !function_exists('exif_imagetype')) {
-            // do something
+    
+		// proceed only with extra meta extraction if the file is an image
+        if (!$meta['isImage']) {
+            return $meta;
+        }
+    
+		// extract imageSize and imageInfo
+        $imageSize = getimagesize($filePath, $imageInfo);
+        if (!is_array($imageSize)) {
+            return $meta;
+        }
+    
+		// extract image dimensions 
+        $meta['width'] = $imageSize[0];
+        $meta['height'] = $imageSize[1];
+    
+		// image format
+        if ($meta['height'] < $meta['width']) {
+            $meta['format'] = 'landscape';
+        } elseif ($meta['height'] > $meta['width']) {
+            $meta['format'] = 'portrait';
+        } else {
+            $meta['format'] = 'square';
         }
 
-        // extract imagetype
-        $meta['imagetype'] = exif_imagetype($filePath);
-        // extract mimetype
-        $meta['mimetype'] = image_type_to_mime_type ($meta['imagetype']);
+        // Extract EXIF/IPTC information only if PHP supports exif functions
+        if (!function_exists('exif_read_data') || !function_exists('exif_imagetype')) {
+			LogUtil::registerStatus('No EXIF/IPTC extraction done on the uploaded image, since PHP exif functions are not available');
+            return $meta;
+        }
 
-        // echo $imagetype . "\n<br>";
+        // extract imagetype and mimetype
+        $meta['imagetype'] = exif_imagetype($filePath);
+        $meta['mimetype'] = image_type_to_mime_type($meta['imagetype']);
+
+		$meta['exif'] = array();
+		$meta['iptc'] = array();
+
         if ($meta['imagetype'] == SimpleMedia_Util_Image::IMAGETYPE_JPEG ||
             $meta['imagetype'] == SimpleMedia_Util_Image::IMAGETYPE_TIFF_II ||
             $meta['imagetype'] == SimpleMedia_Util_Image::IMAGETYPE_TIFF_MM) {
 
-            // Read EXIF data in array form, no minimum sections in exif required
-            $exifdata = exif_read_data($filePath, 0, true);
-            $meta['exif'] = array();
-            if ($exifdata) {
-                foreach ($exifdata as $key => $section) {
+            // Read EXIF data in array form with no minimum sections in exif required
+            $meta['exif'] = exif_read_data($filePath, 0, true);
+            if ($meta['exif']) {
+                foreach ($meta['exif'] as $key => $section) {
                     foreach ($section as $name => $val) {
-                        echo "$key.$name: $val\n<br>";
+                        // echo "$key.$name: $val\n<br>";
+						// Store differently ?
                     }
                 }
             }
 
             // read IPTC data
-            $size = getimagesize($filePath, $info);
-            if (is_array($info)) {
-                $iptc = iptcparse($info["APP13"]);
-                foreach (array_keys($iptc) as $s) {
+            if (isset($imageInfo) && is_array($imageInfo)) {
+                $meta['iptc'] = iptcparse($imageInfo["APP13"]);
+                foreach (array_keys($meta['iptc']) as $s) {
                     $c = count ($iptc[$s]);
-                    for ($i=0; $i <$c; $i++) {
-                        echo $s.' = '.$iptc[$s][$i].'<br>';
+                    for ($i=0; $i<$c; $i++) {
+                        //echo $s.' = '.$iptc[$s][$i].'<br>';
+						// Store in other form ?
                     }
                 }
             }
-
         }
-        */
+	
+/*
+http://stackoverflow.com/questions/1578169/how-can-i-read-xmp-data-from-a-jpg-with-php
+<?php
 
-        /*
-                $meta = array();
-                if (empty($fileName)) {
-                    return $meta;
-                }
+function getXmpData($filename, $chunkSize)
+{
+    if (!is_int($chunkSize)) {
+        throw new RuntimeException('Expected integer value for argument #2 (chunkSize)');
+    }
 
-                $extensionarr = explode('.', $fileName);
-                $meta = array();
-                $meta['extension'] = strtolower($extensionarr[count($extensionarr) - 1]);
-                $meta['size'] = filesize($filePath);
-                $meta['isImage'] = (in_array($meta['extension'], $this->imageFileTypes) ? true : false);
+    if ($chunkSize < 12) {
+        throw new RuntimeException('Chunk size cannot be less than 12 argument #2 (chunkSize)');
+    }
 
-                if (!$meta['isImage']) {
-                    return $meta;
-                }
+    if (($file_pointer = fopen($filename, 'r')) === FALSE) {
+        throw new RuntimeException('Could not open file for reading');
+    }
 
-                if ($meta['extension'] == 'swf') {
-                    $meta['isImage'] = false;
-                }
+    $startTag = '<x:xmpmeta';
+    $endTag = '</x:xmpmeta>';
+    $buffer = NULL;
+    $hasXmp = FALSE;
 
-                $imgInfo = getimagesize($filePath);
-                if (!is_array($imgInfo)) {
-                    return $meta;
-                }
+    while (($chunk = fread($file_pointer, $chunkSize)) !== FALSE) {
 
-                $meta['width'] = $imgInfo[0];
-                $meta['height'] = $imgInfo[1];
+        if ($chunk === "") {
+            break;
+        }
 
-                if ($imgInfo[1] < $imgInfo[0]) {
-                    $meta['format'] = 'landscape';
-                } elseif ($imgInfo[1] > $imgInfo[0]) {
-                    $meta['format'] = 'portrait';
-                } else {
-                    $meta['format'] = 'square';
-                }
+        $buffer .= $chunk;
+        $startPosition = strpos($buffer, $startTag);
+        $endPosition = strpos($buffer, $endTag);
 
-                return $meta;
-        */
+        if ($startPosition !== FALSE && $endPosition !== FALSE) {
+            $buffer = substr($buffer, $startPosition, $endPosition - $startPosition + 12);
+            $hasXmp = TRUE;
+            break;
+        } elseif ($startPosition !== FALSE) {
+            $buffer = substr($buffer, $startPosition);
+            $hasXmp = TRUE;
+        } elseif (strlen($buffer) > (strlen($startTag) * 2)) {
+            $buffer = substr($buffer, strlen($startTag));
+        }
+    }
 
+    fclose($file_pointer);
+    return ($hasXmp) ? $buffer : NULL;
+}
+*/	
+	
         return $meta;
-    }    
+    }
 }

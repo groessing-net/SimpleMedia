@@ -14,7 +14,7 @@
 
     <p>
     {checkpermissionblock component='SimpleMedia:Collection:' instance='::' level='ACCESS_EDIT'}
-        {gt text='Add root node' assign='addRootTitle'}
+        {gt text='Add root collection' assign='addRootTitle'}
         <a id="treeAddRoot" href="javascript:void(0)" title="{$addRootTitle}" class="z-icon-es-add z-hide">{$addRootTitle}</a>
 
         <script type="text/javascript">
