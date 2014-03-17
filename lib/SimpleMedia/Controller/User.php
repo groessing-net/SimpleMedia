@@ -324,10 +324,9 @@ class SimpleMedia_Controller_User extends SimpleMedia_Controller_Base_User
 		// Add template variables like the collection to store the media in
 		// default collection, but this sould also be callable from a collection as action, 
 		// so getting the collection as parameter 
-		
 
 		// Requested collection for store or choose from list with defaultCollection as default
-        $selectedCollection = $this->request->query->filter('collection', ModUtil::getVar('SimpleMedia', 'defaultCollection', 1), FILTER_SANITIZE_STRING);
+        $selectedCollection = (int)$this->request->query->filter('collection', ModUtil::getVar('SimpleMedia', 'defaultCollection', 1), FILTER_SANITIZE_NUMBER_INT);
 
 		// Obtain the list of available collection for storing the media
 		$allCollections = ModUtil::apiFunc('SimpleMedia', 'selection', 'getEntities', array('ot' => 'collection', 'orderBy' => 'lvl', 'useJoins' => false, 'slimMode' => false));
@@ -457,4 +456,101 @@ class SimpleMedia_Controller_User extends SimpleMedia_Controller_Base_User
 
         return $files;
     }
+	
+	/**
+     * This is a custom method.
+     * Add a new collection directly from the frontend. Methods from Ajax.php
+     *
+     * @return mixed Output.
+     */
+	public function addCollection() 
+	{
+        $controllerHelper = new SimpleMedia_Util_Controller($this->serviceManager);
+        
+        // parameter specifying which type of objects we are treating
+        $objectType = $this->request->query->filter('ot', 'collection', FILTER_SANITIZE_STRING);
+        $utilArgs = array('controller' => 'user', 'action' => 'add');
+        if (!in_array($objectType, $controllerHelper->getObjectTypes('controllerAction', $utilArgs))) {
+            $objectType = $controllerHelper->getDefaultObjectType('controllerAction', $utilArgs);
+        }
+		// check for parentId, which means that a child collection is added
+		$parentId = (int) $this->request->query->filter('pid', 0, FILTER_SANITIZE_NUMBER_INT);
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', ACCESS_ADD), LogUtil::getErrorMsgPermission());
+
+		$addChild = ($parentId > 0);
+		$addRoot = ($parentId == 0);
+		
+		$entityClass = 'SimpleMedia_Entity_' . ucfirst($objectType);
+		$repository = $this->entityManager->getRepository($entityClass);
+	
+		$titleFieldName = $descriptionFieldName = '';
+		
+		switch ($objectType) {
+			case 'collection':
+					$titleFieldName = 'title';
+					$descriptionFieldName = 'description';
+					break;
+		}
+		
+		if ($addRoot) {
+			// Root collection being added
+			$entity = new $entityClass();
+			$entityData = array();
+			if (!empty($titleFieldName)) {
+				$entityData[$titleFieldName] = $this->__('New root node');
+			}
+			if (!empty($descriptionFieldName)) {
+				$entityData[$descriptionFieldName] = $this->__('This is a new root node');
+			}
+			$entity->merge($entityData);
+		
+			// save new object to set the root id
+			$action = 'submit';
+			try {
+				// execute the workflow action
+				$workflowHelper = new SimpleMedia_Util_Workflow($this->serviceManager);
+				$success = $workflowHelper->executeAction($entity, $action);
+			} catch(\Exception $e) {
+				LogUtil::registerError($this->__f('Sorry, but an unknown error occured during the %s action. Please apply the changes again!', array($action)));
+			}
+            $this->entityManager->persist($entity);
+			$this->entityManager->flush();
+		} elseif ($addChild) {
+			// Child collection being added to parent
+			$childEntity = new $entityClass();
+			$entityData = array();
+			$entityData[$titleFieldName] = $this->__('New child node');
+			if (!empty($descriptionFieldName)) {
+				$entityData[$descriptionFieldName] = $this->__('This is a new child node');
+			}
+			$childEntity->merge($entityData);
+		
+			// save new object
+			$action = 'submit';
+			try {
+				// execute the workflow action
+				$workflowHelper = new SimpleMedia_Util_Workflow($this->serviceManager);
+				$success = $workflowHelper->executeAction($childEntity, $action);
+			} catch(\Exception $e) {
+				LogUtil::registerError($this->__f('Sorry, but an unknown error occured during the %s action. Please apply the changes again!', array($action)));
+			}
+		
+			//$childEntity->setParent($parentEntity);
+			$parentEntity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', array('ot' => $objectType, 'id' => $parentId, 'useJoins' => false));
+			if ($parentEntity == null) {
+				return new Zikula_Response_Ajax_NotFound($this->__('No such item.'));
+			}
+			$repository->persistAsLastChildOf($childEntity, $parentEntity);
+			$this->entityManager->flush();		
+		}
+		
+		if ($addChild) {
+			// redirect to parent of the new child collection
+			return $this->redirect(ModUtil::url($this->name, 'user', 'display', array('ot' => 'collection', 'id' => $parentId)));
+		} else {
+			// redirect to collection view
+			return $this->redirect(ModUtil::url($this->name, 'user', 'view', array('ot' => 'collection')));
+		}
+		
+	}
 }

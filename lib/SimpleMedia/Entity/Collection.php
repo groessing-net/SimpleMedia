@@ -176,6 +176,20 @@ class SimpleMedia_Entity_Collection extends SimpleMedia_Entity_Base_Collection
                     'linkTitle' => __('Multi Upload media to this colleciton', $dom),
                     'linkText' => __('MultiUpload media', $dom)
                 );
+                $urlArgs = array('ot' => 'collection',
+                    'pid' => $this->id,
+					'root' => 1);
+                if ($currentFunc == 'view') {
+                    $urlArgs['returnTo'] = 'userViewCollection';
+                } elseif ($currentFunc == 'display') {
+                    $urlArgs['returnTo'] = 'userDisplayCollection';
+                }
+                $this->_actions[] = array(
+                    'url' => array('type' => 'user', 'func' => 'addCollection', 'arguments' => $urlArgs),
+                    'icon' => 'add',
+                    'linkTitle' => __('Add child collection to this collection', $dom),
+                    'linkText' => __('Add child collection', $dom)
+                );
             }
             if ($currentFunc == 'display') {
                 $this->_actions[] = array(
