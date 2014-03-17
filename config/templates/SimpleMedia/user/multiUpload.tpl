@@ -53,7 +53,7 @@
 		<legend>{gt text='The collection for storing the media'}</legend>
 		<div class="z-formrow">
 			<label for='simplemedia-collection'>{gt text='Store media in collection'}</label>
-			<select id="simplemedia-collection" name="collection[]" class="z-form-dropdownlist">
+			<select id="simplemedia-collection" name="collection" class="z-form-dropdownlist">
 			<option value="-1">{gt text='Create new collection'}</option>
 			{foreach from=$collectionItems item='collection'}
 			<option value="{$collection.value}"{if $collection.value == $selectedCollection} selected="selected"{/if}>{$collection.text}</option>
