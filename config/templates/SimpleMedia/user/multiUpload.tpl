@@ -1,6 +1,6 @@
 {* purpose of this template: show output of multi upload action in user area *}
+{*-- Not using Prototype on this page --*}
 {* include file='user/header.tpl' *}
-{* purpose of this template: header for user area *}
 {* pageaddvar name='javascript' value='prototype'}
 {pageaddvar name='javascript' value='validation'}
 {pageaddvar name='javascript' value='zikula'}
@@ -17,22 +17,17 @@
 {/if}
 {insert name='getstatusmsg'}
 
-{*
-<!-- Force latest IE rendering engine or ChromeFrame if installed -->
-<!--[if IE]>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<![endif]-->
-*}
+{* Force latest IE rendering engine or ChromeFrame if installed *}
+{browserhack condition="if IE"}<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">{/browserhack}
 
 {pageaddvar name='stylesheet' value='modules/SimpleMedia/lib/vendor/bootstrap-3.1.1/css/bootstrap.min.css'}
 {pageaddvar name='stylesheet' value='modules/SimpleMedia/lib/vendor/jQuery-File-Upload-9.5.6/css/jquery.fileupload.css'}
 {pageaddvar name='stylesheet' value='modules/SimpleMedia/lib/vendor/jQuery-File-Upload-9.5.6/css/jquery.fileupload-ui.css'}
-<!-- CSS adjustments for browsers with JavaScript disabled -->
+{* CSS adjustments for browsers with JavaScript disabled *}
 {pageaddvarblock name='header'}
 <noscript><link rel="stylesheet" href="modules/SimpleMedia/lib/vendor/jQuery-File-Upload-9.5.6/css/jquery.fileupload-noscript.css"></noscript>
 <noscript><link rel="stylesheet" href="modules/SimpleMedia/lib/vendor/jQuery-File-Upload-9.5.6/css/jquery.fileupload-ui-noscript.css"></noscript>
 {/pageaddvarblock}
-
 {pageaddvar name='javascript' value='jQuery'}
 {pageaddvar name='javascript' value='jQuery-ui'}
 
@@ -40,8 +35,7 @@
     {gt text='MultiUpload of Media' assign='templateTitle'}
     {pagesetvar name='title' value=$templateTitle}
     <h2>{$templateTitle}</h2>
-
-    <p>{gt text='Explanation of how to upload, how it works'}</p>
+    <p>{gt text='Here you can upload several media at once.'}</p>
 
     <!-- The file upload form used as target for the file upload widget -->
     <form class="z-form z-linear" id="simplemedia-fileupload" action="{modurl modname='SimpleMedia' type='user' func='multiUploadSave'}" method="post" enctype="multipart/form-data">
@@ -50,9 +44,9 @@
         <noscript><input type="hidden" name="redirect" value="http://blueimp.github.io/jQuery-File-Upload/"></noscript>
 		
 		<fieldset>
-		<legend>{gt text='The collection for storing the media'}</legend>
+		<legend>{gt text='Collection'}</legend>
 		<div class="z-formrow">
-			<label for='simplemedia-collection'>{gt text='Store media in collection'}</label>
+			<label for='simplemedia-collection'>{gt text='Choose the collection to upload media to'}</label>
 			<select id="simplemedia-collection" name="collection" class="z-form-dropdownlist">
 			<option value="-1">{gt text='Create new collection'}</option>
 			{foreach from=$collectionItems item='collection'}
@@ -69,20 +63,27 @@
 				<label for="simplemedia_collection_description">{gt text='Description of the new collection for storing media'}:</label> 
 				<input id="simplemedia_collection_description" name="collectionDescription" value=''>
 			</div>
+			{*-- not implemented yet in handler
 			<div class="z-formrow">
 				<label for="simplemedia_collection_category">{gt text='Category of the new collection for storing media'}:</label> 
 				<input id="simplemedia_collection_category" name="collectionCategory" value=''>
 			</div>
+			*}
 		</div>
 		</fieldset>
 		<fieldset>
 		<legend>{gt text='Media to upload'}</legend>
+		<p><strong>{gt text='Allowed file extensions:'}</strong> <span id="theFileFileExtensions">{$modvars.SimpleMedia.allowedExtensions}</span><br />
+		<strong>{gt text='Allowed file size:'}</strong> {$modvars.SimpleMedia.maxUploadFileSize*1024|simplemediaGetFileSize:'':false:false}<br/>
+		Medium title will be based on the filename if the medium title field is left empty.</p>
+
+		{*-- not implemented yet in handler
 		<div class="z-formrow">
 			<label for="simplemedia_category">{gt text='Category to assign to media'}:</label>
 			<input id="simplemedia_category" name="category" value=''>
 		</div>
-		
-        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+		*}
+        <!-- The fileupload-buttonbar contains buttons to add files and start/cancel the upload -->
         <div class="z-buttonrow fileupload-buttonbar">
             <div class="col-lg-7">
                 <!-- The fileinput-button span is used to style the file input field as button -->
@@ -99,11 +100,13 @@
                     <i class="glyphicon glyphicon-ban-circle"></i>
                     <span>{gt text='Cancel upload'}</span>
                 </button>
-                {* <button type="button" class="btn btn-danger delete">
+                {*-- do not use the delete button
+				<button type="button" class="btn btn-danger delete">
                     <i class="glyphicon glyphicon-trash"></i>
                     <span>{gt text='Delete'}</span>
                 </button>
-                <input type="checkbox" class="toggle"> *}
+                <input type="checkbox" class="toggle"> 
+				*}
                 <!-- The global file processing state -->
                 <span class="fileupload-process"></span>
             </div>
