@@ -1,15 +1,14 @@
 TODO SimpleMedia2
-16 feb 2014
+18 mar 2014
 
 DONE - categories https://github.com/drummer3333/core/commit/e44b73ac39650e13ac2850d9022de904b5b5208c
 DONE - Implement preview image for collection as the first image uploaded
+ONGOING - multi upload via jQ multi upload handler.
+ONGOING - store copyright and exif/iptc in metadata (MediumMetaData or theFileMeta)
 - implement choosing preview image with a template plugin (dropdown list ? or use external find ?
-PARTLY - multi upload via jQ multi upload handler.
-- store copyright and exif/iptc in metadata.
 - update medium display with extra info
-PARTLY - implement metadata exif/iptc extract and store in attributes
-- slideshows in regular collection display, bleuimp ?
+- slideshows in regular collection display, bleuimp, see tickets 
 - Update contenttye with more options
-- scribite plugins update, tabs, direct upload, image thumbnail display
-- update attributes usage
-- Add create-root-node and delete admin-controller methods
+- scribite plugins update, tabs, direct multiupload, image thumbnail display
+- update attributes usage, add, delete inline
+DONE - Add create-root-node and delete admin-controller methods
