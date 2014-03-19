@@ -71,7 +71,7 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
         $this->setVar('maxUploadFileSize', 5000);
         $this->setVar('minWidthForUpload', 100);
         $this->setVar('defaultCollection', 1);
-        $this->setVar('mediaDir', 'media/thefile');
+        $this->setVar('mediaDir', 'media/files');
         $this->setVar('mediaThumbDir', 'tmb');
         $this->setVar('mediaThumbExt', '_tmb_');
         $this->setVar('countMediumViews', true);
