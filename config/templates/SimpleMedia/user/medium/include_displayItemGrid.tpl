@@ -12,7 +12,7 @@
         {assign var='previewImageUsed' value=false}
         {if $medium.theFileMeta.isImage}
             {*--- regular image ---*}
-            {thumb image=$medium.theFileFullPath module='SimpleMedia' objectid="medium-`$medium.id`" preset=$modvars.SimpleMedia.defaultImaginePreset assign="thumbnail"}
+            {thumb image=$medium.theFileFullPath module='SimpleMedia' objectid="medium-`$medium.id`" preset=$modvars.SimpleMedia.mediumImaginePreset assign="thumbnail"}
             {assign var="downloadLink" value=""}
         {else}
             {*--- use download link as standard action for non-images files ---*}
@@ -21,10 +21,10 @@
 				{*--- show the configure preview image for this non-image as thumbnail ---*}
                 {modapifunc modname='SimpleMedia' type='selection' func='getEntity' objectType='medium' id=$medium.previewImage assign='previewImageMedium'}
                 {if !empty($previewImageMedium) && $previewImageMedium.theFileMeta.isImage}
-                    {thumb image=$previewImageMedium.theFileFullPath width=$thumbWidth height=$thumbHeight assign="thumbnail"}
+					{thumb image=$previewImageMedium.theFileFullPath module='SimpleMedia' objectid="medium-`$previewImageMedium.id`" preset=$modvars.SimpleMedia.mediumImaginePreset assign="thumbnail"}
                     {assign var='previewImageUsed' value=true}
                 {else}
-                    {thumb image="modules/SimpleMedia/images/freefileicons/512px/`$medium.theFileMeta.extension`.png" module='SimpleMedia' objectid="medium-`$medium.id`" preset=$modvars.SimpleMedia.defaultImaginePreset assign="thumbnail"}
+                    {thumb image="modules/SimpleMedia/images/freefileicons/512px/`$medium.theFileMeta.extension`.png" module='SimpleMedia' preset=$modvars.SimpleMedia.mediumImaginePreset assign="thumbnail"}
                 {/if}
             {else}
 				{* --- Not an image and no preview image present, so display general thumbnail based on file extension --- *}
@@ -55,7 +55,7 @@
                     {* if not clasified above just display doc thumbnail *}
                 {/if}
 				{*--- General override here ---*}
-                {thumb image="modules/SimpleMedia/images/freefileicons/512px/`$medium.theFileMeta.extension`.png" module='SimpleMedia' objectid="medium-`$medium.id`" preset=$modvars.SimpleMedia.defaultImaginePreset assign="thumbnail"}
+                {thumb image="modules/SimpleMedia/images/freefileicons/512px/`$medium.theFileMeta.extension`.png" module='SimpleMedia' preset=$modvars.SimpleMedia.mediumImaginePreset assign="thumbnail"}
             {/if}
         {/if}
         {*--- displaying medium ---*}

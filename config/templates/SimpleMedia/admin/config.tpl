@@ -34,38 +34,18 @@
                         {formintinput id='collectionsPageSize' group='config' maxLength=255 __title='Enter the collections page size. Only digits are allowed.'}
                 </div>
                 <div class="z-formrow">
-                    {gt text='Use this Imagine system plugin preset for image display in the frontend.' assign='toolTip'}
-                    {formlabel for='defaultImaginePreset' __text='Default Imagine preset' cssClass='simplemedia-form-tooltips ' title=$toolTip}
-                    {formtextinput id='defaultImaginePreset' group='config' maxLength=255 __title='Enter the default imagine preset.'}
+                    {gt text='Use this Imagine system plugin preset for medium thumbnails in the frontend.' assign='toolTip'}
+                    {formlabel for='mediumImaginePreset' __text='Imagine preset for media thumbnails' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {formtextinput id='mediumImaginePreset' group='config' maxLength=255 __title='Enter the medium imagine preset.'}
 					<em class="z-sub z-formnote">
 						{modurl modname='Extensions' type='adminplugin' func='dispatch' _plugin='Imagine' _action='configure' assign='imaginePluginEdit'}
-						{gt text='Within SimpleMedia the Imagine system plugin is used for thumbnail generation and display in the frontend. Imagine uses presets to determine the thumbnail size and way of scaling. A preset has to be chosen here and the presets can be configured <a href="%s">here</a>.' tag1=$imaginePluginEdit}
+						{gt text='Within SimpleMedia the Imagine system plugin is used for thumbnail generation and display in the frontend. Imagine uses presets to determine the thumbnail size and way of scaling. Choose a preset name here, the presets can be configured <a href="%s">here</a>.' tag1=$imaginePluginEdit}
 					</em>
                 </div>
                 <div class="z-formrow">
-                    {gt text='Contains an array of thumbnail widthxheight dimensions array ( array ( width => 200, height => 150 ) )' assign='toolTip'}
-                    {formlabel for='thumbDimensions' __text='Thumbnail dimensions' cssClass='simplemedia-form-tooltips ' title=$toolTip}
-						{* formtextinput id='thumbDimensions' group='config' maxLength=255 __title='Enter the thumb dimensions.' *}
-                    <ol style="margin-left: 320px">
-                    {formvolatile}
-                    {foreach name='thumbLoop' item='thumbSize' from=$modvars.SimpleMedia.thumbDimensions}
-                        <li>
-                            {formintinput group='thumbSizes' id="thumb`$smarty.foreach.thumbLoop.iteration`width" size='6' maxLength='4' text=$thumbSize.width style='width: 60px'} x
-                            {formintinput group='thumbSizes' id="thumb`$smarty.foreach.thumbLoop.iteration`height" size='6' maxLength='4' text=$thumbSize.height style='width: 60px'} {gt text='pixels'}
-                        </li>
-                    {/foreach}
-                        <li>
-                            {formintinput group='thumbSizes' id="thumb`$smarty.foreach.thumbLoop.iteration+1`width" size='6' maxLength='4' text='' style='width: 60px'} x
-                            {formintinput group='thumbSizes' id="thumb`$smarty.foreach.thumbLoop.iteration+1`height" size='6' maxLength='4' text='' style='width: 60px'} {gt text='pixels'}
-                        </li>
-                    {/formvolatile}
-                    </ol>
-                    <em class="z-sub z-formnote">{gt text='Thumbnails are generated with the Imagine plugin in the Zikula Core.<br />Turning legacy_prefilters off in config/config.php reduces memory consumption a lot.'}</em>
-                </div>
-                <div class="z-formrow">
-                    {gt text='The default thumbnail that is used from the set of Thumbdimensions' assign='toolTip'}
-                    {formlabel for='defaultThumbNumber' __text='Default thumbnail number' cssClass='simplemedia-form-tooltips ' title=$toolTip}
-                        {formintinput id='defaultThumbNumber' group='config' maxLength=255 __title='Enter the default thumb number. Only digits are allowed.'}
+                    {gt text='Use this Imagine system plugin preset for collection thumbnails in the frontend.' assign='toolTip'}
+                    {formlabel for='collectionImaginePreset' __text='Imagine preset for collection thumbnails' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {formtextinput id='collectionImaginePreset' group='config' maxLength=255 __title='Enter the collection imagine preset.'}
                 </div>
                 <div class="z-formrow">
                     {gt text='Enable shrinking to maximum image dimensions, original image not stored' assign='toolTip'}

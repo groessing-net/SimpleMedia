@@ -10,12 +10,12 @@
             {if $collection.previewImage != 0}
                 {modapifunc modname='SimpleMedia' type='selection' func='getEntity' objectType='medium' id=$collection.previewImage assign='previewImageMedium'}
                 {if !empty($previewImageMedium) && $previewImageMedium.theFileMeta.isImage}
-                    {thumb image=$previewImageMedium.theFileFullPath module='SimpleMedia' objectid="collection-`$collection.id`" preset=$modvars.SimpleMedia.defaultImaginePreset assign="thumbnail"}
+                    {thumb image=$previewImageMedium.theFileFullPath module='SimpleMedia' objectid="collection-`$collection.id`" preset=$modvars.SimpleMedia.collectionImaginePreset assign="thumbnail"}
                 {else}
-                    {thumb image='modules/SimpleMedia/images/sm2_collection_512x512.png' module='SimpleMedia' objectid="collection-`$collection.id`" preset=$modvars.SimpleMedia.defaultImaginePreset assign="thumbnail"}
+                    {thumb image='modules/SimpleMedia/images/sm2_collection_512x512.png' module='SimpleMedia' objectid="collection-`$collection.id`" preset=$modvars.SimpleMedia.collectionImaginePreset assign="thumbnail"}
                 {/if}
             {else}
-                {thumb image='modules/SimpleMedia/images/sm2_collection_512x512.png' module='SimpleMedia' objectid="collection-`$collection.id`" preset=$modvars.SimpleMedia.defaultImaginePreset assign="thumbnail"}
+                {thumb image='modules/SimpleMedia/images/sm2_collection_512x512.png' module='SimpleMedia' objectid="collection-`$collection.id`" preset=$modvars.SimpleMedia.collectionImaginePreset assign="thumbnail"}
             {/if}
             <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$collection.id}" title="{if !empty($collection.description)}{$collection.description}{else}{gt text="View detail page"}{/if}">
             <div class="simplemedia-collection-preview"  id='simplemedia-collection-meta-{$collection.id}-trigger'>

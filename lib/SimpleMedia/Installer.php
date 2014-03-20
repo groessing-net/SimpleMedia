@@ -58,11 +58,8 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
         $this->setVar('pageSize', 20);
         $this->setVar('mediaPageSize', 15);
         $this->setVar('collectionsPageSize', 6);
-        $thumbDimensions = array();
-        $thumbDimensions[] = array('width' => 250, 'height' => 187);
-        $thumbDimensions[] = array('width' => 100, 'height' => 75);
-        $this->setVar('thumbDimensions', $thumbDimensions);
-        $this->setVar('defaultThumbNumber', 1);
+        $this->setVar('mediumImaginePreset', 'default');
+        $this->setVar('collectionImaginePreset', 'default');
         $this->setVar('enableShrinking', false);
         $this->setVar('shrinkDimensions', array('width' => 1600, 'height' => 1200));
         $this->setVar('useThumbCropper', false);
@@ -71,7 +68,7 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
         $this->setVar('maxUploadFileSize', 5000);
         $this->setVar('minWidthForUpload', 100);
         $this->setVar('defaultCollection', 1);
-        $this->setVar('mediaDir', 'media/thefile');
+        $this->setVar('mediaDir', 'media/files');
         $this->setVar('mediaThumbDir', 'tmb');
         $this->setVar('mediaThumbExt', '_tmb_');
         $this->setVar('countMediumViews', true);
@@ -89,6 +86,27 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
             LogUtil::registerStatus($this->__('A default collection has been created.'));
         }
 
+		// create Imagine presets for collections and media
+        $imaginePlugin = $this->getServiceManager()->getService('systemplugin.imagine.manager')->getPlugin();
+		if (!$imaginePlugin->hasPreset('simplemedia_medium')) {
+			$imaginePlugin->setPreset(new SystemPlugin_Imagine_Preset('simplemedia_medium', array(
+                    'width' => 200,
+                    'height' => 200,
+					'mode' => 'outbound',
+					'__module' => 'SimpleMedia'
+                )));
+			$this->setVar('mediumImaginePreset', 'simplemedia_medium');
+		}
+		if (!$imaginePlugin->hasPreset('simplemedia_collection')) {
+			$imaginePlugin->setPreset(new SystemPlugin_Imagine_Preset('simplemedia_collection', array(
+                    'width' => 200,
+                    'height' => 200,
+					'mode' => 'outbound',
+					'__module' => 'SimpleMedia'
+                )));
+			$this->setVar('collectionImaginePreset', 'simplemedia_collection');
+		}
+		
         // register persistent event handlers
         $this->registerPersistentEventHandlers();
 
