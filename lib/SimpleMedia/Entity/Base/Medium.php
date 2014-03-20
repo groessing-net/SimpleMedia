@@ -214,7 +214,7 @@ abstract class SimpleMedia_Entity_Base_Medium extends Zikula_EntityAccess
      * Bidirectional - Many media [media] are linked by one collection [collection] (OWNING SIDE).
      *
      * @ORM\ManyToOne(targetEntity="SimpleMedia_Entity_Collection", inversedBy="media")
-     * @ORM\JoinColumn(name="collection_id", referencedColumnName="id" , unique=true, nullable=false)
+     * @ORM\JoinColumn(name="collection_id", referencedColumnName="id" , nullable=false)
      * @var SimpleMedia_Entity_Collection $collection.
      */
     protected $collection;

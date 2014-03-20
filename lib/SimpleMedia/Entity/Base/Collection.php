@@ -183,9 +183,9 @@ abstract class SimpleMedia_Entity_Base_Collection extends Zikula_EntityAccess
      *
      * @ORM\OneToMany(targetEntity="SimpleMedia_Entity_Medium", mappedBy="collection", cascade={"persist"})
      * @ORM\JoinTable(name="simmed_collectionmedia",
-             *      joinColumns={@ORM\JoinColumn(name="collection_id", referencedColumnName="id" , unique=true, nullable=false)
+             *      joinColumns={@ORM\JoinColumn(name="collection_id", referencedColumnName="id" , nullable=false)
              },
-             *      inverseJoinColumns={@ORM\JoinColumn(name="medium_id", referencedColumnName="id" , unique=true, nullable=false)
+             *      inverseJoinColumns={@ORM\JoinColumn(name="medium_id", referencedColumnName="id" , nullable=false)
             }
              * )
      * @var SimpleMedia_Entity_Medium[] $media.
