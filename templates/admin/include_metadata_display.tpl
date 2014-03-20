@@ -79,6 +79,10 @@
         <dt>{gt text='Extra'}</dt>
         <dd>{$obj.metadata.extra|default:'-'|safetext}</dd>
     {/if}
+    {if $obj.metadata.metaTags ne ''}
+        <dt>{gt text='TAGS'}</dt>
+        <dd>{$obj.metadata.metaTags|@debug_print_var}</dd>
+    {/if}
     </dl>
     {if isset($panel) && $panel eq true}
         </div>

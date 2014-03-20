@@ -390,7 +390,7 @@ class SimpleMedia_Controller_User extends SimpleMedia_Controller_Base_User
         $uploadField = 'theFile';
 
         // For each file, handle it
-        // TODO clecnup this code and check it all
+        // TODO cleanup this code and check it all
         $files = array();
         foreach ($uploads['tmp_name'] as $index => $value) {
             $file[$uploadField] = array(
@@ -441,16 +441,25 @@ class SimpleMedia_Controller_User extends SimpleMedia_Controller_Base_User
                 $uploadResult = $uploadManager->performFileUpload('medium', $file, $uploadField);
                 // assign the upload file name
                 $medium->setTheFile($uploadResult['fileName']);
-                // assign the meta data
+                // assign the basic meta data
                 $medium->setTheFileMeta($uploadResult['metaData']);
 
-                // approve
+				// assign the meta tags from getID3
+				$metaData = $medium->getMetadata();
+				if (is_null($metaData)) {
+					$metaDataEntityClass = $this->name . '_Entity_mediumMetaData';
+					$metaData = new $metaDataEntityClass($medium);
+				}
+				$metaData->merge(array('metaTags' => $uploadResult['metaTags']));
+				$medium->setMetadata($metaData);
+				
+                // workflow approve
                 $medium->setWorkflowState('approved');
-
+				
+				// now store the created medium and flush to DB
                 $entityManager = $this->serviceManager->getService('doctrine.entitymanager');
                 $entityManager->persist($medium);
                 $entityManager->flush();
-
            }
         }
 

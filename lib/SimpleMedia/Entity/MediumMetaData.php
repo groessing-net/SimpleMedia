@@ -12,6 +12,7 @@
  */
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Entity extension domain class storing medium meta data.
@@ -30,14 +31,58 @@ class SimpleMedia_Entity_MediumMetaData extends SimpleMedia_Entity_Base_MediumMe
      */
     private $rights;
 
+    /**
+     * Extensive medium meta file tags (exif/iptc/xmp/etc) array.
+     *
+     * @ORM\Column(type="array")
+     * @var array $metaTags.
+     */
+    protected $metaTags = array();
+	
+    /**
+     * Get copyright.
+     *
+     * @return text
+     */
     public function getRights()
     {
         return $this->rights;
     }
 
-    public function setRights($rights)
+    /**
+     * Set copyright.
+     *
+     * @param text $rights.
+     *
+     * @return void
+     */
+     public function setRights($rights)
     {
         $this->rights = $rights;
+    }
+
+    /**
+     * Get the metaTags information.
+     *
+     * @return array
+     */
+    public function getMetaTags()
+    {
+        return $this->metaTags;
+    }
+    
+    /**
+     * Set the metaTags information.
+     *
+     * @param array $metaTags.
+     *
+     * @return void
+     */
+    public function setMetaTags($metaTags = Array())
+    {
+        if ($metaTags != $this->metaTags) {
+            $this->metaTags = $metaTags;
+        }
     }
 
 }

@@ -50,11 +50,11 @@ Cascading grid layout library for frontend gallery display of images.
 
 getID3
 ------
-getID3 is a PHP script that extracts useful information from MP3s & other multimedia file formats.
-EXIF/IPTC/XMP metadata is extracted from the medium
+getID3 is a PHP script that extracts useful information from images, MP3s & other multimedia file formats.
+EXIF/IPTC/XMP metadata is extracted from the medium. Removed helperapps from package
 * Version v1.10.x beta
 * http://www.getid3.org / https://github.com/JamesHeinrich/getID3
-* GPLv3 / LGPLv3
+* LGPLv3
 
 Blueimp Bootstrap Image Gallery
 -------------------------------
