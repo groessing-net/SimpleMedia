@@ -43,6 +43,14 @@
 					</em>
                 </div>
                 <div class="z-formrow">
+                    {gt text='Use this Imagine system plugin preset for fullsize image medium thumbnails in the frontend.' assign='toolTip'}
+                    {formlabel for='mediumFullImaginePreset' __text='Imagine preset for fullimage medium thumbnails' cssClass='simplemedia-form-tooltips ' title=$toolTip}
+                        {formtextinput id='mediumFullImaginePreset' group='config' maxLength=255 __title='Enter the medium fullsize image imagine preset.'}
+					<em class="z-sub z-formnote">
+						{gt text='The Imagine preset simplemedia_medium_full can be used here if prefered.'}
+					</em>
+                </div>
+                <div class="z-formrow">
                     {gt text='Use this Imagine system plugin preset for collection thumbnails in the frontend.' assign='toolTip'}
                     {formlabel for='collectionImaginePreset' __text='Imagine preset for collection thumbnails' cssClass='simplemedia-form-tooltips ' title=$toolTip}
                         {formtextinput id='collectionImaginePreset' group='config' maxLength=255 __title='Enter the collection imagine preset.'}
