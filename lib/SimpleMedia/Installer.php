@@ -59,6 +59,7 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
         $this->setVar('mediaPageSize', 15);
         $this->setVar('collectionsPageSize', 6);
         $this->setVar('mediumImaginePreset', 'default');
+        $this->setVar('mediumFullImaginePreset', ''); // by default empty, use original image
         $this->setVar('collectionImaginePreset', 'default');
         $this->setVar('enableShrinking', false);
         $this->setVar('shrinkDimensions', array('width' => 1600, 'height' => 1200));
@@ -86,7 +87,7 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
             LogUtil::registerStatus($this->__('A default collection has been created.'));
         }
 
-		// create Imagine presets for collections and media
+		// create Imagine presets for collections and media and set variables
         $imaginePlugin = $this->getServiceManager()->getService('systemplugin.imagine.manager')->getPlugin();
 		if (!$imaginePlugin->hasPreset('simplemedia_medium')) {
 			$imaginePlugin->setPreset(new SystemPlugin_Imagine_Preset('simplemedia_medium', array(
@@ -95,8 +96,17 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
 					'mode' => 'outbound',
 					'__module' => 'SimpleMedia'
                 )));
-			$this->setVar('mediumImaginePreset', 'simplemedia_medium');
 		}
+		$this->setVar('mediumImaginePreset', 'simplemedia_medium');
+		if (!$imaginePlugin->hasPreset('simplemedia_medium_full')) {
+			$imaginePlugin->setPreset(new SystemPlugin_Imagine_Preset('simplemedia_medium_full', array(
+                    'width' => 1600,
+                    'height' => 1600,
+					'mode' => 'inset',
+					'__module' => 'SimpleMedia'
+                )));
+		}
+		// $this->setVar('collectionImaginePreset', 'simplemedia_medium_full');
 		if (!$imaginePlugin->hasPreset('simplemedia_collection')) {
 			$imaginePlugin->setPreset(new SystemPlugin_Imagine_Preset('simplemedia_collection', array(
                     'width' => 200,
@@ -104,8 +114,8 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
 					'mode' => 'outbound',
 					'__module' => 'SimpleMedia'
                 )));
-			$this->setVar('collectionImaginePreset', 'simplemedia_collection');
 		}
+		$this->setVar('collectionImaginePreset', 'simplemedia_collection');
 		
         // register persistent event handlers
         $this->registerPersistentEventHandlers();
@@ -144,7 +154,6 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
         } catch (Exception $e) {
             return LogUtil::registerError($e->getMessage());
         }
-
     }
     
     /**
