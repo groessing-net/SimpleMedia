@@ -8,18 +8,10 @@
 {pageaddvar name='javascript' value='zikula.ui'}
 {pageaddvar name='javascript' value='zikula.imageviewer'}
 {pageaddvar name='javascript' value='modules/SimpleMedia/javascript/SimpleMedia.js' *}
-
-{if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
-    <div class="z-frontendbox">
-        <h2><img src="modules/SimpleMedia/images/sm2_16x16.png" width=16 height=16 alt='' /> {gt text='SimpleMedia' comment='This is the title of the header template'}</h2>
-        {modulelinks modname='SimpleMedia' type='user'}
-    </div>
-{/if}
-{insert name='getstatusmsg'}
-
+{pageaddvar name='javascript' value='jquery'}
+{*pageaddvar name='javascript' value='jquery-ui'*}
 {* Force latest IE rendering engine or ChromeFrame if installed *}
 {browserhack condition="if IE"}<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">{/browserhack}
-
 {pageaddvar name='stylesheet' value='modules/SimpleMedia/lib/vendor/bootstrap-3.1.1/css/bootstrap.min.css'}
 {pageaddvar name='stylesheet' value='modules/SimpleMedia/lib/vendor/jQuery-File-Upload-9.5.6/css/jquery.fileupload.css'}
 {pageaddvar name='stylesheet' value='modules/SimpleMedia/lib/vendor/jQuery-File-Upload-9.5.6/css/jquery.fileupload-ui.css'}
@@ -28,8 +20,14 @@
 <noscript><link rel="stylesheet" href="modules/SimpleMedia/lib/vendor/jQuery-File-Upload-9.5.6/css/jquery.fileupload-noscript.css"></noscript>
 <noscript><link rel="stylesheet" href="modules/SimpleMedia/lib/vendor/jQuery-File-Upload-9.5.6/css/jquery.fileupload-ui-noscript.css"></noscript>
 {/pageaddvarblock}
-{pageaddvar name='javascript' value='jQuery'}
-{pageaddvar name='javascript' value='jQuery-ui'}
+
+{if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
+    <div class="z-frontendbox">
+        <h2><img src="modules/SimpleMedia/images/sm2_16x16.png" width=16 height=16 alt='' /> {gt text='SimpleMedia' comment='This is the title of the header template'}</h2>
+        {modulelinks modname='SimpleMedia' type='user'}
+    </div>
+{/if}
+{insert name='getstatusmsg'}
 
 <div class="simplemedia-multiupload">
     {gt text='MultiUpload of Media' assign='templateTitle'}
@@ -198,7 +196,7 @@
 	{* jQuery and jQueryUI are loaded with pagevar *}
     <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
     <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
-    <!-- <script src="modules/SimpleMedia/lib/vendor/jQuery-File-Upload-9.5.6/js/vendor/jquery.ui.widget.js"></script> -->
+    <script src="modules/SimpleMedia/lib/vendor/jQuery-File-Upload-9.5.6/js/vendor/jquery.ui.widget.js"></script>
     <!-- The Templates plugin is included to render the upload/download listings -->
     <script src="modules/SimpleMedia/lib/vendor/blueimp-js/tmpl.min.js"></script>
     <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
