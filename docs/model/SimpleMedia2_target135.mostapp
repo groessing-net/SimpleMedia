@@ -1,6 +1,6 @@
 application SimpleMedia {
 	documentation "Simple file and media management in Collections."
-	vendor "ZKM"
+	vendor "ESP"
 	author "Erik Spaan & Axel Guckelsberger"
 	email "erik@zikula.nl"
 	url "https://github.com/zikula-ev/SimpleMedia"
@@ -23,28 +23,13 @@ application SimpleMedia {
 						},
 						upload theFile {
 						    documentation "The attached file to this medium"
-						    allowedExtensions "gif, jpeg, jpg, png, pdf, txt, mp3, mp4, avi, mpg, mpeg, mov, zip"
-						    subFolderName ""
+							regexp ""
+							allowedExtensions "gif, jpeg, jpg, png, pdf, doc, xls, ppt, docx, xlsx, pptx, odt, ods, odp, arj, zip, rar, tar, tgz, gz, bz2, txt, rtf, swf, flv, mp3, mp4, avi, mpg, mpeg, mov"
+						    subFolderName files
 						    allowedFileSize 5000000
 						},
 						text description {
 							documentation "Extensive description of this medium item"
-							defaultValue ""
-							mandatory false
-						},
-						string zipcode {
-							documentation "Zip code for the geographical location of this medium"
-							defaultValue ""
-							mandatory false
-							length 15
-						},
-						integer previewImage {
-							documentation "Contains an optional thumbnail image for the medium item."
-							defaultValue "0"
-							mandatory false
-						},
-						integer sortValue {
-							documentation "Used for sorting media within a collection."
 							defaultValue ""
 							mandatory false
 						},
@@ -58,8 +43,24 @@ application SimpleMedia {
 								listItem Other ( other )
 							}
 						},
+						string zipcode {
+							documentation "Zip code for the geographical location of this medium"
+							defaultValue ""
+							mandatory false
+							length 15
+						},
+						integer previewImage {
+							documentation "Contains an optional thumbnail image for the medium item."
+							defaultValue "0"
+							mandatory false
+						},
 						integer viewsCount readonly {
 						    documentation "The number of views for this medium"
+							defaultValue "0"
+							mandatory false
+						},
+						integer sortValue {
+							documentation "Used for sorting media within a collection."
 							defaultValue "0"
 							mandatory false
 						}
@@ -84,21 +85,21 @@ application SimpleMedia {
 							defaultValue "0"
 							mandatory false
 						},
-						integer sortValue {
-							documentation "Used for sorting collections within a parent collection."
-							defaultValue ""
-							mandatory false
-						},
 						integer viewsCount readonly {
 						    documentation "The number of views for this collection"
 							defaultValue "0"
+							mandatory false
+						},
+						integer sortValue {
+							documentation "Used for sorting collections within a parent collection."
+							defaultValue ""
 							mandatory false
 						}
 					}
 				}
 			}
 			relations {
-				one2many bidirectional unique {
+				one2many bidirectional {
 					source collection
 					sourceAlias collection
 					target medium
@@ -119,20 +120,21 @@ application SimpleMedia {
 						},
 						intVar mediaPageSize {
 							documentation "Number of media on a page (frontend)"
-							value "15"
+							value "25"
 						},
 						intVar collectionsPageSize {
 							documentation "Number of collections on a page (frontend)"
-							value "6"
+							value "15"
 						},
-						textVar thumbDimensions {
-							documentation
-							"Contains an array of thumbnail widthxheight dimensions array ( array ( width => 200, height => 150 ) )"
-							value ""
+						textVar mediumImaginePreset {
+							documentation "Use this Imagine system plugin preset for medium thumbnails in the frontend."
+							value "default"
+							maxLength 100
 						},
-						intVar defaultThumbNumber {
-							documentation "The default thumbnail that is used from the set of Thumbdimensions"
-							value "1"
+						textVar collectionImaginePreset {
+							documentation "Use this Imagine system plugin preset for collection thumbnails in the frontend."
+							value "default"
+							maxLength 100
 						},
 						boolVar enableShrinking {
 							documentation "Enable shrinking to maximum image dimensions, original image not stored"
@@ -169,7 +171,7 @@ application SimpleMedia {
 						},
 						textVar mediaDir {
 							documentation "The folder location under userdata/SimpleMedia where the uploaded files are stored."
-							value "media/thefile"
+							value "media/files"
 							maxLength 100
 						},
 						textVar mediaThumbDir {
@@ -184,11 +186,11 @@ application SimpleMedia {
 						},
 						boolVar countMediumViews {
 							documentation "Count the number of medium views "
-							value ^false
+							value ^true
 						},
 						boolVar countCollectionViews {
 							documentation "Count the number of collection views"
-							value ^false
+							value ^true
 						}
 					}
 				}
@@ -206,14 +208,28 @@ application SimpleMedia {
 						viewAction View,
 						displayAction Display,
 						editAction Edit,
-						customAction Import
+						deleteAction Delete,
+						customAction MultiUpload {
+							documentation "Upload multiple media in one go from the backend."
+						},
+						customAction Import {
+							documentation "Import media / collections from other modules"
+						}
 					}
 				},
 				userController User {
 					actions {
 						mainAction Main,
 						viewAction View,
-						displayAction Display
+						displayAction Display,
+						editAction Edit,
+						deleteAction Delete,
+						customAction MultiUpload {
+							documentation "Upload multiple media in one go from the frontend."
+						},
+						customAction EditList {
+							documentation "Provide a list overview of multiple media for easy editing of media properties."
+						}
 					}
 				},
 				ajaxController Ajax {
