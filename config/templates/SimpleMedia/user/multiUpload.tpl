@@ -31,6 +31,10 @@
 {pageaddvar name='javascript' value='jQuery'}
 {pageaddvar name='javascript' value='jQuery-ui'}
 
+Selected Collection : {$selectedCollection}
+{$collectionItems|@print_r}
+
+
 <div class="simplemedia-multiupload">
     {gt text='MultiUpload of Media' assign='templateTitle'}
     {pagesetvar name='title' value=$templateTitle}
@@ -47,7 +51,7 @@
 		<legend>{gt text='Collection'}</legend>
 		<div class="z-formrow">
 			<label for='simplemedia-collection'>{gt text='Choose the collection to upload media to'}</label>
-			<select id="simplemedia-collection" name="collection" class="z-form-dropdownlist">
+			<select id="simplemedia-collection" name="collectionStore" class="z-form-dropdownlist">
 			<option value="-1">{gt text='Create new collection'}</option>
 			{foreach from=$collectionItems item='collection'}
 			<option value="{$collection.value}"{if $collection.value == $selectedCollection} selected="selected"{/if}>{$collection.text}</option>
@@ -57,16 +61,16 @@
 		<div id="simplemedia-collection-details">
 			<div class="z-formrow">
 				<label for="simplemedia_collection_title">{gt text='Title of the new collection for storing media'}:</label> 
-				<input id="simplemedia_collection_title" name="collectionTitle" value=''>
+				<input id="simplemedia_collection_title" name="collectionStoreTitle" value=''>
 			</div>
 			<div class="z-formrow">
 				<label for="simplemedia_collection_description">{gt text='Description of the new collection for storing media'}:</label> 
-				<input id="simplemedia_collection_description" name="collectionDescription" value=''>
+				<input id="simplemedia_collection_description" name="collectionStoreDescription" value=''>
 			</div>
 			{*-- not implemented yet in handler
 			<div class="z-formrow">
 				<label for="simplemedia_collection_category">{gt text='Category of the new collection for storing media'}:</label> 
-				<input id="simplemedia_collection_category" name="collectionCategory" value=''>
+				<input id="simplemedia_collection_category" name="collectionStoreCategory" value=''>
 			</div>
 			*}
 		</div>

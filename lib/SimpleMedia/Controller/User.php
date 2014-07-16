@@ -322,7 +322,7 @@ class SimpleMedia_Controller_User extends SimpleMedia_Controller_Base_User
         /** TODO: custom logic */
 		
 		// Add template variables like the collection to store the media in
-		// default collection, but this sould also be callable from a collection as action, 
+		// default collection, but this should also be callable from a collection as action,
 		// so getting the collection as parameter 
 
 		// Requested collection for store or choose from list with defaultCollection as default
@@ -380,12 +380,11 @@ class SimpleMedia_Controller_User extends SimpleMedia_Controller_Base_User
 
 		// submitted collection to store media in
         //TODO check why collection is not coming through
-        $collection = $this->request->request->get('collection', ModUtil::getVar('SimpleMedia', 'defaultCollection', 1));
-        //$collection = $this->request->request->get('collection');
-        //$collection = 2;
-        $collectionEntity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', array('ot' => 'collection', 'id' => $collection));
+        $collection = $this->request->request->get('collectionStore', ModUtil::getVar('SimpleMedia', 'defaultCollection', 1));
 
-        LogUtil::registerStatus('COLLECTION: ' . $collection);
+        //$collection = $this->request->request->get('collection');
+        //$collection = 4;
+        $collectionEntity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', array('ot' => 'collection', 'id' => $collection));
 
         $uploadField = 'theFile';
 
