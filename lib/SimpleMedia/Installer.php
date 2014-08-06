@@ -16,78 +16,31 @@
  */
 class SimpleMedia_Installer extends SimpleMedia_Base_Installer
 {
-    // feel free to extend the installer here
-
     /**
-     * Install the SimpleMedia application. 
-	 * OVERRIDE:
-     * CHECK
-	 * - some modvars are set specifically here
-	 * - more extensive category creation via separate method
-	 * - createDefaultData also creates a default collection
+     * Install the SimpleMedia application.
      *
      * @return boolean True on success, or false.
      */
     public function install()
     {
-        // Check if upload directories exist and if needed create them
-        try {
-            $controllerHelper = new SimpleMedia_Util_Controller($this->serviceManager);
-            $result = $controllerHelper->checkAndCreateAllUploadFolders();
-            if ($result) {
-                LogUtil::registerStatus($this->__f('The file upload directory is created at [%s].', FileUtil::getDataDirectory() . '/SimpleMedia/'));
-            }
-        } catch (\Exception $e) {
-            return LogUtil::registerError($e->getMessage());
-        }
-        // create all tables from according entity definitions
-        try {
-            DoctrineHelper::createSchema($this->entityManager, $this->listEntityClasses());
-        } catch (\Exception $e) {
-            if (System::isDevelopmentMode()) {
-                LogUtil::registerError($this->__('Doctrine Exception: ') . $e->getMessage());
-            }
-            $returnMessage = $this->__f('An error was encountered while creating the tables for the %s extension.', array($this->name));
-            if (!System::isDevelopmentMode()) {
-                $returnMessage .= ' ' . $this->__('Please enable the development mode by editing the /config/config.php file in order to reveal the error details.');
-            }
-            return LogUtil::registerError($returnMessage);
+        $result = parent::install();
+        if (!$result) {
+            return $result;
         }
 
-        // set up all our vars with initial values
-        $this->setVar('pageSize', 20);
         $this->setVar('mediaPageSize', 15);
         $this->setVar('collectionsPageSize', 6);
-        $this->setVar('mediumImaginePreset', 'default');
         $this->setVar('mediumFullImaginePreset', ''); // by default empty, use original image
-        $this->setVar('collectionImaginePreset', 'default');
-        $this->setVar('enableShrinking', false);
         $this->setVar('shrinkDimensions', array('width' => 1600, 'height' => 1200));
-        $this->setVar('useThumbCropper', false);
-        $this->setVar('cropSizeMode', 0);
-        $this->setVar('allowedExtensions', 'gif, jpeg, jpg, png, pdf, txt, mp3, mp4, avi, mpg, mpeg, mov, zip');
-        $this->setVar('maxUploadFileSize', 5000);
-        $this->setVar('minWidthForUpload', 100);
-        $this->setVar('defaultCollection', 1);
-        $this->setVar('mediaDir', 'media/files');
-        $this->setVar('mediaThumbDir', 'tmb');
-        $this->setVar('mediaThumbExt', '_tmb_');
-        $this->setVar('countMediumViews', true);
-        $this->setVar('countCollectionViews', true);
 
         $categoryRegistryIdsPerEntity = array();
 
         // create the default categories
-        if ($this->createDefaultCategories($categoryRegistryIdsPerEntity)) {
-            LogUtil::registerStatus($this->__('A Category tree for SimpleMedia has been created at [Root/Modules/SimpleMedia].'));
-        }
-
-        // create the default data
-        if ($this->createDefaultData($categoryRegistryIdsPerEntity)) {
-            LogUtil::registerStatus($this->__('A default collection has been created.'));
-        }
+        $this->createDefaultCategories($categoryRegistryIdsPerEntity);
+        LogUtil::registerStatus($this->__('A Category tree for SimpleMedia has been created at [Root/Modules/SimpleMedia].'));
 
 		// create Imagine presets for collections and media and set variables
+        /** @var SystemPlugin_Imagine_Plugin $imaginePlugin */
         $imaginePlugin = $this->getServiceManager()->getService('systemplugin.imagine.manager')->getPlugin();
 		if (!$imaginePlugin->hasPreset('simplemedia_medium')) {
 			$imaginePlugin->setPreset(new SystemPlugin_Imagine_Preset('simplemedia_medium', array(
@@ -117,19 +70,14 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
 		}
 		$this->setVar('collectionImaginePreset', 'simplemedia_collection');
 		
-        // register persistent event handlers
-        $this->registerPersistentEventHandlers();
-
-        // register hook subscriber bundles
-        HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
-
         // initialisation successful
         return true;
     }
 
     /**
-     * Create the default data for SimpleMedia. 
-	 * OVERRIDE: added default collection creation
+     * Create the default data for SimpleMedia.
+     *
+     * @param array $categoryRegistryIdsPerEntity
      *
      * @return void
      */
@@ -155,10 +103,13 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
             return LogUtil::registerError($e->getMessage());
         }
     }
-    
+
     /**
      * Create the default data for SimpleMedia. NEW
      *
+     * @param $categoryRegistryIdsPerEntity
+     *
+     * @throws Zikula_Exception
      * @return void
      */
     protected function createDefaultCategories(&$categoryRegistryIdsPerEntity)
@@ -238,8 +189,6 @@ class SimpleMedia_Installer extends SimpleMedia_Base_Installer
             LogUtil::registerError($this->__f('Error! Could not create a category registry for the %s entity.', array('collection')));
         }
         $categoryRegistryIdsPerEntity['collection'] = $registryData['id'];
-
-        return true;
     }
 
     /**
