@@ -79,15 +79,6 @@ div.simplemedia-edit .z-panel-content legend {
 }
 
 
-div.simplemedia-autocomplete-wrap {
-    position: absolute;
-    height: 40px;
-    margin: 0;
-    padding: 0;
-    left: 260px;
-    top: 10px;
-}
-
 div.simplemedia-autocomplete {
     position: relative !important;
     top: 2px !important;
@@ -159,6 +150,8 @@ div.simplemedia-view form.simplemedia-quicknav fieldset #num {
     width: 50px;
     text-align: right;
 }
+
+/* CUSTOM STYLES */
 
 /* Collection and Media grid view */
 .simplemedia-collection div.simplemedia-collection-wrap {

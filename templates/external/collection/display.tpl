@@ -2,7 +2,7 @@
 <div id="collection{$collection.id}" class="simplemedia-external-collection">
 {if $displayMode eq 'link'}
     <p class="simplemedia-external-link">
-    <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection' id=$collection.id}" title="{$collection->getTitleFromDisplayPattern()|replace:"\"":""}">
+    <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='collection'  id=$collection.id}" title="{$collection->getTitleFromDisplayPattern()|replace:"\"":""}">
     {$collection->getTitleFromDisplayPattern()|notifyfilters:'simplemedia.filter_hooks.collections.filter'}
     </a>
     </p>

@@ -2,7 +2,7 @@
 <div id="medium{$medium.id}" class="simplemedia-external-medium">
 {if $displayMode eq 'link'}
     <p class="simplemedia-external-link">
-    <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='medium' id=$medium.id slug=$medium.slug}" title="{$medium->getTitleFromDisplayPattern()|replace:"\"":""}">
+    <a href="{modurl modname='SimpleMedia' type='user' func='display' ot='medium'  id=$medium.id slug=$medium.slug}" title="{$medium->getTitleFromDisplayPattern()|replace:"\"":""}">
     {$medium->getTitleFromDisplayPattern()|notifyfilters:'simplemedia.filter_hooks.media.filter'}
     </a>
     </p>

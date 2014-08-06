@@ -47,7 +47,7 @@ function SimpleMediaFinderCKEditor(editor, simmedURL)
 }
 
 
-// The simplemedia variable
+
 var simplemedia = {};
 
 simplemedia.finder = {};
@@ -62,8 +62,6 @@ simplemedia.finder.onLoad = function (baseId, selectedId)
     $('simpleMediaSearchGo').observe('keypress', simplemedia.finder.onParamChanged);
     $('simpleMediaSubmit').addClassName('z-hide');
     $('simpleMediaCancel').observe('click', simplemedia.finder.handleCancel);
-	
-	// TODO add catching of list/thumbs and showmeta checks here
 };
 
 simplemedia.finder.onParamChanged = function ()
@@ -107,10 +105,10 @@ function getPasteSnippet(mode, itemId)
     if (mode === 'url') {
         // plugin mode
         return itemUrl;
-    } else {
-        // editor mode
-        return '<a href="' + itemUrl + '" title="' + itemDescription + '">' + itemTitle + '</a>';
     }
+
+    // editor mode
+    return '<a href="' + itemUrl + '" title="' + itemDescription + '">' + itemTitle + '</a>';
 }
 
 
@@ -153,14 +151,13 @@ simplemedia.finder.selectItem = function (itemId)
             }
         }
     } else if (editor === 'tinymce') {
-        // get the html to insert and place it in the editor
         html = getPasteSnippet('html', itemId);
         window.opener.tinyMCE.activeEditor.execCommand('mceInsertContent', false, html);
         // other tinymce commands: mceImage, mceInsertLink, mceReplaceContent, see http://www.tinymce.com/wiki.php/Command_identifiers
     } else if (editor === 'ckeditor') {
-        // get the html to insert and place it in the editor
-        html = getPasteSnippet('html', itemId);
         if (window.opener.currentSimpleMediaEditor !== null) {
+            html = getPasteSnippet('html', itemId);
+
             window.opener.currentSimpleMediaEditor.insertHtml(html);
         }
     } else {
@@ -208,10 +205,6 @@ simplemedia.itemSelector.onLoad = function (baseId, selectedId)
     $('simpleMediaSearchGo').observe('keypress', simplemedia.itemSelector.onParamChanged);
 
     simplemedia.itemSelector.getItemList();
-    
-    // TODO
-	// Add show images as thumbnails / list
-    // Add show name/size/date
 };
 
 simplemedia.itemSelector.onParamChanged = function ()
@@ -221,29 +214,26 @@ simplemedia.itemSelector.onParamChanged = function ()
     simplemedia.itemSelector.getItemList();
 };
 
-// The items in the item (media/collections) div
 simplemedia.itemSelector.getItemList = function ()
 {
-    var baseId, pars, request;
+    var baseId, params, request;
 
     baseId = simplemedia.itemSelector.baseId;
-    pars = 'ot=' + baseId + '&';
+    params = 'ot=' + baseId + '&';
     if ($(baseId + '_catidMain') != undefined) {
-        pars += 'catidMain=' + $F(baseId + '_catidMain') + '&';
+        params += 'catidMain=' + $F(baseId + '_catidMain') + '&';
     } else if ($(baseId + '_catidsMain') != undefined) {
-        pars += 'catidsMain=' + $F(baseId + '_catidsMain') + '&';
+        params += 'catidsMain=' + $F(baseId + '_catidsMain') + '&';
     }
-    pars += 'sort=' + $F(baseId + 'Sort') + '&' +
-            'sortdir=' + $F(baseId + 'SortDir') + '&' +
-            'searchterm=' + $F(baseId + 'SearchTerm');
-			
-	// TODO add show images as and showmeta data here
+    params += 'sort=' + $F(baseId + 'Sort') + '&' +
+              'sortdir=' + $F(baseId + 'SortDir') + '&' +
+              'searchterm=' + $F(baseId + 'SearchTerm');
 
     request = new Zikula.Ajax.Request(
         Zikula.Config.baseURL + 'ajax.php?module=SimpleMedia&func=getItemListFinder',
         {
             method: 'post',
-            parameters: pars,
+            parameters: params,
             onFailure: function(req) {
                 Zikula.showajaxerror(req.getMessage());
             },
@@ -302,8 +292,9 @@ simplemedia.itemSelector.updatePreview = function ()
     }
 
     if (selectedElement !== null) {
-        $(baseId + 'PreviewContainer').update(window.atob(selectedElement.previewInfo))
-                                      .removeClassName('z-hide');
+        $(baseId + 'PreviewContainer')
+            .update(window.atob(selectedElement.previewInfo))
+            .removeClassName('z-hide');
     }
 };
 

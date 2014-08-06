@@ -32,7 +32,6 @@ class SimpleMedia_Api_User extends SimpleMedia_Api_Base_User
         $links = array();
 		
 		// get the current url parameters
-		$ot = $this->request->getGet()->filter('ot', 'collection', FILTER_SANITIZE_STRING);
 		$id = $this->request->getGet()->filter('id' , 0 , FILTER_SANITIZE_NUMBER_INT);
 
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
@@ -48,7 +47,7 @@ class SimpleMedia_Api_User extends SimpleMedia_Api_Base_User
 
         if (in_array('collection', $allowedObjectTypes)
             && SecurityUtil::checkPermission($this->name . ':Collection:', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url($this->name, 'user', 'view', array('ot' => 'collection')),
+            $links[] = array('url' => ModUtil::url($this->name, 'collection', 'view'),
                              'text' => $this->__('Collections'),
                              'title' => $this->__('Collection list'));
         }
@@ -63,19 +62,19 @@ class SimpleMedia_Api_User extends SimpleMedia_Api_Base_User
 		// Add single media only when in a collection
         if (in_array('medium', $allowedObjectTypes)
             && SecurityUtil::checkPermission($this->name . ':Medium:', '::', ACCESS_ADD) && $id > 0) {
-            $links[] = array('url' => ModUtil::url($this->name, 'user', 'edit', array('ot' => 'medium', 'collection' => $id)),
+            $links[] = array('url' => ModUtil::url($this->name, 'medium', 'edit', array('collection' => $id)),
                 'text' => $this->__('Add medium'),
                 'title' => $this->__('Upload a medium'));
         }
         if (in_array('medium', $allowedObjectTypes)
             && SecurityUtil::checkPermission($this->name . ':Medium:', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url($this->name, 'user', 'multiUpload', array('collection' => $id)),
+            $links[] = array('url' => ModUtil::url($this->name, 'medium', 'multiUpload', array('collection' => $id)),
                 'text' => $this->__('MultiUpload media'),
                 'title' => $this->__('Upload several media at once'));
         }
         if (in_array('collection', $allowedObjectTypes)
             && SecurityUtil::checkPermission($this->name . ':Collection:', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url($this->name, 'user', 'addCollection', array('ot' => 'collection', 'pid' => $id)),
+            $links[] = array('url' => ModUtil::url($this->name, 'collection', 'addCollection', array('pid' => $id)),
                 'text' => $this->__('Add Collection'),
                 'title' => $this->__('Add a root collection'));
         }

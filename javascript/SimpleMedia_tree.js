@@ -8,23 +8,23 @@ var currentNodeId = 0;
  */
 function simmedPerformTreeOperation(objectType, rootId, op)
 {
-    var opParam, pars, request;
+    var opParam, params, request;
 
     opParam = ((op === 'moveNodeUp' || op === 'moveNodeDown') ? 'moveNode' : op);
-    pars = 'ot=' + objectType + '&op=' + opParam;
+    params = 'ot=' + objectType + '&op=' + opParam;
 
     if (op !== 'addRootNode') {
-        pars += '&root=' + rootId;
+        params += '&root=' + rootId;
 
         if (!currentNodeId) {
-            Zikula.UI.Alert('Invalid node id', Zikula.__('Error', 'module_simplemedia_js'));
+            Zikula.UI.Alert(Zikula.__('Invalid node id', 'module_simplemedia_js'), Zikula.__('Error', 'module_simplemedia_js'));
         }
-        pars += '&' + ((op === 'addChildNode') ? 'pid' : 'id') + '=' + currentNodeId;
+        params += '&' + ((op === 'addChildNode') ? 'pid' : 'id') + '=' + currentNodeId;
 
         if (op === 'moveNodeUp') {
-            pars += '&direction=up';
+            params += '&direction=up';
         } else if (op === 'moveNodeDown') {
-            pars += '&direction=down';
+            params += '&direction=down';
         }
     }
 
@@ -32,7 +32,7 @@ function simmedPerformTreeOperation(objectType, rootId, op)
         Zikula.Config.baseURL + 'ajax.php?module=SimpleMedia&func=handleTreeOperation',
         {
             method: 'post',
-            parameters: pars,
+            parameters: params,
             onComplete: function (req) {
                 if (!req.isSuccess()) {
                     Zikula.UI.Alert(req.getMessage(), Zikula.__('Error', 'module_simplemedia_js'));
@@ -66,18 +66,18 @@ simmedTreeContextMenu = Class.create(Zikula.UI.ContextMenu, {
 /**
  * Initialise event handlers for all nodes of a given tree root.
  */
-function simmedInitTreeNodes(objectType, controller, rootId, hasDisplay, hasEdit)
+function simmedInitTreeNodes(objectType, rootId, hasDisplay, hasEdit)
 {
     $$('#itemTree' + rootId + ' a').each(function (elem) {
         var liRef, isRoot, contextMenu;
-
+        
         // get reference to list item
         liRef = elem.up();
         isRoot = (liRef.id === 'tree' + rootId + 'node_' + rootId);
-
+        
         // define a link id
         elem.id = liRef.id + 'link';
-
+        
         // and use it to attach a context menu
         contextMenu = new simmedTreeContextMenu(elem.id, { leftClick: true, animation: false });
         if (hasDisplay === true) {
@@ -86,10 +86,11 @@ function simmedInitTreeNodes(objectType, controller, rootId, hasDisplay, hasEdit
                      + Zikula.__('Display', 'module_simplemedia_js'),
                 callback: function (selectedMenuItem, isRightClick) {
                     var url;
-
+        
                     currentNodeId = liRef.id.replace('tree' + rootId + 'node_', '');
-                    url = Zikula.Config.baseURL + 'index.php?module=SimpleMedia&type=' + controller + '&func=display&ot=' + objectType + '&id=' + currentNodeId;
-
+                    url = Zikula.Config.baseURL + 'index.php?module=SimpleMedia&type=' + objectType + '&func=display&id=' + currentNodeId;
+                    
+        
                     if (isRightClick) {
                         window.open(url);
                     } else {
@@ -104,10 +105,11 @@ function simmedInitTreeNodes(objectType, controller, rootId, hasDisplay, hasEdit
                      + Zikula.__('Edit', 'module_simplemedia_js'),
                 callback: function (selectedMenuItem, isRightClick) {
                     var url;
-
+        
                     currentNodeId = liRef.id.replace('tree' + rootId + 'node_', '');
-                    url = Zikula.Config.baseURL + 'index.php?module=SimpleMedia&type=' + controller + '&func=edit&ot=' + objectType + '&id=' + currentNodeId;
-
+                    url = Zikula.Config.baseURL + 'index.php?module=SimpleMedia&type=' + objectType + '&func=edit&id=' + currentNodeId;
+                    
+        
                     if (isRightClick) {
                         window.open(url);
                     } else {
@@ -115,18 +117,10 @@ function simmedInitTreeNodes(objectType, controller, rootId, hasDisplay, hasEdit
                     }
                 }
             });
-            contextMenu.addItem({
-                label: '<img src="' + Zikula.Config.baseURL + 'images/icons/extrasmall/folder_image.png" width="16" height="16" alt="' + Zikula.__('Create medium', 'module_simplemedia_js') + '" /> '
-                     + Zikula.__('Create medium', 'module_simplemedia_js'),
-                callback: function () {
-                    currentNodeId = liRef.id.replace('tree' + rootId + 'node_', '');
-                    window.location = Zikula.Config.baseURL + 'index.php?module=SimpleMedia&type=' + controller + '&func=edit&ot=medium&collection=' + currentNodeId + '&returnTo=adminDisplayCollection';
-                }
-            });
         }
         contextMenu.addItem({
-            label: '<img src="' + Zikula.Config.baseURL + 'images/icons/extrasmall/folder_new.png" width="16" height="16" alt="' + Zikula.__('Add child collection', 'module_simplemedia_js') + '" /> '
-                 + Zikula.__('Add child collection', 'module_simplemedia_js'),
+            label: '<img src="' + Zikula.Config.baseURL + 'images/icons/extrasmall/insert_table_row.png" width="16" height="16" alt="' + Zikula.__('Add child node', 'module_simplemedia_js') + '" /> '
+                 + Zikula.__('Add child node', 'module_simplemedia_js'),
             callback: function () {
                 currentNodeId = liRef.id.replace('tree' + rootId + 'node_', '');
                 simmedPerformTreeOperation(objectType, rootId, 'addChildNode');
@@ -137,7 +131,7 @@ function simmedInitTreeNodes(objectType, controller, rootId, hasDisplay, hasEdit
                  + Zikula.__('Delete node', 'module_simplemedia_js'),
             callback: function () {
                 var confirmQuestion;
-
+        
                 confirmQuestion = Zikula.__('Do you really want to remove this node?', 'module_simplemedia_js');
                 if (!liRef.hasClassName('z-tree-leaf')) {
                     confirmQuestion = Zikula.__('Do you really want to remove this node including all child nodes?', 'module_simplemedia_js');
@@ -166,7 +160,7 @@ function simmedInitTreeNodes(objectType, controller, rootId, hasDisplay, hasEdit
                 return !isRoot && !liRef.hasClassName('z-tree-last'); // has next sibling
             },
             callback: function () {
-                currentNodeId = liRef.id.replace('tree' + rootId + 'node_', '');
+                currentNodeId = liRef.attr('id').replace('tree' + rootId + 'node_', '');
                 simmedPerformTreeOperation(objectType, rootId, 'moveNodeDown');
             }
         });
@@ -178,7 +172,7 @@ function simmedInitTreeNodes(objectType, controller, rootId, hasDisplay, hasEdit
  *
  * @param node - the node which is currently being moved
  * @param params - array with insertion params, which are [relativenode, dir];
- *     - "dir" is a string with value "after', "before" or "bottom" and defines
+ *     - "dir" is a string with value "after", "before" or "bottom" and defines
  *       whether the affected node is inserted after, before or as last child of "relativenode"
  * @param tree data - serialized to JSON tree data
  *
@@ -186,7 +180,7 @@ function simmedInitTreeNodes(objectType, controller, rootId, hasDisplay, hasEdit
  */
 function simmedTreeSave(node, params, data)
 {
-    var nodeParts, rootId, nodeId, destId, pars, request;
+    var nodeParts, rootId, nodeId, destId, requestParams, request;
 
     // do not allow inserts on root level
     if (node.up('li') === undefined) {
@@ -198,7 +192,7 @@ function simmedTreeSave(node, params, data)
     nodeId = nodeParts[1];
     destId = params[1].id.replace('tree' + rootId + 'node_', '');
 
-    pars = {
+    requestParams = {
         'op': 'moveNodeTo',
         'direction': params[0],
         'root': rootId,
@@ -210,15 +204,18 @@ function simmedTreeSave(node, params, data)
         Zikula.Config.baseURL + 'ajax.php?module=SimpleMedia&func=handleTreeOperation',
         {
             method: 'post',
-            parameters: pars,
+            parameters: requestParams,
             onComplete: function (req) {
                 if (!req.isSuccess()) {
+                    var treeName = 'itemTree' + rootId;
                     Zikula.UI.Alert(req.getMessage(), Zikula.__('Error', 'module_simplemedia_js'));
-                    return Zikula.TreeSortable.categoriesTree.revertInsertion();
+
+                    return Zikula.TreeSortable[treeName].revertInsertion();
                 }
                 return true;
             }
         }
     );
+
     return request.success();
 }

@@ -41,13 +41,14 @@
             ed.addButton('simplemedia', {
                 title : 'simplemedia.desc',
                 cmd : 'mceSimpleMedia',
-				image : url + '/img/ed_simplemedia.png'
+             // image : url + '/img/SimpleMedia.gif'
+                image : '/images/icons/extrasmall/favorites.png'
             });
 
             // Add a node change handler, selects the button in the UI when a image is selected
-            /*ed.onNodeChange.add(function (ed, cm, n) {
+            ed.onNodeChange.add(function (ed, cm, n) {
                 cm.setActive('simplemedia', n.nodeName === 'IMG');
-            });*/
+            });
         },
 
         /**
@@ -72,7 +73,7 @@
          */
         getInfo : function () {
             return {
-                longname : 'SimpleMedia for TinyMCE',
+                longname : 'SimpleMedia for tinymce',
                 author : 'Erik Spaan & Axel Guckelsberger',
                 authorurl : 'https://github.com/zikula-ev/SimpleMedia',
                 infourl : 'https://github.com/zikula-ev/SimpleMedia',

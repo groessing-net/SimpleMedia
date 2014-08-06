@@ -45,11 +45,9 @@ function simmedInitItemActions(objectType, func, containerId)
         icon = '';
         if (func === 'display') {
             if (elem.hasClassName('z-icon-es-preview')) {
-                icon = '14_layer_visible';
+                icon = 'xeyes.png';
             } else if (elem.hasClassName('z-icon-es-display')) {
-                icon = 'kview';
-            } else if (elem.hasClassName('z-icon-es-add')) {
-                icon = 'edit_add';
+                icon = 'kview.png';
             } else if (elem.hasClassName('z-icon-es-edit')) {
                 icon = 'edit';
             } else if (elem.hasClassName('z-icon-es-saveas')) {
@@ -104,7 +102,7 @@ function simmedSubmitQuickNavForm(objectType)
 /**
  * Initialise the quick navigation panel in list views.
  */
-function simmedInitQuickNavigation(objectType, controller)
+function simmedInitQuickNavigation(objectType)
 {
     if ($('simplemedia' + simmedCapitaliseFirstLetter(objectType) + 'QuickNavForm') == undefined) {
         return;
@@ -171,7 +169,7 @@ function simmedInitInlineWindow(containerElem, title)
         }
     );
 
-    // return the instance
+    // return the instance;
     return newWindow;
 }
 

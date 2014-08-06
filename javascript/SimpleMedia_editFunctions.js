@@ -71,23 +71,31 @@ function simmedInitUploadField(fieldName)
 /**
  * Example method for initialising geo coding functionality in JavaScript.
  * In contrast to the map picker this one determines coordinates for a given address.
- * To use this please customise the form field names to your needs.
+ * Uses a callback function for retrieving the address to be converted, so that it can be easily customised in each edit template.
  * There is also a method on PHP level available in the \SimpleMedia_Util_Controller class.
  */
-function simmedInitGeoCoding()
+function simmedInitGeoCoding(addressCallback)
 {
     $('linkGetCoordinates').observe('click', function (evt) {
-        simmedDoGeoCoding();
+        simmedDoGeoCoding(addressCallback);
     });
 }
 
-function simmedDoGeoCoding()
+/**
+ * Performs the actual geo coding using Mapstraction.
+ */
+function simmedDoGeoCoding(addressCallback)
 {
-    var geocoder = new mxn.Geocoder('googlev3', simmedGeoCodeReturn, simmedGeoCodeErrorCallback);
-
     var address = {
         address : $F('street') + ' ' + $F('houseNumber') + ' ' + $F('zipcode') + ' ' + $F('city') + ' ' + $F('country')
     };
+
+    // Check whether the given callback is executable
+    if (typeof addressCallback !== 'function') {
+        address = addressCallback();
+    }
+
+    var geocoder = new mxn.Geocoder('googlev3', simmedGeoCodeReturn, simmedGeoCodeErrorCallback);
     geocoder.geocode(address);
 
     function simmedGeoCodeErrorCallback (status) {
@@ -135,7 +143,7 @@ function simmedResetRelatedItemForm(idPrefix)
  * For edit forms we use "iframe: true" to ensure file uploads work without problems.
  * For all other windows we use "iframe: false" because we want the escape key working.
  */
-function simmedCreateWindowInstance(containerElem, useIframe)
+function simmedCreateRelationWindowInstance(containerElem, useIframe)
 {
     var newWindow;
 
@@ -163,7 +171,7 @@ function simmedCreateWindowInstance(containerElem, useIframe)
 /**
  * Observe a link for opening an inline window
  */
-function simmedInitInlineWindow(objectType, containerID)
+function simmedinitInlineRelationWindow(objectType, containerID)
 {
     var found, newItem;
 
@@ -182,7 +190,7 @@ function simmedInitInlineWindow(objectType, containerID)
                 relationHandler.windowInstance.destroy();
             }
             // create and assign the new window instance
-            relationHandler.windowInstance = simmedCreateWindowInstance($(containerID), true);
+            relationHandler.windowInstance = simmedCreateRelationWindowInstance($(containerID), true);
         }
     });
 
@@ -194,7 +202,7 @@ function simmedInitInlineWindow(objectType, containerID)
         newItem.alias = '';
         newItem.prefix = containerID;
         newItem.acInstance = null;
-        newItem.windowInstance = simmedCreateWindowInstance($(containerID), true);
+        newItem.windowInstance = simmedCreateRelationWindowInstance($(containerID), true);
 
         // add it to the list of handlers
         relationHandler.push(newItem);
@@ -256,7 +264,7 @@ function simmedSelectRelatedItem(objectType, idPrefix, inputField, selectedListI
         editLink.update(' ' + editImage);
 
         $(elemPrefix + 'Edit').observe('click', function (e) {
-            simmedInitInlineWindow(objectType, idPrefix + 'Reference_' + newItemId + 'Edit');
+            simmedinitInlineRelationWindow(objectType, idPrefix + 'Reference_' + newItemId + 'Edit');
             e.stop();
         });
     }
@@ -347,7 +355,7 @@ function simmedInitRelationItemsForm(objectType, idPrefix, includeEditing)
     // from here inline editing will be handled
     $(idPrefix + 'SelectorDoNew').href += '&theme=Printer&idp=' + idPrefix + 'SelectorDoNew';
     $(idPrefix + 'SelectorDoNew').observe('click', function(e) {
-        simmedInitInlineWindow(objectType, idPrefix + 'SelectorDoNew');
+        simmedinitInlineRelationWindow(objectType, idPrefix + 'SelectorDoNew');
         e.stop();
     });
 
@@ -360,7 +368,7 @@ function simmedInitRelationItemsForm(objectType, idPrefix, includeEditing)
             elemPrefix = idPrefix + 'Reference_' + existingId + 'Edit';
             $(elemPrefix).href += '&theme=Printer&idp=' + elemPrefix;
             $(elemPrefix).observe('click', function (e) {
-                simmedInitInlineWindow(objectType, elemPrefix);
+                simmedinitInlineRelationWindow(objectType, elemPrefix);
                 e.stop();
             });
         }
@@ -387,7 +395,7 @@ function simmedCloseWindowFromInside(idPrefix, itemId)
                 if (relationHandler.acInstance !== null) {
                     // activate it
                     relationHandler.acInstance.activate();
-                    // show a message 
+                    // show a message
                     Zikula.UI.Alert(Zikula.__('Action has been completed.', 'module_simplemedia_js'), Zikula.__('Information', 'module_simplemedia_js'), {
                         autoClose: 3 // time in seconds
                     });
