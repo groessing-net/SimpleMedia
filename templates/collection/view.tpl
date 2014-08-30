@@ -16,7 +16,7 @@
         <h2>{$templateTitle}</h2>
     {/if}
 
-    <p class="z-informationmsg">{gt text='Collections are nested trees that can contain media items and sub-collections.'}</p>
+    {*<p class="z-informationmsg">{gt text='Collections are nested trees that can contain media items and sub-collections.'}</p>*}
 
     {if $canBeCreated}
         {checkpermissionblock component='SimpleMedia:Collection:' instance='::' level='ACCESS_EDIT'}
@@ -29,25 +29,24 @@
         {assign var='own' value=1}
     {/if}
     {assign var='all' value=0}
-    {if isset($showAllEntries) && $showAllEntries eq 1}
+    {*if isset($showAllEntries) && $showAllEntries eq 1}
         {gt text='Back to paginated view' assign='linkTitle'}
         <a href="{modurl modname='SimpleMedia' type='collection' func='view'}" title="{$linkTitle}" class="z-icon-es-view">{$linkTitle}</a>
         {assign var='all' value=1}
     {else}
         {gt text='Show all entries' assign='linkTitle'}
         <a href="{modurl modname='SimpleMedia' type='collection' func='view' all=1}" title="{$linkTitle}" class="z-icon-es-view">{$linkTitle}</a>
-    {/if}
+    {/if*}
     {*gt text='Switch to hierarchy view' assign='linkTitle'}
     <a href="{modurl modname='SimpleMedia' type='collection' func='view' tpl='tree'}" title="{$linkTitle}" class="z-icon-es-view">{$linkTitle}</a>*}
 
-    {include file='collection/view_quickNav.tpl' all=$all own=$own workflowStateFilter=false}{* see template file for available options *}
+    {*include file='collection/view_quickNav.tpl' all=$all own=$own workflowStateFilter=false*}{* see template file for available options *}
 
-    {* display the collections in a grid *}
     {include file='collection/view_items.tpl' collections=$items gridLevel=0}
 
     {* pager *}
-        {if !isset($showAllEntries) || $showAllEntries ne 1}
-            {pager rowcount=$pager.numitems limit=$pager.itemsperpage display='page' modname='SimpleMedia' type='collection' func='view' lct=$lct}
+    {if !isset($showAllEntries) || $showAllEntries ne 1}
+        {pager rowcount=$pager.numitems limit=$pager.itemsperpage display='page' modname='SimpleMedia' type='collection' func='view' lct=$lct}
     {/if}
 
     {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}

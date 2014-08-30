@@ -57,15 +57,7 @@ class SimpleMedia_Controller_Medium extends SimpleMedia_Controller_Base_Medium
      */
     public function multiUpload()
     {
-        $controllerHelper = new SimpleMedia_Util_Controller($this->serviceManager);
-
-        // parameter specifying which type of objects we are treating
-        $objectType = $this->request->query->filter('ot', 'medium', FILTER_SANITIZE_STRING);
-        $utilArgs = array('controller' => 'user', 'action' => 'multiUpload');
-        if (!in_array($objectType, $controllerHelper->getObjectTypes('controllerAction', $utilArgs))) {
-            $objectType = $controllerHelper->getDefaultObjectType('controllerAction', $utilArgs);
-        }
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', ACCESS_OVERVIEW), LogUtil::getErrorMsgPermission());
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':Medium:', '::', ACCESS_OVERVIEW), LogUtil::getErrorMsgPermission());
         /** TODO: custom logic */
 
         // Add template variables like the collection to store the media in
@@ -97,7 +89,7 @@ class SimpleMedia_Controller_Medium extends SimpleMedia_Controller_Base_Medium
         // $category = $this->request->query->filter('category', '', FILTER_SANITIZE_STRING);
 
         // return template
-        return $this->view->fetch('medium/multiUpload.tpl');
+        return $this->view->display('medium/multiUpload.tpl');
     }
 
     /**
@@ -109,106 +101,74 @@ class SimpleMedia_Controller_Medium extends SimpleMedia_Controller_Base_Medium
      */
     public function multiUploadSave()
     {
-        // check form csrf token
-        //if (!SecurityUtil::validateCsrfToken($this->request->request->filter('csrftoken', '', FILTER_SANITIZE_STRING), $this->serviceManager)) {
-        //	return LogUtil::registerAuthidError();
-        //}
-        // check permission to be sure
-        //$this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':Medium:', '::', ACCESS_ADD), LogUtil::getErrorMsgPermission());
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':Medium:', '::', ACCESS_OVERVIEW), LogUtil::getErrorMsgPermission());
 
-        // get the formdata
-        $uploads = $this->request->files->get('files', array());
-        $titles = $this->request->request->get('title', array());
-        $descriptions = $this->request->request->get('description', array());
+        new SimpleMedia_JQueryFileUploadUploadHandler();
 
-        $this->throwNotFoundUnless($uploads != null, $this->__('No "files" file parameter found.'));
-        // If it's not an array, passed value isn't correct
-        $this->throwNotFoundUnless(is_array($uploads['tmp_name']), $this->__('Parameter value isn\'t an array'));
+        return true;
+    }
 
-        // submitted collection to store media in
-        //TODO check why collection is not coming through
-        $collection = $this->request->request->get('collectionStore', ModUtil::getVar('SimpleMedia', 'defaultCollection', 1));
+    public function multiUploadMove()
+    {
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':Medium:', '::', ACCESS_OVERVIEW), LogUtil::getErrorMsgPermission());
 
-        //$collection = $this->request->request->get('collection');
-        //$collection = 4;
-        $collectionEntity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', array('ot' => 'collection', 'id' => $collection));
+        $uploadHandler = new SimpleMedia_JQueryFileUploadUploadHandler(null, false);
+        $files = $uploadHandler->get(false);
+        $files = $files['files'];
 
-        $uploadField = 'theFile';
-
-        // For each file, handle it
-        // TODO cleanup this code and check it all
-        $files = array();
-        foreach ($uploads['tmp_name'] as $index => $value) {
-            $file[$uploadField] = array(
-                'tmp_name' => $uploads['tmp_name'][$index],
-                'name' => $uploads['name'][$index],
-                'size' => $uploads['size'][$index],
-                'type' => $uploads['type'][$index],
-                'error' => $uploads['error'][$index],
-                'index' => $index
-            );
-
-            if ($file[$uploadField]['error'] != UPLOAD_ERR_OK) {
-                switch ((int) $file[$uploadField]['error']) {
-                    case UPLOAD_ERR_INI_SIZE:
-                        throw new UploadException("File size exceed 'upload_max_filesize' ini parameter");
-                    case UPLOAD_ERR_FORM_SIZE:
-                        throw new UploadException("File size exceed 'MAX_FILE_SIZE' form parameter");
-                    case UPLOAD_ERR_CANT_WRITE:
-                        throw new UploadException("Can write file");
-                    case UPLOAD_ERR_FORM_SIZE:
-                        throw new UploadException(sprintf("Unknown error (%d)", $file[$uploadField]['error']));
-                }
-            } else {
-
-                // First create medium
-                //$entityClass = $this->name . '_Entity_Medium';
-                $entityClass = 'SimpleMedia_Entity_Medium';
-                $medium = new $entityClass();
-
-                $medium->setTitle($titles[$index]);
-                $medium->setDescription($descriptions[$index]);
-                $medium->setCollection($collectionEntity);
-
-                // Perform the actual file upload and initialise the upload handler
-                // do the actual upload (includes validation, physical file processing and reading meta data)
-                //$uploadResult = $uploadManager->performFileUpload('medium', $file, 'files');
-                // assign the upload file name
-                // $formData[$uploadField] = $uploadResult['fileName'];
-                // assign the meta data
-                // $formData[$uploadField . 'Meta'] = $uploadResult['metaData'];
-
-                // Integrate handleCommand, fetchInputData, handleUploads of SimpleMedia_Form_Handler_User_Base_Edit
-
-                // TODO add sanity checks
-
-                $uploadManager = new SimpleMedia_UploadHandler();
-                // do the actual upload (includes validation, physical file processing and reading meta data)
-                $uploadResult = $uploadManager->performFileUpload('medium', $file, $uploadField);
-                // assign the upload file name
-                $medium->setTheFile($uploadResult['fileName']);
-                // assign the basic meta data
-                $medium->setTheFileMeta($uploadResult['metaData']);
-
-                // assign the meta tags from getID3
-                $metaData = $medium->getMetadata();
-                if (is_null($metaData)) {
-                    $metaDataEntityClass = $this->name . '_Entity_mediumMetaData';
-                    $metaData = new $metaDataEntityClass($medium);
-                }
-                $metaData->merge(array('metaTags' => $uploadResult['metaTags']));
-                $medium->setMetadata($metaData);
-
-                // workflow approve
-                $medium->setWorkflowState('approved');
-
-                // now store the created medium and flush to DB
-                $entityManager = $this->serviceManager->getService('doctrine.entitymanager');
-                $entityManager->persist($medium);
-                $entityManager->flush();
-            }
+        if (count($files) == 0) {
+            return $this->redirect(ModUtil::url($this->name, 'collection', 'main'));
         }
 
-        return $files;
+        $workflowHelper = new SimpleMedia_Util_Workflow($this->getServiceManager());
+
+        // submitted collection to store media in
+        $collection = $this->request->request->get('collectionStore', $collection = $this->getVar('defaultCollection', 1));
+        if ($collection == -1) {
+            // Create new collection.
+            $collectionEntity = new SimpleMedia_Entity_Collection();
+            $collectionEntity->setTitle($this->request->request->get('collectionStoreTitle', null));
+            $collectionEntity->setDescription($this->request->request->get('collectionStoreDescription', null));
+            $collectionEntity->setWorkflowState('approved');
+
+            $workflowHelper->executeAction($collectionEntity, 'submit');
+        } else {
+            $collectionEntity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', array('ot' => 'collection', 'id' => $collection));
+        }
+
+        // For each file, handle it
+        $uploadField = 'theFile';
+        foreach ($files as $file) {
+            $formData[$uploadField] = array(
+                'tmp_name' => $file->path,
+                'name' => $file->name,
+                'error' => '0'
+            );
+
+            // First create medium
+            $medium = new SimpleMedia_Entity_Medium();
+            $medium->setTitle($file->name);
+            $medium->setCollection($collectionEntity);
+
+            $uploadManager = new SimpleMedia_UploadHandler();
+            // do the actual upload (includes validation, physical file processing and reading meta data)
+            $uploadResult = $uploadManager->performFileUpload('medium', $formData, $uploadField);
+            // assign the upload file name
+            $medium->setTheFile($uploadResult['fileName']);
+            // assign the basic meta data
+            $medium->setTheFileMeta($uploadResult['metaData']);
+
+            // assign the meta tags from getID3
+            $metaData = new SimpleMedia_Entity_MediumMetaData($medium);
+            $metaData->merge(array('metaTags' => $uploadResult['metaTags']));
+            $medium->setMetadata($metaData);
+
+            // workflow approve
+            $medium->setWorkflowState('approved');
+
+            $workflowHelper->executeAction($medium, 'submit');
+        }
+
+        return $this->redirect(ModUtil::url($this->name, 'collection', 'view', array('id' => $collectionEntity->getId())));
     }
 }
