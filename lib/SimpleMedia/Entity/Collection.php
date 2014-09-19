@@ -39,166 +39,33 @@ class SimpleMedia_Entity_Collection extends SimpleMedia_Entity_Base_Collection
      * - added Create Medium
      * - added Multi upload in an album
      */
-    /**
-     * Collect available actions for this entity.
-     */
     protected function prepareItemActions()
     {
         if (!empty($this->_actions)) {
             return;
         }
+        parent::prepareItemActions();
 
-        $currentType = FormUtil::getPassedValue('type', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
         $currentFunc = FormUtil::getPassedValue('func', 'main', 'GETPOST', FILTER_SANITIZE_STRING);
         $dom = ZLanguage::getModuleDomain('SimpleMedia');
-        if ($currentType == 'admin') {
-            if (in_array($currentFunc, array('main', 'view'))) {
-                $this->_actions[] = array(
-                    'url' => array('type' => 'user', 'func' => 'display', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
-                    'icon' => 'preview',
-                    'linkTitle' => __('Open preview page', $dom),
-                    'linkText' => __('Preview', $dom)
-                );
-                $this->_actions[] = array(
-                    'url' => array('type' => 'admin', 'func' => 'display', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
-                    'icon' => 'display',
-                    'linkTitle' => str_replace('"', '', $this->getTitleFromDisplayPattern()),
-                    'linkText' => __('Details', $dom)
-                );
-            }
-            if (in_array($currentFunc, array('main', 'view', 'display'))) {
-                $component = 'SimpleMedia:Collection:';
-                $instance = $this->id . '::';
-                if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
-                    $this->_actions[] = array(
-                        'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
-                        'icon' => 'edit',
-                        'linkTitle' => __('Edit', $dom),
-                        'linkText' => __('Edit', $dom)
-                    );
-                }
-                if (SecurityUtil::checkPermission($component, $instance, ACCESS_DELETE)) {
-                    $this->_actions[] = array(
-                        'url' => array('type' => 'admin', 'func' => 'delete', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
-                        'icon' => 'delete',
-                        'linkTitle' => __('Delete', $dom),
-                        'linkText' => __('Delete', $dom)
-                    );
-                }
-            }
-            if ($currentFunc == 'display') {
-                $this->_actions[] = array(
-                    'url' => array('type' => 'admin', 'func' => 'view', 'arguments' => array('ot' => 'collection')),
-                    'icon' => 'back',
-                    'linkTitle' => __('Back to overview', $dom),
-                    'linkText' => __('Back to overview', $dom)
-                );
-            }
 
-            // more actions for adding new related items
-            $authAdmin = SecurityUtil::checkPermission($component, $instance, ACCESS_ADMIN);
+        // more actions for adding new related items
+        $authAdmin = true; //SecurityUtil::checkPermission($component, $instance, ACCESS_ADD);
+        $uid = UserUtil::getVar('uid');
+        if ($authAdmin || (isset($uid) && isset($this->createdUserId) && $this->createdUserId == $uid)) {
 
-            $uid = UserUtil::getVar('uid');
-            if ($authAdmin || (isset($uid) && isset($this->createdUserId) && $this->createdUserId == $uid)) {
-
-                $urlArgs = array('ot' => 'medium',
-                    'collection' => $this->id);
-                if ($currentFunc == 'view') {
-                    $urlArgs['returnTo'] = 'adminViewCollection';
-                } elseif ($currentFunc == 'display') {
-                    $urlArgs['returnTo'] = 'adminDisplayCollection';
-                }
-                $this->_actions[] = array(
-                    'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => $urlArgs),
-                    'icon' => 'add',
-                    'linkTitle' => __('Create medium', $dom),
-                    'linkText' => __('Create medium', $dom)
-                );
+            $urlArgs = array('collection' => $this->id);
+            if ($currentFunc == 'view') {
+                $urlArgs['returnTo'] = 'userViewCollection';
+            } elseif ($currentFunc == 'display') {
+                $urlArgs['returnTo'] = 'userDisplayCollection';
             }
-        }
-        if ($currentType == 'user') {
-            /*if (in_array($currentFunc, array('main', 'view'))) {
-                $this->_actions[] = array(
-                    'url' => array('type' => 'user', 'func' => 'display', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
-                    'icon' => 'display',
-                    'linkTitle' => str_replace('"', '', $this->getTitleFromDisplayPattern()),
-                    'linkText' => __('Details', $dom)
-                );
-            }*/
-            if (in_array($currentFunc, array('main', 'view', 'display'))) {
-                $component = 'SimpleMedia:Collection:';
-                $instance = $this->id . '::';
-                if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
-                    $this->_actions[] = array(
-                        'url' => array('type' => 'user', 'func' => 'edit', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
-                        'icon' => 'edit',
-                        'linkTitle' => __('Edit', $dom),
-                        'linkText' => __('Edit', $dom)
-                    );
-                }
-                if (SecurityUtil::checkPermission($component, $instance, ACCESS_DELETE)) {
-                    $this->_actions[] = array(
-                        'url' => array('type' => 'user', 'func' => 'delete', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
-                        'icon' => 'delete',
-                        'linkTitle' => __('Delete', $dom),
-                        'linkText' => __('Delete', $dom)
-                    );
-                }
-            }
-
-            // more actions for adding new related items
-            $authAdmin = SecurityUtil::checkPermission($component, $instance, ACCESS_ADD);
-            $uid = UserUtil::getVar('uid');
-            if ($authAdmin || (isset($uid) && isset($this->createdUserId) && $this->createdUserId == $uid)) {
-
-                $urlArgs = array('ot' => 'medium',
-                    'collection' => $this->id);
-                if ($currentFunc == 'view') {
-                    $urlArgs['returnTo'] = 'userViewCollection';
-                } elseif ($currentFunc == 'display') {
-                    $urlArgs['returnTo'] = 'userDisplayCollection';
-                }
-                $this->_actions[] = array(
-                    'url' => array('type' => 'user', 'func' => 'edit', 'arguments' => $urlArgs),
-                    'icon' => 'add',
-                    'linkTitle' => __('Add single medium to this collection', $dom),
-                    'linkText' => __('Add medium', $dom)
-                );
-                $urlArgs = array('collection' => $this->id);
-                if ($currentFunc == 'view') {
-                    $urlArgs['returnTo'] = 'userViewCollection';
-                } elseif ($currentFunc == 'display') {
-                    $urlArgs['returnTo'] = 'userDisplayCollection';
-                }
-                $this->_actions[] = array(
-                    'url' => array('type' => 'user', 'func' => 'multiUpload', 'arguments' => $urlArgs),
-                    'icon' => 'add',
-                    'linkTitle' => __('Multi Upload media to this colleciton', $dom),
-                    'linkText' => __('MultiUpload media', $dom)
-                );
-                $urlArgs = array('ot' => 'collection',
-                    'pid' => $this->id,
-					'root' => 1);
-                if ($currentFunc == 'view') {
-                    $urlArgs['returnTo'] = 'userViewCollection';
-                } elseif ($currentFunc == 'display') {
-                    $urlArgs['returnTo'] = 'userDisplayCollection';
-                }
-                $this->_actions[] = array(
-                    'url' => array('type' => 'user', 'func' => 'addCollection', 'arguments' => $urlArgs),
-                    'icon' => 'add',
-                    'linkTitle' => __('Add child collection to this collection', $dom),
-                    'linkText' => __('Add child collection', $dom)
-                );
-            }
-            if ($currentFunc == 'display') {
-                $this->_actions[] = array(
-                    'url' => array('type' => 'user', 'func' => 'view', 'arguments' => array('ot' => 'collection')),
-                    'icon' => 'back',
-                    'linkTitle' => __('Back to collection overview', $dom),
-                    'linkText' => __('Back to overview', $dom)
-                );
-            }
+            $this->_actions[] = array(
+                'url' => array('type' => 'user', 'func' => 'multiUpload', 'arguments' => $urlArgs),
+                'icon' => 'add',
+                'linkTitle' => __('Multi Upload media to this colleciton', $dom),
+                'linkText' => __('MultiUpload media', $dom)
+            );
         }
     }
     

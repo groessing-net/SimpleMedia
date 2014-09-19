@@ -126,5 +126,4 @@ class SimpleMedia_Form_Handler_Admin_Config extends SimpleMedia_Form_Handler_Adm
 
         return $this->view->redirect($url);
     }
-
 }
